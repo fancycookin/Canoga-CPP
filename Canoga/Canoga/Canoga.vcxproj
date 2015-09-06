@@ -142,6 +142,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardView.h" />
+    <ClInclude Include="Computer.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Human.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Tournment.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardView.cpp" />
+    <ClCompile Include="Computer.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Human.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Tournment.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
