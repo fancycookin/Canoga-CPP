@@ -4,19 +4,16 @@ using namespace std;
 class Board
 {
 public:
+	Board();
 	Board(int a_numberOfRows);
 	~Board();
 	bool isCovered(int a_square);
-	bool isCoverable(int a_square);
-	bool isUncoverable(int a_square);
-private:
-	int InitializeRows(int a_numberOfRows);
+	map<int,bool> getMap();
 
-	//int m_humanRows[11], m_computerRows[11];
-	map<int, bool> m_humanRows, m_computerRows;
+private:
+	int initializeRows(int a_numberOfRows);
+	map<int, bool> m_squareRows;
 	int m_maxRows;
-	bool setCoverSquare(int a_square);
-	bool setUncoverSquare(int a_square);
 
 
 };

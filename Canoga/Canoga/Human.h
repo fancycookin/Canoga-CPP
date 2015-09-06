@@ -7,5 +7,6 @@ public:
 	Human();
 	~Human();
 private:
+	bool verifyInput(string a_selection);
 };
 

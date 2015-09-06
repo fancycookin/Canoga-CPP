@@ -13,5 +13,5 @@ Game::~Game()
 
 int Game::GetGameRule()
 {
-	return 0;
+	return m_gameRule;
 }

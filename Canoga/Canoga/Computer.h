@@ -7,7 +7,7 @@ public:
 	Computer();
 	~Computer();
 private:
-	int GetSuggestedMove();
-	int SearchAndDestroy();
+	int getSuggestedMove();
+	int searchAndDestroy();
 };
 
