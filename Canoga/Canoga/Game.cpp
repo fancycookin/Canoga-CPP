@@ -5,6 +5,8 @@
 #include "Computer.h"
 #include <iostream>
 #include <string>
+#include <conio.h>
+#include <windows.h>
 
 using namespace std;
 
@@ -37,25 +39,42 @@ int main() {
 	Human player = Human(temp);
 	Computer CPU = Computer(temp);
 
-	BoardView playerBoardView = BoardView(player);
-	BoardView CPUBoardView = BoardView(CPU);
-	playerBoardView.RefreshDisplay();
-	playerBoardView.Display();
-	CPUBoardView.Display();
+	BoardView playerBoardView = BoardView(player, CPU);
+	//BoardView CPUBoardView = BoardView(CPU);
+	playerBoardView.refreshDisplay();
+	playerBoardView.display();
+	//CPUBoardView.Display();
 	player.setCoverSquare(5);
-	playerBoardView.RefreshDisplay();
-	playerBoardView.Display();
-	CPUBoardView.Display();
-	cout << "Player's score:" << endl;
-	cout << player.getScore() << endl;
-	cout << "CPU's score:" << endl;
-	cout << CPU.getScore() << endl;
+	playerBoardView.refreshDisplay();
+	playerBoardView.display();
+	
+	playerBoardView.displayScore();
 
 	/*
 	map<string, bool> hi = map<string, bool>();
 	hi.insert(pair<string,bool>("hi", false));
 	hi["hi"] = true;
 	cout << hi["hi"];
+	*/
+
+	/*
+	float progress = 0.0;
+	while (progress < 1.0) {
+		int barWidth = 70;
+
+		std::cout << "[";
+		int pos = barWidth * progress;
+		for (int i = 0; i < barWidth; ++i) {
+			if (i < pos) std::cout << "=";
+			else if (i == pos) std::cout << ">";
+			else std::cout << " ";
+		}
+		std::cout << "] " << int(progress * 100.0) << " %\r";
+		std::cout.flush();
+		Sleep(50);
+		progress += 0.16; // for demonstration only
+	}
+	std::cout << std::endl;
 	*/
 
 	return 0;

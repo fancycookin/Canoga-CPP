@@ -4,12 +4,14 @@
 class BoardView
 {
 public:
-	BoardView(Player &a_player);
+	BoardView(Player &a_player,Player &a_player2);
 	~BoardView();
-	void RefreshDisplay();
-	void Display();
+	void refreshDisplay();
+	void display();
+	void displayScore();
 
 private:
 	Player *m_player;
+	Player *m_player2;
 };
 
