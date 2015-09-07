@@ -105,16 +105,17 @@ bool Player::setCoverSquare(int a_square)
 		return true;
 	}
 }
-/*
+
 bool Player::setUncoverSquare(int a_square)
 {
 	if (isCoverable(a_square)) return false;
 	else {
-		m_playerBoard.getMap()[a_square] = false;
+		map<int, bool> *ptr = m_playerBoard.getMap();
+		ptr->at(a_square) = false;
 		return true;
 	}
 }
-*/
+
 
 int Player::rollDice()
 {

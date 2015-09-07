@@ -5,6 +5,7 @@ class Computer :
 {
 public:
 	Computer();
+	using Player::Player;
 	~Computer();
 private:
 	int getSuggestedMove();
