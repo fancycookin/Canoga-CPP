@@ -22,33 +22,28 @@ void BoardView::RefreshDisplay()
 
 void BoardView::Display()
 {
-
-	int test = m_player->getBoard().getMaxRows();
+	int test = m_player->getBoard()->getMaxRows();
+	//int test = m_player->getBoard().getMaxRows();
 	//map<int, bool> *playerRows;
 	//playerRows = m_player.getBoard().getMap();
-	for (int i = 0; i < m_player->getBoard().getMaxRows() * 2; i++) {
+	for (int i = 0; i < m_player->getBoard()->getMaxRows() * 2; i++) {
 		cout << "--";
 	}
 	cout << "\n";
-	
-	//auto it= m_player->getBoard().getMap()->begin();
+	auto it = m_player->getBoard()->getMap()->begin();
 
-	//it->first;
 	/*
 	for (it = playerRows->begin(); it != playerRows->end();++it) {
 		if (it->second) cout << "|*" << it->first << "*|";
 		else cout << "|" << (it->first) << "|";
 	}
 	*/
-	//it = m_player->getBoard().getMap()->begin();
-	//it->first;
-	//it = m_player->getBoard().getMap()->end();
-	/*
-	for (it = m_player->getBoard().getMap()->begin(); it != m_player->getBoard().getMap()->end();++it) {
+	
+	for (it; it != m_player->getBoard()->getMap()->end();++it) {
 		if (it->second) cout << "|*" << it->first << "*|";
 		else cout << "|" << (it->first) << "|";
 	}
-	*/
+	
 	cout << "\n";
 }
 

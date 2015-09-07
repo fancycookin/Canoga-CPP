@@ -37,7 +37,7 @@ int Board::getMaxRows()
 	return m_maxRows;
 }
 
-map<int,bool>* Board::getMap()
+map<int,bool>*Board::getMap()
 {
 	return &m_squareRows;
 }

@@ -13,7 +13,7 @@ public:
 	bool isCoverable(int a_square);
 	bool isUncoverable(int a_square);
 	bool setCoverSquare(int a_square);
-	Board getBoard();
+	Board* getBoard();
 
 private:
 	Board m_playerBoard;

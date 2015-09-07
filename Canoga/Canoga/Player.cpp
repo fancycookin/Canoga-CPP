@@ -54,9 +54,9 @@ bool Player::isUncoverable(int a_square)
 	return false;
 }
 
-Board Player::getBoard()
+Board* Player::getBoard()
 {
-	return m_playerBoard;
+	return &m_playerBoard;
 }
 
 bool Player::setOneDieMode()
