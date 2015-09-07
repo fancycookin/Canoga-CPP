@@ -8,12 +8,15 @@ public:
 	Board(int a_numberOfRows);
 	~Board();
 	bool isCovered(int a_square);
-	map<int,bool> getMap();
+	int getMaxRows();
+	map<int,bool>* getMap();
 
 private:
-	int initializeRows(int a_numberOfRows);
 	map<int, bool> m_squareRows;
 	int m_maxRows;
+
+	int initializeRows(int a_numberOfRows);
+
 
 
 };

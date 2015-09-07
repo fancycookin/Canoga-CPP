@@ -8,7 +8,6 @@
 
 
 #include "Board.h"
-#include "Game.h"
 
 Board::Board() {
 
@@ -17,6 +16,7 @@ Board::Board() {
 
 Board::Board(int a_numberOfRows)
 {
+	m_maxRows = 0;
 	initializeRows(a_numberOfRows);
 
 }
@@ -32,17 +32,21 @@ bool Board::isCovered(int a_square)
 	else return false;
 }
 
-map<int,bool> Board::getMap()
+int Board::getMaxRows()
 {
-	return m_squareRows;
+	return m_maxRows;
+}
+
+map<int,bool>* Board::getMap()
+{
+	return &m_squareRows;
 }
 
 int Board::initializeRows(int a_numberOfRows) {
 	if (a_numberOfRows < 9 || a_numberOfRows > 12) {
-
-		return 1;
+		return -1;
 	}
-
+	m_maxRows = a_numberOfRows;
 	for (int i = 0; i < m_maxRows; i++) {
 		m_squareRows.insert(pair<int, bool>(i + 1, false));
 	}

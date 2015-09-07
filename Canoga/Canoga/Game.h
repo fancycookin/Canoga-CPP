@@ -8,6 +8,6 @@ public:
 
 private:
 	int m_gameRule;
-	bool SetGameRule();
+	bool SetGameRule(int a_gameRule);
 };
 

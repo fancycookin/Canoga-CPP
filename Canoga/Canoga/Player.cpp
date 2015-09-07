@@ -8,6 +8,8 @@ Player::Player() {
 
 Player::Player(int a_gameRule)
 {
+	m_score = 0;
+	m_wins = 0;
 	m_isOneDieMode = false;
 	m_isTurn = false;
 	m_playerBoard =  Board(a_gameRule);
@@ -52,6 +54,11 @@ bool Player::isUncoverable(int a_square)
 	return false;
 }
 
+Board Player::getBoard()
+{
+	return m_playerBoard;
+}
+
 bool Player::setOneDieMode()
 {
 	m_isOneDieMode = !m_isOneDieMode;
@@ -92,11 +99,13 @@ bool Player::setCoverSquare(int a_square)
 {
 	if (isUncoverable(a_square)) return false;
 	else {
-		m_playerBoard.getMap()[a_square] = true;
+		map<int,bool> *ptr = m_playerBoard.getMap();
+		//m_playerBoard.getMap()[a_square] = true;
+		ptr->at(a_square) = true;
 		return true;
 	}
 }
-
+/*
 bool Player::setUncoverSquare(int a_square)
 {
 	if (isCoverable(a_square)) return false;
@@ -105,6 +114,7 @@ bool Player::setUncoverSquare(int a_square)
 		return true;
 	}
 }
+*/
 
 int Player::rollDice()
 {
@@ -116,6 +126,7 @@ int Player::rollDice()
 
 int Player::rollDie()
 {
+	srand(static_cast<unsigned int>(time(0)));
 	int value;
 	if (!isOneDieMode()) return -1;
 	else {

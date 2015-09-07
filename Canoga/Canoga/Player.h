@@ -12,12 +12,14 @@ public:
 	bool isTurn();
 	bool isCoverable(int a_square);
 	bool isUncoverable(int a_square);
-	int getDice();
+	bool setCoverSquare(int a_square);
+	Board getBoard();
 
 private:
 	Board m_playerBoard;
 	int m_score, m_wins;
 	bool m_isTurn, m_isOneDieMode;
+
 	bool setOneDieMode();
 	bool setWin(int a_wins);
 	bool addWin();
@@ -25,7 +27,7 @@ private:
 	bool addScore();
 	bool setTurn();
 
-	bool setCoverSquare(int a_square);
+	
 	bool setUncoverSquare(int a_square);
 	int rollDice();
 	int rollDie();
