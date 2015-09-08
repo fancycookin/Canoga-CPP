@@ -7,8 +7,9 @@ public:
 	Computer();
 	using Player::Player;
 	~Computer();
-private:
 	int getSuggestedMove();
 	int searchAndDestroy();
+private:
+
 };
 

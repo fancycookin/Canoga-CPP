@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "Board.h"
-#include <ctime>
 
 Player::Player() {
 
@@ -117,21 +116,4 @@ bool Player::setUncoverSquare(int a_square)
 }
 
 
-int Player::rollDice()
-{
-	srand(static_cast<unsigned int>(time(0)));
-	int value = rand() % 6 + 1;
-	value += rand() % 6 + 1;
-	return value;
-}
 
-int Player::rollDie()
-{
-	srand(static_cast<unsigned int>(time(0)));
-	int value;
-	if (!isOneDieMode()) return -1;
-	else {
-		value = rand() % 6 + 1;
-		return value;
-	}
-}

@@ -14,7 +14,6 @@ public:
 private:
 	map<int, bool> m_squareRows;
 	int m_maxRows;
-
 	int initializeRows(int a_numberOfRows);
 
 

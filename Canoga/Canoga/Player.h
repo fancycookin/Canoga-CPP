@@ -13,12 +13,9 @@ public:
 	bool isCoverable(int a_square);
 	bool isUncoverable(int a_square);
 	bool setCoverSquare(int a_square);
+
 	Board* getBoard();
 
-private:
-	Board m_playerBoard;
-	int m_score, m_wins;
-	bool m_isTurn, m_isOneDieMode;
 
 	bool setOneDieMode();
 	bool setWin(int a_wins);
@@ -27,10 +24,15 @@ private:
 	bool addScore();
 	bool setTurn();
 
-	
+
 	bool setUncoverSquare(int a_square);
-	int rollDice();
-	int rollDie();
+
+
+private:
+	Board m_playerBoard;
+	int m_score, m_wins;
+	bool m_isTurn, m_isOneDieMode;
+
 
 
 };

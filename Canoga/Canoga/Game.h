@@ -1,13 +1,26 @@
 #pragma once
+#include "Human.h"
+#include "Computer.h"
 class Game
 {
 public:
 	Game();
 	~Game();
-	int GetGameRule();
+	int getGameRule();
 
 private:
+	Human m_human;
+	Computer m_computer;
 	int m_gameRule;
-	bool SetGameRule(int a_gameRule);
+	bool setGameRule(int a_gameRule);
+	void setNewRound();
+	void playRound();
+	void askMove();
+	int rollDice();
+	int rollDie();
+	bool playTurn();
+	void setFirstPlayer();
+	int m_playerDiceSum,m_computerDiceSum;
+	Player m_firstPlayer;
 };
 

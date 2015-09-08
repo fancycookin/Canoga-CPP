@@ -7,12 +7,16 @@
 #include <string>
 #include <conio.h>
 #include <windows.h>
+#include <ctime>
 
 using namespace std;
 
 
 Game::Game()
 {
+
+	m_playerDiceSum = 0;
+	m_computerDiceSum = 0;
 }
 
 
@@ -20,15 +24,72 @@ Game::~Game()
 {
 }
 
-int Game::GetGameRule()
+int Game::getGameRule()
 {
 	return m_gameRule;
 }
 
-bool Game::SetGameRule(int a_gameRule)
+bool Game::setGameRule(int a_gameRule)
 {
 	m_gameRule = a_gameRule;
 	return true;
+}
+
+void Game::setNewRound()
+{
+	m_human = Human(m_gameRule);
+	m_computer = Computer(m_gameRule);
+	m_human.setScore(0);
+	m_computer.setScore(0);
+}
+
+void Game::playRound()
+{
+	if (m_human.isTurn()) {
+		askMove();
+		  
+	}
+	else {
+		m_computer.searchAndDestroy(); 
+	}
+}
+
+void Game::askMove()
+{
+	cout << "What would you like to do bud?";
+}
+
+void Game::setFirstPlayer()
+{
+	while (m_playerDiceSum == m_computerDiceSum) {
+		m_playerDiceSum = rollDice();
+		m_computerDiceSum = rollDice();
+		if (m_playerDiceSum > m_computerDiceSum) {
+			m_firstPlayer = m_human;
+			m_human.setTurn();
+		}
+		if (m_computerDiceSum > m_playerDiceSum) {
+			m_firstPlayer = m_computer;
+			m_computer.setTurn();
+		}
+	}
+}
+
+
+int Game::rollDice()
+{
+	srand(static_cast<unsigned int>(time(0)));
+	int value = rand() % 6 + 1;
+	value += rand() % 6 + 1;
+	return value;
+}
+
+int Game::rollDie()
+{
+	srand(static_cast<unsigned int>(time(0)));
+	int value;
+	value = rand() % 6 + 1;
+	return value;
 }
 
 int main() {
@@ -47,8 +108,11 @@ int main() {
 	player.setCoverSquare(5);
 	playerBoardView.refreshDisplay();
 	playerBoardView.display();
-	
 	playerBoardView.displayScore();
+	player.addScore();
+	playerBoardView.display();
+	playerBoardView.displayScore();
+	
 
 	/*
 	map<string, bool> hi = map<string, bool>();
