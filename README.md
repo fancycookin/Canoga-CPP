@@ -20,3 +20,15 @@ to do some coding today, so I laid down the base strucutre of the design for the
 in the evening and it is a Saturday night, so ... family time!
 
 untill tomorrow!
+
+******************************************************************************************************
+Update 9/11/2015:
+******************************************************************************************************
+Status:
+Tonight is the first submission checkpoint of this project. I have to submit my current progress, log
+files, and source code to the instructor of the course.
+
+I have made a lot of local changes that I have yet to submit to GitHub. However, I am in the process of reworking some issues with the Game class and reconstructing the Board class.
+
+Additional commits will be made during the weekend!
+
