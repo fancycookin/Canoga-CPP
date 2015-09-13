@@ -7,10 +7,16 @@ public:
 	Human();
 	using Player::Player;
 	~Human();
+	bool verifyInput(string a_input, string a_inputType);
 private:
-	bool verifyInput(string a_selection);
+	/*
 	bool verifyGameRule(string a_selection);
-	bool verifyCommand(string a_selection);
+	bool verifyRollDice(string a_selection);
 	bool verifyRollChoice(string a_selection);
+	bool verifyCoverSquare(string a_selection);
+	bool verifyUncoverSquare(string a_selection);
+	bool verifyFileName(string a_selection);
+	*/
+
 };
 

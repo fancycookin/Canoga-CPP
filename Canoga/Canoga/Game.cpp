@@ -14,7 +14,11 @@ using namespace std;
 
 Game::Game()
 {
-
+	//askGameRule();
+	setGameRule(m_gameRule);
+	setNewRound();
+	m_human = Human(m_gameRule);
+	m_computer = Computer(m_gameRule);
 	m_playerDiceSum = 0;
 	m_computerDiceSum = 0;
 }
@@ -31,6 +35,7 @@ int Game::getGameRule()
 
 bool Game::setGameRule(int a_gameRule)
 {
+	if (a_gameRule < 9 || a_gameRule > 11) return false;
 	m_gameRule = a_gameRule;
 	return true;
 }
@@ -42,6 +47,24 @@ void Game::setNewRound()
 	m_human.setScore(0);
 	m_computer.setScore(0);
 }
+/*
+void Game::askGameRule()
+{
+	string selection;
+	cout << "Set the rule of the game.\nHow many squares would you like the game boards to have?" << endl;
+	do{
+		cout << "Enter a value from 9 - 11: ";
+		cin >> selection;
+		if (m_human.verifyGameRule(selection)) {
+			setGameRule(stoi(selection));
+			cout << "Game rule has been set to: " + selection + " squares per board.";
+		}
+		else {
+			cout << "Invalid input.";
+		}
+	}while(selection.i)
+}
+*/
 
 void Game::playRound()
 {
@@ -92,11 +115,31 @@ int Game::rollDie()
 	return value;
 }
 
+
+string Game::getInputFromUser(Human &user, string inputType) {
+	bool validInput = false;
+	string userChoice;
+	//loop until valid input is entered
+	while (validInput == false) {
+		cin >> userChoice;
+		//Make all characters in userChoice string uppercase
+		for (int index = 0; index < int(userChoice.length()); index++) {
+			userChoice.at(index) = toupper(userChoice.at(index));
+		}
+		//Validate input
+		validInput = user.verifyInput(userChoice, inputType);
+		if (validInput == false) {
+			cout << "Invalid input try again." << endl;
+		}
+	}
+	return userChoice;
+}
+
 int main() {
 	int temp;
 	cout << "Enter number of rows that you'd like:";
 	cin >> temp;
-
+	Game myGame = Game();
 	Human player = Human(temp);
 	Computer CPU = Computer(temp);
 
@@ -112,6 +155,8 @@ int main() {
 	player.addScore();
 	playerBoardView.display();
 	playerBoardView.displayScore();
+
+	//m_firstPlayer = 
 	
 
 	/*
