@@ -6,8 +6,9 @@
 #include <iomanip>
 
 
-BoardView::BoardView(Player &a_player, Player &a_player2)
+BoardView::BoardView(Player &a_player, Player &a_player2, Board &a_board)
 {
+	m_board = &a_board;
 	m_player = &a_player;
 	m_player2 = &a_player2;
 }
@@ -37,8 +38,9 @@ void BoardView::display()
 	cout << ":\t";
 
 	// CPU HUD
-	auto it2 = m_player2->getBoard()->getMap()->begin();
-	for (it2; it2 != m_player2->getBoard()->getMap()->end();++it2) {
+	auto it2 = m_board->getComputerRows()->begin();
+	//auto it2 = m_player2->getBoard()->getMap()->begin();
+	for (it2; it2 != m_board->getComputerRows()->end();++it2) {
 		if (it2->second) cout << "|*" << it2->first << "*";
 		else cout << "| " << (it2->first) << " ";
 	}
@@ -59,8 +61,9 @@ void BoardView::display()
 	cout << ":\t";
 
 	// Player HUD
-	auto it = m_player->getBoard()->getMap()->begin();
-	for (it; it != m_player->getBoard()->getMap()->end();++it) {
+	auto it = m_board->getComputerRows()->begin();
+	//auto it = m_player->getBoard()->getMap()->begin();
+	for (it; it != m_board->getComputerRows()->end();++it) {
 		if (it->second) cout << "|*" << it->first << "*";
 		else cout << "| " << (it->first) << " ";
 	}

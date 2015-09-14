@@ -7,6 +7,7 @@ public:
 	Game();
 	~Game();
 	int getGameRule();
+	//string getInputFromUser(Human &a_user, string a_inputType);
 
 private:
 	Human m_human;
@@ -15,7 +16,7 @@ private:
 	bool setGameRule(int a_gameRule);
 	void setNewRound();
 	//void askGameRule();
-	string getInputFromUser(Human &user, string inputType);
+
 	void playRound();
 	void askMove();
 	int rollDice();

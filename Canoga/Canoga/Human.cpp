@@ -8,10 +8,16 @@ Human::Human()
 {
 }
 
+Human::Human(int a_gameRule)  : Player(a_gameRule)
+{
+	Player::setPlayerType("Human");
+
+}
 
 Human::~Human()
 {
 }
+
 
 bool Human::verifyInput(string a_input, string a_inputType) {
 	/*

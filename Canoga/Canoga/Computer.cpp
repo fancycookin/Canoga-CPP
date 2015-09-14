@@ -7,6 +7,11 @@ Computer::Computer()
 }
 
 
+Computer::Computer(int a_gameRule) : Player(a_gameRule)
+{
+	Player::setPlayerType("Computer");
+}
+
 Computer::~Computer()
 {
 }

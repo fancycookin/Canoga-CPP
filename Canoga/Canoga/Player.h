@@ -1,18 +1,25 @@
 #pragma once
 #include "Board.h"
+//class Board;
 class Player
 {
 public:
 	Player();
 	Player(int a_gameRule);
 	~Player();
+	string getPlayerType();
+	void setPlayerType(string a_playerType);
 	int getWins();
 	int getScore();
 	bool isOneDieMode();
 	bool isTurn();
-	bool isCoverable(int a_square);
-	bool isUncoverable(int a_square);
-	bool setCoverSquare(int a_square);
+	bool isCoverable(Player a_player, int a_square);
+	bool isUncoverable(Player a_player, int a_square);
+	bool setCoverSquare(Player a_player, int a_square);
+
+	bool setUncoverSquare(Player a_player, int a_square);
+
+
 
 	Board* getBoard();
 
@@ -25,13 +32,11 @@ public:
 	bool setTurn();
 
 
-	bool setUncoverSquare(int a_square);
-
-
 private:
 	Board m_playerBoard;
 	int m_score, m_wins;
 	bool m_isTurn, m_isOneDieMode;
+	string m_playerType;
 
 
 

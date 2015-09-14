@@ -8,6 +8,10 @@
 
 
 #include "Board.h"
+#include <typeinfo>
+#include <iostream>
+#include <string>
+#include "Player.h"
 
 Board::Board() {
 
@@ -26,10 +30,25 @@ Board::~Board()
 {
 }
 
-bool Board::isCovered(int a_square)
+bool Board::isCovered(Player& a_player, int a_square)
 {
-	if (m_squareRows[a_square]) return true;
-	else return false;
+
+	cout << typeid(a_player).name() << endl;
+	string temp = a_player.getPlayerType();
+	cout << temp;
+	//cout << a_player.getPlayerType() << endl;
+	if (a_player.getPlayerType() == "Human") {
+		if (m_humanRows[a_square]) return true;
+		else return false;
+	}
+	if (a_player.getPlayerType() == "Computer") {
+		if (m_computerRows[a_square]) return true;
+		else return false;
+	}
+	else {
+		throw exception("Object is neither computer or player");
+		return false;
+	}
 }
 
 int Board::getMaxRows()
@@ -37,9 +56,14 @@ int Board::getMaxRows()
 	return m_maxRows;
 }
 
-map<int,bool>*Board::getMap()
+map<int,bool>*Board::getHumanRows()
 {
-	return &m_squareRows;
+	return &m_humanRows;
+}
+
+map<int, bool>*Board::getComputerRows()
+{
+	return &m_computerRows;
 }
 
 int Board::initializeRows(int a_numberOfRows) {
@@ -48,7 +72,8 @@ int Board::initializeRows(int a_numberOfRows) {
 	}
 	m_maxRows = a_numberOfRows;
 	for (int i = 0; i < m_maxRows; i++) {
-		m_squareRows.insert(pair<int, bool>(i + 1, false));
+		m_humanRows.insert(pair<int, bool>(i + 1, false));
+		m_computerRows.insert(pair<int, bool>(i + 1, false));
 	}
 	return 0;
 }

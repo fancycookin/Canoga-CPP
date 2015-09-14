@@ -115,8 +115,8 @@ int Game::rollDie()
 	return value;
 }
 
-
-string Game::getInputFromUser(Human &user, string inputType) {
+/*
+string Game::getInputFromUser(Human &user, string a_inputType) {
 	bool validInput = false;
 	string userChoice;
 	//loop until valid input is entered
@@ -127,13 +127,14 @@ string Game::getInputFromUser(Human &user, string inputType) {
 			userChoice.at(index) = toupper(userChoice.at(index));
 		}
 		//Validate input
-		validInput = user.verifyInput(userChoice, inputType);
+		validInput = user.verifyInput(userChoice, a_inputType);
 		if (validInput == false) {
 			cout << "Invalid input try again." << endl;
 		}
 	}
 	return userChoice;
 }
+*/
 
 int main() {
 	int temp;
@@ -142,13 +143,13 @@ int main() {
 	Game myGame = Game();
 	Human player = Human(temp);
 	Computer CPU = Computer(temp);
-
-	BoardView playerBoardView = BoardView(player, CPU);
+	Board board = Board(temp);
+	BoardView playerBoardView = BoardView(player, CPU, board);
 	//BoardView CPUBoardView = BoardView(CPU);
 	playerBoardView.refreshDisplay();
 	playerBoardView.display();
 	//CPUBoardView.Display();
-	player.setCoverSquare(5);
+	player.setCoverSquare(player,5);
 	playerBoardView.refreshDisplay();
 	playerBoardView.display();
 	playerBoardView.displayScore();
