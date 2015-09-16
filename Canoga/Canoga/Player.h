@@ -5,7 +5,7 @@ class Player
 {
 public:
 	Player();
-	Player(Board& a_board,int a_gameRule);
+	Player(Board& a_board);
 	~Player();
 	string getPlayerType();
 	void setPlayerType(string a_playerType);

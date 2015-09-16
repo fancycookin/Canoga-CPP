@@ -5,7 +5,7 @@ Player::Player() {
 
 }
 
-Player::Player(Board& a_board, int a_gameRule)
+Player::Player(Board& a_board)
 {
 	setPlayerType("Player");
 	m_score = 0;

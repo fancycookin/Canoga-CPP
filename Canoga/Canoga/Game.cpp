@@ -44,8 +44,8 @@ bool Game::setGameRule(int a_gameRule)
 void Game::setNewRound()
 {
 	m_board = Board(m_gameRule);
-	m_human = Human(m_board,m_gameRule);
-	m_computer = Computer(m_board,m_gameRule);
+	m_human = Human(m_board);
+	m_computer = Computer(m_board);
 	m_human.setScore(0);
 	m_computer.setScore(0);
 }
