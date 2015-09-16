@@ -113,6 +113,9 @@ bool Player::setCoverSquare(Player a_player,int a_square)
 			map<int, bool> *ptr = m_playerBoard.getHumanRows();
 			//m_playerBoard.getMap()[a_square] = true;
 			ptr->at(a_square) = true;
+			int x;
+			x = 5;
+
 		}
 		else {
 			map<int, bool> *ptr = m_playerBoard.getComputerRows();

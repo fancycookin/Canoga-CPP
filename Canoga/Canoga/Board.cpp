@@ -20,7 +20,7 @@ Board::Board() {
 
 Board::Board(int a_numberOfRows)
 {
-	m_maxRows = 0;
+	m_maxSquares = 0;
 	initializeRows(a_numberOfRows);
 
 }
@@ -38,11 +38,11 @@ bool Board::isCovered(Player& a_player, int a_square)
 	cout << temp;
 	//cout << a_player.getPlayerType() << endl;
 	if (a_player.getPlayerType() == "Human") {
-		if (m_humanRows[a_square]) return true;
+		if (m_humanRow[a_square]) return true;
 		else return false;
 	}
 	if (a_player.getPlayerType() == "Computer") {
-		if (m_computerRows[a_square]) return true;
+		if (m_computerRow[a_square]) return true;
 		else return false;
 	}
 	else {
@@ -51,31 +51,46 @@ bool Board::isCovered(Player& a_player, int a_square)
 	}
 }
 
-int Board::getMaxRows()
+int Board::getMaxSquares()
 {
-	return m_maxRows;
+	return m_maxSquares;
+}
+
+bool Board::setMaxSquares(int a_maxRows)
+{
+	if (a_maxRows < 9 || a_maxRows > 12) {
+		return false;
+	}
+	else {
+		m_maxSquares = a_maxRows;
+		return true;
+	}
 }
 
 map<int,bool>*Board::getHumanRows()
 {
-	return &m_humanRows;
+	return &m_humanRow;
 }
 
 map<int, bool>*Board::getComputerRows()
 {
-	return &m_computerRows;
+	return &m_computerRow;
 }
 
+
+
 int Board::initializeRows(int a_numberOfRows) {
-	if (a_numberOfRows < 9 || a_numberOfRows > 12) {
-		return -1;
+	if (setMaxSquares(a_numberOfRows)) {
+		for (int i = 0; i < m_maxSquares; i++) {
+			m_humanRow.insert(pair<int, bool>(i + 1, false));
+			m_computerRow.insert(pair<int, bool>(i + 1, false));
+		}
+		return true;
 	}
-	m_maxRows = a_numberOfRows;
-	for (int i = 0; i < m_maxRows; i++) {
-		m_humanRows.insert(pair<int, bool>(i + 1, false));
-		m_computerRows.insert(pair<int, bool>(i + 1, false));
+	else {
+		cerr << "Number of Maximum Squares must be between 9 and 11";
+		return false;
 	}
-	return 0;
 }
 
 

@@ -4,14 +4,17 @@
 class Game
 {
 public:
-	Game();
+	Game(int a_gameRule);
 	~Game();
 	int getGameRule();
 	//string getInputFromUser(Human &a_user, string a_inputType);
-
-private:
+	Board m_board;
 	Human m_human;
 	Computer m_computer;
+	Player m_firstPlayer;
+
+private:
+
 	int m_gameRule;
 	bool setGameRule(int a_gameRule);
 	void setNewRound();
@@ -24,6 +27,6 @@ private:
 	//bool playTurn();
 	void setFirstPlayer();
 	int m_playerDiceSum,m_computerDiceSum;
-	Player m_firstPlayer;
+
 };
 

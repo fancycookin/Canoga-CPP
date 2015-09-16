@@ -12,13 +12,14 @@
 using namespace std;
 
 
-Game::Game()
+Game::Game(int a_gameRule)
 {
 	//askGameRule();
-	setGameRule(m_gameRule);
+	setGameRule(a_gameRule);
+	
 	setNewRound();
-	m_human = Human(m_gameRule);
-	m_computer = Computer(m_gameRule);
+	//m_human = Human(m_gameRule);
+	//m_computer = Computer(m_gameRule);
 	m_playerDiceSum = 0;
 	m_computerDiceSum = 0;
 }
@@ -42,6 +43,7 @@ bool Game::setGameRule(int a_gameRule)
 
 void Game::setNewRound()
 {
+	m_board = Board(m_gameRule);
 	m_human = Human(m_gameRule);
 	m_computer = Computer(m_gameRule);
 	m_human.setScore(0);
@@ -140,11 +142,11 @@ int main() {
 	int temp;
 	cout << "Enter number of rows that you'd like:";
 	cin >> temp;
-	Game myGame = Game();
-	Human player = Human(temp);
-	Computer CPU = Computer(temp);
-	Board board = Board(temp);
-	BoardView playerBoardView = BoardView(player, CPU, board);
+	Game myGame = Game(temp);
+	Human player = myGame.m_human;
+	Computer CPU = myGame.m_computer;
+	//Board board = Board(temp);
+	BoardView playerBoardView = BoardView(player, CPU, myGame.m_board);
 	//BoardView CPUBoardView = BoardView(CPU);
 	playerBoardView.refreshDisplay();
 	playerBoardView.display();
