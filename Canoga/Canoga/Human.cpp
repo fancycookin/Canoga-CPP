@@ -8,7 +8,7 @@ Human::Human()
 {
 }
 
-Human::Human(int a_gameRule)  : Player(a_gameRule)
+Human::Human(Board &a_board,int a_gameRule)  : Player(a_board,a_gameRule)
 {
 	Player::setPlayerType("Human");
 

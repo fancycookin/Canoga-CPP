@@ -61,9 +61,9 @@ void BoardView::display()
 	cout << ":\t";
 
 	// Player HUD
-	auto it = m_board->getComputerRows()->begin();
+	auto it = m_board->getHumanRows()->begin();
 	//auto it = m_player->getBoard()->getMap()->begin();
-	for (it; it != m_board->getComputerRows()->end();++it) {
+	for (it; it != m_board->getHumanRows()->end();++it) {
 		if (it->second) cout << "|*" << it->first << "*";
 		else cout << "| " << (it->first) << " ";
 	}

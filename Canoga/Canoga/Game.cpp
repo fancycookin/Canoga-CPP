@@ -44,8 +44,8 @@ bool Game::setGameRule(int a_gameRule)
 void Game::setNewRound()
 {
 	m_board = Board(m_gameRule);
-	m_human = Human(m_gameRule);
-	m_computer = Computer(m_gameRule);
+	m_human = Human(m_board,m_gameRule);
+	m_computer = Computer(m_board,m_gameRule);
 	m_human.setScore(0);
 	m_computer.setScore(0);
 }
@@ -152,7 +152,7 @@ int main() {
 	playerBoardView.display();
 	//CPUBoardView.Display();
 	player.setCoverSquare(player,5);
-	playerBoardView.refreshDisplay();
+	//playerBoardView.refreshDisplay();
 	playerBoardView.display();
 	playerBoardView.displayScore();
 	player.addScore();

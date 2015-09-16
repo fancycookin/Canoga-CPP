@@ -5,7 +5,7 @@ class Human :
 {
 public:
 	Human();
-	Human(int a_gameRule);
+	Human(Board &a_board,int a_gameRule);
 	//using Player::Player;
 	~Human();
 	bool verifyInput(string a_input, string a_inputType);

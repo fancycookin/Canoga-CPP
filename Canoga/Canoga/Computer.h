@@ -6,7 +6,7 @@ class Computer :
 public:
 	Computer();
 	//using Player::Player;
-	Computer(int a_gameRule);
+	Computer(Board& a_board, int a_gameRule);
 	~Computer();
 	int getSuggestedMove();
 	int searchAndDestroy();
