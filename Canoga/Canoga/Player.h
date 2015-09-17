@@ -5,12 +5,12 @@ class Player
 {
 public:
 	Player();
-	Player(Board& a_board);
 	~Player();
 	string getPlayerType();
 	void setPlayerType(string a_playerType);
 	int getWins();
 	int getScore();
+	void setConnectedBoard(Board& a_board);
 	bool isOneDieMode();
 	bool isTurn();
 	bool isCoverable(Player a_player, int a_square);
@@ -30,12 +30,13 @@ public:
 	bool setScore(int a_score);
 	bool addScore();
 	bool setTurn();
+	bool isWon();
 
 
 private:
 	Board *m_playerBoard;
 	int m_score, m_wins;
-	bool m_isTurn, m_isOneDieMode;
+	bool m_isTurn, m_isOneDieMode, m_isWon;
 	string m_playerType;
 
 

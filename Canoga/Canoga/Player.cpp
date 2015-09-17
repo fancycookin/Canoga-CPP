@@ -1,18 +1,15 @@
 #include "Player.h"
 #include <typeinfo>
 
-Player::Player() {
 
-}
-
-Player::Player(Board& a_board)
+Player::Player()
 {
 	setPlayerType("Player");
 	m_score = 0;
 	m_wins = 0;
 	m_isOneDieMode = false;
 	m_isTurn = false;
-	m_playerBoard = &a_board;
+	
 }
 
 
@@ -38,6 +35,11 @@ int Player::getWins()
 int Player::getScore()
 {
 	return m_score;
+}
+
+void Player::setConnectedBoard(Board& a_board)
+{
+	m_playerBoard = &a_board;
 }
 
 bool Player::isOneDieMode()
@@ -103,6 +105,12 @@ bool Player::setTurn()
 {
 	m_isTurn = !m_isTurn;
 	return true;
+}
+
+bool Player::isWon()
+{
+	if (m_isWon) return true;
+	else return false;
 }
 
 bool Player::setCoverSquare(Player a_player,int a_square)

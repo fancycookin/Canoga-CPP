@@ -1,13 +1,7 @@
 #include "Computer.h"
 
 
-
-Computer::Computer()
-{
-}
-
-
-Computer::Computer(Board &a_board) : Player(a_board)
+Computer::Computer() : Player()
 {
 	Player::setPlayerType("Computer");
 }
