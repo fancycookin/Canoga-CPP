@@ -21,7 +21,7 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	else if (a_inputType == "roll") {
 		return verifyRollDice(a_input);
 	}
-	else if (a_inputType == "rollChoice") {
+	else if (a_inputType == "rollchoice") {
 		return verifyRollChoice(a_input);
 	}
 	else if (a_inputType == "cover") {
@@ -35,6 +35,9 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	}
 	else if (a_inputType == "save" || a_input == "load") {
 		return verifyFileName(a_input);
+	}
+	else if (a_inputType == "side") {
+		return verifySideSelection(a_input);
 	}
 	else {
 		return false;
@@ -50,21 +53,25 @@ bool Human::verifyGameRule(string a_selection)
 bool Human::verifyRollDice(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
-	return false;
+	if (selection == "roll") return true;
+	else return false;
 }
 bool Human::verifyRollChoice(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
-	return false;
+	if (selection == "one" || selection == "two") return true;
+	else return false;
 }
 bool Human::verifyCoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
+	if (selection == "cover") return true;
 	return false;
 }
 bool Human::verifyUncoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
+	if (selection == "uncover") return true;
 	return false;
 }
 bool Human::verifyFileName(string a_selection)
@@ -76,6 +83,17 @@ bool Human::verifyStartGame(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "play" || selection == "quit")
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+bool Human::verifySideSelection(string a_selection)
+{
+	string selection = toLowerCase(a_selection);
+	if (selection == "cover" || selection == "uncover")
 	{
 		return true;
 	}
@@ -104,6 +122,9 @@ bool Human::verifyNumber(string a_selection)
 {
 	if (is_number(a_selection))
 	{
+		return true;
+	}
+	else if (a_selection == "-1") {
 		return true;
 	}
 	else 

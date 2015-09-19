@@ -15,7 +15,7 @@ public:
 	bool isTurn();
 	bool isCoverable(Player a_player, int a_square);
 	bool isUncoverable(Player a_player, int a_square);
-	bool setCoverSquare(Player a_player, int a_square);
+	bool setCoverSquare(int a_square);
 
 	bool setUncoverSquare(Player a_player, int a_square);
 
@@ -30,13 +30,16 @@ public:
 	bool setScore(int a_score);
 	bool addScore();
 	bool setTurn();
+	void setIsWon();
+	bool getWentFirst();
+	void setWentFirst();
 	bool isWon();
 
 
 private:
 	Board *m_playerBoard;
 	int m_score, m_wins;
-	bool m_isTurn, m_isOneDieMode, m_isWon;
+	bool m_isTurn, m_isOneDieMode, m_isWon, m_wentFirst;
 	string m_playerType;
 
 

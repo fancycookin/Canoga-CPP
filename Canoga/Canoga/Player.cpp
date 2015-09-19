@@ -9,6 +9,8 @@ Player::Player()
 	m_wins = 0;
 	m_isOneDieMode = false;
 	m_isTurn = false;
+	m_isWon = false;
+	m_wentFirst = false;
 	
 }
 
@@ -107,22 +109,35 @@ bool Player::setTurn()
 	return true;
 }
 
+void Player::setIsWon()
+{
+	m_isWon = true;
+}
+
+bool Player::getWentFirst()
+{
+	return m_wentFirst;
+}
+
+void Player::setWentFirst()
+{
+	m_wentFirst = true;
+}
+
 bool Player::isWon()
 {
 	if (m_isWon) return true;
 	else return false;
 }
 
-bool Player::setCoverSquare(Player a_player,int a_square)
+bool Player::setCoverSquare(int a_square)
 {
-	if (isUncoverable(a_player,a_square)) return false;
-	else {
+	//if (isUncoverable(a_player,a_square)) return false;
+	//else {
 		if (m_playerType == "Human") {
 			map<int, bool> *ptr = m_playerBoard->getHumanRows();
 			//m_playerBoard.getMap()[a_square] = true;
 			ptr->at(a_square) = true;
-			int x;
-			x = 5;
 
 		}
 		else {
@@ -131,7 +146,7 @@ bool Player::setCoverSquare(Player a_player,int a_square)
 			ptr->at(a_square) = true;
 		}
 		return true;
-	}
+	//}
 }
 
 bool Player::setUncoverSquare(Player a_player, int a_square)

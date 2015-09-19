@@ -33,7 +33,8 @@ Board::~Board()
 bool Board::isCovered(Player& a_player, int a_square)
 {
 
-	cout << typeid(a_player).name() << endl;
+	//cout << typeid(a_player).name() << endl;
+	//cout << a_player.getPlayerType() << endl;
 	if (a_player.getPlayerType() == "Human") {
 		if (m_humanRow[a_square]) return true;
 		else return false;
