@@ -17,6 +17,7 @@ public:
 	bool isWon();
 	void setWon(Player& a_player);
 
+
 	void setNewRound();
 	void askGameRule();
 	Player* getWinner();

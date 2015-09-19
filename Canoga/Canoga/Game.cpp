@@ -105,12 +105,12 @@ void Game::playRound()
 		// maybe do the check for if move is makeable here?
 		for (int i = 0; i < m_board.getMaxSquares(); i++) {
 			if (m_human->isCoverable(*m_human, i)) {
-				if (m_playerDiceSum = i) {
+				if (m_playerDiceSum == i) {
 					coverMoveOpen = true;
 				}
 			}
 			if (m_human->isUncoverable(*m_computer, i)) {
-				if (m_playerDiceSum = i) {
+				if (m_playerDiceSum == i) {
 					uncoverMoveOpen = true;
 				}
 			}
@@ -194,29 +194,31 @@ void Game::playRound()
 			cout << "Type 'cover' to cover your squares or 'uncover' to uncover the computer's squares:" << endl;
 		}
 
-
-
-
-
-
-
-
 		//string input = getInputFromUser(*m_human, "side");
-		if ( input == "cover") {
+		if ( input == "cover" && coverMoveOpen) {
 			cout << "You picked to cover your row!" << endl;
 			cout << "Select the squares you'd like to cover.\nOnce done selecting, type '-1'" << endl;
 			int selection = 0;
-			int selections[4];
 			int selectionSum = 0;
 			bool valid = false;
-			bool validTotal = false;
-			while (!valid && !validTotal) {
+			bool invalidTotal = false;
+			bool invalidNumbers = false;
+			do {
+				valid = false;
+				invalidTotal = false;
+				invalidNumbers = false;
 				string selectionInput = "";
+				int selections[4] = { 0 };
 				selection = 0;
+				selectionSum = 0;
+
 				while (selection < 4 && selectionInput != "-1") {
 					selectionInput = getInputFromUser(*m_human, "number");
 					if (selectionInput != "-1") {
 						selections[selection] = stoi(selectionInput);
+						//add sum of selection numbers to a variable for later comparison
+						// with sum of pips
+						selectionSum += selections[selection];
 						selection++;
 					}
 				}
@@ -226,25 +228,33 @@ void Game::playRound()
 				// TODO: implement that two selections can't be equal
 				// like if i rolled 4..  i can't pick to cover 2 twice
 
-				// What if player decided to cover.. but there are no more squares to cover... and he already rolled
+
+				for (int i = 0; i < selection - 1; i++)
+				{
+					for (int j = i + 1;j < selection; j++)
+					{
+						// then this is a duplicate 
+							if (selections[i] == selections[j] && selections[i] != 0 && selections[j] != 0) {
+								invalidNumbers = true;
+								cerr << "Can't insert the same number as multiple selections. Select Again." << endl;
+								break;
+							}
+					}
+				}
+				// DONE: What if player decided to cover.. but there are no more squares to cover... and he already rolled
 				// well.. you gotta reverse the operation.. so go to uncover.. and if also no moves there.. just end round
 
 
-
-				for (int i = 0; i < selection; i++) {
-					selectionSum += selections[i];
-				}
-
 				if (selectionSum != m_playerDiceSum) {
-					validTotal = false;
-					cout << "Sum of squares selected does not equal sum of pips.\nSelect again." << endl;
+					invalidTotal = true;
+					cerr << "Sum of squares selected does not equal sum of pips.\nSelect again." << endl;
 				}
 				else {
-					validTotal = true;
+					invalidTotal = false;
 				}
 
 				//check if they are coverable
-				if (validTotal) {
+				if (!invalidTotal && !invalidNumbers) {
 					// check if they are coverable only if sum of pips equals sum of selection
 					for (int i = 0; i < selection; i++) {
 						if (m_human->isCoverable(*m_human, selections[i])) {
@@ -252,23 +262,23 @@ void Game::playRound()
 						}
 						else {
 							valid = false;
-							cout << "Cannot cover square #" << selections[i] << " because it is already covered.\nSelect again." << endl;
+							cerr << "Cannot cover square #" << selections[i] << " because it is already covered.\nSelect again." << endl;
 							break;
 						}
 					}
 					
 					// if all selections are valid, start covering
-					if (valid) {
+					if (valid && !invalidTotal && !invalidNumbers) {
 						for (int i = 0; i < selection; i++) {
 							m_human->setCoverSquare(selections[i]);
 							cout << "Square #" << selections[i] << " on the computer's row has been covered" << endl;
 						}
 					}
 				}
-			}
+			} while (!valid || invalidTotal || invalidNumbers);
 
 		}
-		else if (input == "uncover") {
+		else if (input == "uncover" && uncoverMoveOpen) {
 			cout << "You picked to uncover the computer's row!" << endl;
 			cout << "Select the squares you'd like to uncover.\n Once done selecting, type '-1'" << endl;
 		}
