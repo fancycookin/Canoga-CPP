@@ -22,7 +22,7 @@ public:
 	void askGameRule();
 	Player* getWinner();
 
-	void playRound();
+	bool playRound();
 	int rollDice(Player& a_player);
 	int rollDie(Player& a_player);
 	//bool playTurn();

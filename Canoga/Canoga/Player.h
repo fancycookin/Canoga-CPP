@@ -15,9 +15,9 @@ public:
 	bool isTurn();
 	bool isCoverable(Player a_player, int a_square);
 	bool isUncoverable(Player a_player, int a_square);
+	
 	bool setCoverSquare(int a_square);
-
-	bool setUncoverSquare(Player a_player, int a_square);
+	bool setUncoverSquare( int a_square);
 
 
 
@@ -28,7 +28,7 @@ public:
 	bool setWin(int a_wins);
 	bool addWin();
 	bool setScore(int a_score);
-	bool addScore();
+	bool addScore(int a_score);
 	bool setTurn();
 	void setIsWon();
 	bool getWentFirst();

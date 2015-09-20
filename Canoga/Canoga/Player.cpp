@@ -97,9 +97,9 @@ bool Player::setScore(int a_score)
 	return true;
 }
 
-bool Player::addScore()
+bool Player::addScore(int a_score)
 {
-	m_score++;
+	m_score += a_score;
 	return true;
 }
 
@@ -149,10 +149,10 @@ bool Player::setCoverSquare(int a_square)
 	//}
 }
 
-bool Player::setUncoverSquare(Player a_player, int a_square)
+bool Player::setUncoverSquare(int a_square)
 {
-	if (isCoverable(a_player, a_square)) return false;
-	else {
+	//if (isCoverable(a_player, a_square)) return false;
+	//else {
 		if (m_playerType == "Human") {
 			map<int, bool> *ptr = m_playerBoard->getHumanRows();
 			ptr->at(a_square) = false;
@@ -162,7 +162,7 @@ bool Player::setUncoverSquare(Player a_player, int a_square)
 			ptr->at(a_square) = false;
 		}
 		return true;
-	}
+	//}
 }
 
 
