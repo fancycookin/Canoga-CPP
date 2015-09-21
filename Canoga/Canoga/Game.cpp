@@ -17,6 +17,7 @@ Game::Game(Human& a_human, Computer& a_computer)
 {
 	m_human = &a_human;
 	m_computer = &a_computer;
+	struct Computer::Moves m_moves;
 	//askGameRule();
 
 	//setGameRule(a_gameRule);
@@ -311,8 +312,11 @@ bool Game::playRound()
 			} while (!valid || invalidTotal || invalidNumbers);	
 	}
 	else {
+		
 		m_computerDiceSum = rollDice(*m_computer);
-		m_computer->setBestMove(m_gameRule,m_computerDiceSum);
+		m_computerMoves = m_computer->setBestMove(*m_human, m_gameRule,m_computerDiceSum);
+
+		
 	}
 }
 
@@ -323,7 +327,7 @@ void Game::setFirstPlayer()
 
 		m_playerDiceSum = rollDice(*m_human);
 		//cout << "You rolled a " << m_playerDiceSum << endl;
-		Sleep(2000);
+		//Sleep(2000);
 		m_computerDiceSum = rollDice(*m_computer);
 		//cout << "Computer rolled a " << m_computerDiceSum << endl;
 		if (m_playerDiceSum == m_computerDiceSum) {
@@ -348,8 +352,9 @@ void Game::setFirstPlayer()
 
 int Game::rollDice(Player& a_player)
 {
-	//srand(static_cast<unsigned int>(time(0)));
-	srand(time(NULL));
+	Sleep(2000);
+	srand(static_cast<unsigned int>(time(0)));
+	//srand(time(NULL));
 	int value = 0;
 	int value1 = rand() % 6 + 1;
 	int value2 = rand() % 6 + 1;
@@ -360,8 +365,9 @@ int Game::rollDice(Player& a_player)
 
 int Game::rollDie(Player& a_player)
 {
-	//srand(static_cast<unsigned int>(time(0)));
-	srand(time(NULL));
+	Sleep(2000);
+	srand(static_cast<unsigned int>(time(0)));
+	//srand(time(NULL));
 	int value;
 	value = rand() % 6 + 1;
 	cout << a_player.getPlayerType() << " rolled a " << value << "." << endl;

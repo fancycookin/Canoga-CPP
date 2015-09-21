@@ -1,5 +1,7 @@
 #pragma once
 #include "Player.h"
+#include "Human.h"
+#include <vector>
 class Computer :
 	public Player
 {
@@ -8,14 +10,23 @@ public:
 	//using Player::Player;
 	~Computer();
 	int getSuggestedMove();
-	void setBestMove(int a_gameRule, int a_diceSum);
+	
+	struct Moves {
+		vector<int> m_moveSet = vector<int>();
+		bool m_computerRowMove = false;
+		bool m_humanRowMove = false;
+	};
+	Moves setBestMove(Human& a_human, int a_gameRule, int a_diceSum);
 private:
 	//flags
+
 	bool m_goComputerHigherSquares;
 	bool m_goComputerLowerSquares;
 	bool m_goRollOneDice;
 	bool m_goHumanHigherSquares;
 	bool m_goHumanLowerSquares;
+	bool m_moveFree;
+	Human *m_human;
 
 
 	// okay here's the plan

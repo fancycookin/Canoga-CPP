@@ -28,6 +28,7 @@ public:
 	//bool playTurn();
 	void setFirstPlayer();
 	int m_playerDiceSum, m_computerDiceSum;
+	Computer::Moves m_computerMoves;
 private:
 	bool m_isWonGame;
 
