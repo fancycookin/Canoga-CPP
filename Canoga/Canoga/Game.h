@@ -16,6 +16,8 @@ public:
 	int m_gameRule;
 	bool isWon();
 	void setWon(Player& a_player);
+	bool isFirstPlay();
+	void setIsFirstPlay();
 
 
 	void setNewRound();
@@ -31,6 +33,7 @@ public:
 	Computer::Moves m_computerMoves;
 private:
 	bool m_isWonGame;
+	bool m_firstPlay;
 
 
 

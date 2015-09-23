@@ -11,6 +11,7 @@ public:
 	bool verifyInput(string a_input, string a_inputType);
 	bool is_number(const string& s);
 	string toLowerCase(string a_selection);
+	void setGameRule(int a_gameRule);
 private:
 	bool verifyGameRule(string a_selection);
 	bool verifyRollDice(string a_selection);
@@ -21,6 +22,8 @@ private:
 	bool verifyStartGame(string a_selection);
 	bool verifySideSelection(string a_selection);
 	bool verifyNumber(string a_selection);
+	bool verifyCoverUncoverSquare(string a_selection);
+	int m_gameRule;
 
 
 };

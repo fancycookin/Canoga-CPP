@@ -130,10 +130,11 @@ bool Player::isWon()
 	else return false;
 }
 
-bool Player::setCoverSquare(int a_square)
+void Player::setCoverSquare(int a_square)
 {
 	//if (isUncoverable(a_player,a_square)) return false;
 	//else {
+	if (a_square != 0) {
 		if (m_playerType == "Human") {
 			map<int, bool> *ptr = m_playerBoard->getHumanRows();
 			//m_playerBoard.getMap()[a_square] = true;
@@ -145,14 +146,15 @@ bool Player::setCoverSquare(int a_square)
 			//m_playerBoard.getMap()[a_square] = true;
 			ptr->at(a_square) = true;
 		}
-		return true;
+	}
 	//}
 }
 
-bool Player::setUncoverSquare(int a_square)
+void Player::setUncoverSquare(int a_square)
 {
 	//if (isCoverable(a_player, a_square)) return false;
 	//else {
+	if (a_square != 0) {
 		if (m_playerType == "Human") {
 			map<int, bool> *ptr = m_playerBoard->getHumanRows();
 			ptr->at(a_square) = false;
@@ -161,7 +163,7 @@ bool Player::setUncoverSquare(int a_square)
 			map<int, bool> *ptr = m_playerBoard->getComputerRows();
 			ptr->at(a_square) = false;
 		}
-		return true;
+	}
 	//}
 }
 

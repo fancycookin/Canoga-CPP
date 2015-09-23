@@ -16,8 +16,8 @@ public:
 	bool isCoverable(Player a_player, int a_square);
 	bool isUncoverable(Player a_player, int a_square);
 	
-	bool setCoverSquare(int a_square);
-	bool setUncoverSquare( int a_square);
+	void setCoverSquare(int a_square);
+	void setUncoverSquare( int a_square);
 
 
 

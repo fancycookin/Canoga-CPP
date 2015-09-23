@@ -12,7 +12,8 @@ public:
 	int getSuggestedMove();
 	
 	struct Moves {
-		vector<int> m_moveSet = vector<int>();
+		vector<int> m_moveComputerSet = vector<int>();
+		vector<int> m_moveHumanSet = vector<int>();
 		bool m_computerRowMove = false;
 		bool m_humanRowMove = false;
 	};

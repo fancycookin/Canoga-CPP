@@ -30,6 +30,9 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	else if (a_inputType == "uncover") {
 		return verifyUncoverSquare(a_input);
 	}
+	else if (a_inputType == "coveruncover") {
+		return verifyCoverUncoverSquare(a_input);
+	}
 	else if (a_inputType == "number") {
 		return verifyNumber(a_input);
 	}
@@ -120,9 +123,9 @@ bool Human::verifyGameRule(string a_selection)
 
 bool Human::verifyNumber(string a_selection)
 {
-	if (is_number(a_selection))
+	if (is_number(a_selection) && stoi(a_selection) <= m_gameRule && stoi(a_selection) >= 1 )
 	{
-		return true;
+			return true;
 	}
 	else if (a_selection == "-1") {
 		return true;
@@ -133,12 +136,29 @@ bool Human::verifyNumber(string a_selection)
 	}
 }
 
+bool Human::verifyCoverUncoverSquare(string a_selection)
+{
+	string selection = toLowerCase(a_selection);
+	if (selection == "cover" || selection == "uncover")
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 string Human::toLowerCase(string a_selection) {
 	string lower_str = a_selection;
 	transform(lower_str.begin(), lower_str.end(), lower_str.begin(), ::tolower);
 	return lower_str;
 
 
+}
+
+void Human::setGameRule(int a_gameRule)
+{
+	m_gameRule = a_gameRule;
 }
 
 bool Human::is_number(const string& s)

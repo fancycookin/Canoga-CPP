@@ -30,6 +30,7 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 {
 	// see if we can cover top
 	//the first two were indexed at 5 but now its 6 cuz why not
+	m_moveFree = false;
 	Moves m_moves;
 	vector<int> m_finalComputerSet4 = vector<int>();
 	vector<int> m_finalComputerSet3 = vector<int>();
@@ -40,8 +41,8 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 	vector<int> m_finalHumanSet3 = vector<int>();
 	vector<int> m_finalHumanSet2 = vector<int>();
 	vector<int> m_finalHumanSet1 = vector<int>();
-	int m_selectionsComputer[11] = { 0 };
-	int m_selectionsHuman[11] = { 0 };
+	int* m_selectionsComputer = new int [a_gameRule];
+	int* m_selectionsHuman = new int [a_gameRule];
 	int m_selectionsComputerCounter = 0;
 	int m_selectionsHumanCounter = 0;
 	int m_compHighSelections[6] = { 0,0,0,0,0,0 };
@@ -117,7 +118,7 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 				if (m_selectionsComputer[k] + m_selectionsComputer[j] + m_selectionsComputer[i] == a_diceSum) {
 					m_moveFree = true;
 					m_moves.m_computerRowMove = true;
-					m_finalComputerSet4.clear();
+					m_finalComputerSet3.clear();
 					m_finalComputerSet3.push_back(m_selectionsComputer[k]);
 					m_finalComputerSet3.push_back(m_selectionsComputer[j]);
 					m_finalComputerSet3.push_back(m_selectionsComputer[i]);
@@ -177,44 +178,44 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 	}
 
 	if (!m_moveFree) {
-		cout << "No Move available to be made by computer. Ending turn..." << endl;
+		//cout << "No Move available to be made by computer. Ending turn..." << endl;
 		return m_moves;
 	}
 	if (m_moveFree && m_moves.m_computerRowMove) {
 		cout << "Computer decided to cover own squares." << endl;
 		if (!m_finalComputerSet4.empty()) { 
-			m_moves.m_moveSet = m_finalComputerSet4;
+			m_moves.m_moveComputerSet = m_finalComputerSet4;
 			return m_moves;
 		}
 		else if (!m_finalComputerSet3.empty()) { 
-			m_moves.m_moveSet = m_finalComputerSet3;
+			m_moves.m_moveComputerSet = m_finalComputerSet3;
 			return m_moves;
 		}
 		else if (!m_finalComputerSet2.empty()) {
-			m_moves.m_moveSet = m_finalComputerSet2; 
+			m_moves.m_moveComputerSet = m_finalComputerSet2; 
 			return m_moves;
 		}
-		else if (!m_finalComputerSet2.empty()) {
-			m_moves.m_moveSet = m_finalComputerSet1;
+		else if (!m_finalComputerSet1.empty()) {
+			m_moves.m_moveComputerSet = m_finalComputerSet1;
 			return m_moves;
 		}
 	}
 	if (m_moveFree && m_moves.m_humanRowMove) {
 		cout << "Computer decided to uncover your squares." << endl;
 		if (!m_finalHumanSet4.empty()) { 
-			m_moves.m_moveSet = m_finalHumanSet4; 
+			m_moves.m_moveHumanSet = m_finalHumanSet4;
 			return m_moves;
 		}
 		else if (!m_finalHumanSet3.empty()) {
-			m_moves.m_moveSet = m_finalHumanSet3;
+			m_moves.m_moveHumanSet = m_finalHumanSet3;
 			return m_moves;
 		}
 		else if (!m_finalHumanSet2.empty()) {
-			m_moves.m_moveSet = m_finalHumanSet2;
+			m_moves.m_moveHumanSet = m_finalHumanSet2;
 			return m_moves;
 		}
 		else if (!m_finalHumanSet1.empty()) { 
-			m_moves.m_moveSet = m_finalHumanSet1;
+			m_moves.m_moveHumanSet = m_finalHumanSet1;
 			return m_moves;
 		}
 	}
