@@ -21,6 +21,12 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	else if (a_inputType == "roll") {
 		return verifyRollDice(a_input);
 	}
+	else if (a_inputType == "one") {
+		return verifyOneRoll(a_input);
+	}
+	else if (a_inputType == "two") {
+		return verifyTwoRoll(a_input);
+	}
 	else if (a_inputType == "rollchoice") {
 		return verifyRollChoice(a_input);
 	}
@@ -57,6 +63,18 @@ bool Human::verifyRollDice(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "roll") return true;
+	else return false;
+}
+bool Human::verifyOneRoll(string a_selection)
+{
+	string selection = toLowerCase(a_selection);
+	if (selection == "one") return true;
+	else return false;
+}
+bool Human::verifyTwoRoll(string a_selection)
+{
+	string selection = toLowerCase(a_selection);
+	if (selection == "two") return true;
 	else return false;
 }
 bool Human::verifyRollChoice(string a_selection)

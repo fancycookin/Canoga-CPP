@@ -11,6 +11,8 @@ Player::Player()
 	m_isTurn = false;
 	m_isWon = false;
 	m_wentFirst = false;
+	m_wonByCover = false;
+	m_wonByUncover = false;
 	
 }
 
@@ -73,9 +75,9 @@ Board* Player::getBoard()
 	return m_playerBoard;
 }
 
-bool Player::setOneDieMode()
+bool Player::setOneDieMode(bool a_flag)
 {
-	m_isOneDieMode = !m_isOneDieMode;
+	m_isOneDieMode = a_flag;
 	return true;
 }
 
@@ -165,6 +167,26 @@ void Player::setUncoverSquare(int a_square)
 		}
 	}
 	//}
+}
+
+void Player::setWonByCover()
+{
+	m_wonByCover = true;
+}
+
+void Player::setWonByUncover()
+{
+	m_wonByUncover = true;
+}
+
+string Player::getWonBy()
+{
+	if (m_wonByCover) {
+		return "cover";
+	}
+	if (m_wonByUncover) {
+		return "uncover";
+	}
 }
 
 

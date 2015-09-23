@@ -30,6 +30,10 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 {
 	// see if we can cover top
 	//the first two were indexed at 5 but now its 6 cuz why not
+
+
+
+
 	m_moveFree = false;
 	Moves m_moves;
 	vector<int> m_finalComputerSet4 = vector<int>();

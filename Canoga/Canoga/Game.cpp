@@ -119,6 +119,7 @@ bool Game::playRound()
 	if (m_human->isTurn()) {
 		int winHumanRowCounter = 0;
 		int winComputerRowCounter = 0;
+		m_human->setOneDieMode(false);
 		for (int i = 1; i <= m_gameRule; i++) {
 			if (m_human->getBoard()->getHumanRows()->at(i) == true) {
 				winHumanRowCounter++;
@@ -126,6 +127,7 @@ bool Game::playRound()
 			if (winHumanRowCounter == m_gameRule && !isFirstPlay()) {
 				cout << "You covered all your squares! You win!" << endl;
 				setWon(*m_human);
+				m_human->setWonByCover();
 				return true;
 			}
 			if (m_human->getBoard()->getComputerRows()->at(i) == false) {
@@ -135,14 +137,39 @@ bool Game::playRound()
 			if (winComputerRowCounter == m_gameRule && !isFirstPlay()) {
 				cout << "You uncovered all computer's squares! You win!" << endl;
 				setWon(*m_human);
+				m_human->setWonByUncover();
 				return true;
 			}
 		}
+		int dieModeCounter = 0;
+		for (int i = 7; i <= m_gameRule; i++) {
+			if (m_human->getBoard()->getHumanRows()->at(i) == true) {
+				dieModeCounter++;
+			}
+		}
+		if (dieModeCounter == ((m_gameRule + 1 ) - 7)) 
+		{
+			m_human->setOneDieMode(true);
+		}
+
 
 		cout << "Your turn!" << endl;
 		cout << "Enter 'roll' to roll the dice: ";
 		getInputFromUser(*m_human, "roll");
-		m_playerDiceSum = rollDice(*m_human);
+
+		if (m_human->isOneDieMode()) {
+			cout << "Roll 'one' or 'two' dice?: ";
+			string rollChoice;
+			rollChoice = getInputFromUser(*m_human, "rollchoice");
+			if (rollChoice== "one") {
+				m_playerDiceSum = rollDie(*m_human);
+			}
+			else if (rollChoice == "two") {
+				m_playerDiceSum = rollDice(*m_human);
+			}
+
+		}
+		
 		
 		bool coverMoveOpen = false;
 		bool uncoverMoveOpen = false;
@@ -355,8 +382,35 @@ bool Game::playRound()
 	}
 	else {
 		bool computerMoved = false;
-		m_computerDiceSum = rollDice(*m_computer);
+
+		// can we use one die?
+		int dieModeCounter = 0;
+		for (int i = 7; i <= m_gameRule; i++) {
+			if (m_computer->getBoard()->getHumanRows()->at(i) == true) {
+				dieModeCounter++;
+			}
+		}
+		if (dieModeCounter == ((m_gameRule + 1) - 7))
+		{
+			m_computer->setOneDieMode(true);
+		}
+
+		int squareDieCounter = 0;
+		for (int i = 1; i <= m_gameRule; i++) {
+			if (m_computer->isCoverable(*m_computer,i)) {
+				squareDieCounter++;
+			}
+		}
+
+		if (squareDieCounter == 4 && m_computer->isOneDieMode()) {
+			m_computerDiceSum = rollDie(*m_computer);
+		}
+		else {
+			m_computerDiceSum = rollDice(*m_computer);
+		}
 		m_computerMoves = m_computer->setBestMove(*m_human, m_gameRule,m_computerDiceSum);
+
+
 
 		int winHumanRowCounter = 0;
 		int winComputerRowCounter = 0;
@@ -367,6 +421,7 @@ bool Game::playRound()
 			if (winHumanRowCounter == m_gameRule && !isFirstPlay()) {
 				cout << "All your squares were uncovered! Computer wins!" << endl;
 				setWon(*m_computer);
+				m_computer->setWonByUncover();
 				return true;
 			}
 			if (m_human->getBoard()->getComputerRows()->at(i) == true) {
@@ -376,6 +431,7 @@ bool Game::playRound()
 			if (winComputerRowCounter == m_gameRule && !isFirstPlay()) {
 				cout << "Computer covered all of its squares! Computer wins!" << endl;
 				setWon(*m_computer);
+				m_computer->setWonByCover();
 				return true;
 			}
 		}
@@ -524,17 +580,18 @@ int main() {
 		}
 		myGame.setNewRound();
 		BoardView playerBoardView = BoardView(player, CPU, myGame.m_board);
+		cout << "Time to roll the dice to see who goes first!" << endl;
+		cout << "Type 'roll' to roll the dice: ";
+		myGame.getInputFromUser(player, "roll");
+
+		playerBoardView.refreshDisplay();
+		playerBoardView.display();
+		playerBoardView.displayScore();
+		myGame.setFirstPlayer();
 
 		while (!myGame.isWon()) {
 			if (myGame.isFirstPlay()) {
-				cout << "Time to roll the dice to see who goes first!" << endl;
-				cout << "Type 'roll' to roll the dice: ";
-				myGame.getInputFromUser(player, "roll");
-				playerBoardView.refreshDisplay();
-				playerBoardView.display();
-				playerBoardView.displayScore();
 
-				myGame.setFirstPlayer();
 				//myGame.m_human->setCoverSquare(1);
 				//myGame.m_human->setCoverSquare(2);
 				//myGame.m_human->setCoverSquare(3);
@@ -543,6 +600,7 @@ int main() {
 				//myGame.m_human->setCoverSquare(6);
 				//myGame.m_human->setCoverSquare(7);
 				//myGame.m_human->setCoverSquare(8);
+				//myGame.m_human->setCoverSquare(9);
 				if (!myGame.playRound()) {
 					myGame.m_human->setTurn();
 					myGame.m_computer->setTurn();
@@ -568,26 +626,53 @@ int main() {
 					//cout << "You win!" << endl;
 					int scoreSum = 0;
 					myGame.m_human->setIsWon();
-					for (int i = 0; i < myGame.getGameRule(); i++) {
-						if (myGame.m_human->isCoverable(*myGame.m_computer,i)) {
-							scoreSum += i;
-							myGame.m_human->setScore(scoreSum);
+					if(myGame.m_human->getWonBy() == "cover"){
+						for (int i = 1; i <= myGame.getGameRule(); i++) {
+							if (myGame.m_human->isCoverable(*myGame.m_computer, i)) {
+								scoreSum += i;
+								myGame.m_human->setScore(scoreSum);
+								myGame.m_human->addWin();
+							}
 						}
 					}
+					else if (myGame.m_human->getWonBy() == "uncover"){
+						for (int i = 1; i <= myGame.getGameRule(); i++) {
+							if (myGame.m_human->isUncoverable(*myGame.m_human, i)) {
+								scoreSum += i;
+								myGame.m_human->setScore(scoreSum);
+								myGame.m_human->addWin();
+							}
+						}
+					}
+
 				}
 				else if (myGame.getWinner()->getPlayerType() == "Computer") {
 					//TODO: implement score calculations
 					//sum of all uncovered squares of computer
 					//cout << "You lose!" << endl;
 					int scoreSum = 0;
-					for (int i = 0; i < myGame.getGameRule(); i++) {
-						if (myGame.m_computer->isCoverable(*myGame.m_human, i)) {
-							scoreSum += i;
-							myGame.m_computer->setScore(scoreSum);
+					myGame.m_computer->setIsWon();
+					if (myGame.m_computer->getWonBy() == "cover") {
+						for (int i = 1; i <= myGame.getGameRule(); i++) {
+							if (myGame.m_computer->isCoverable(*myGame.m_human, i)) {
+								scoreSum += i;
+								myGame.m_computer->setScore(scoreSum);
+								myGame.m_computer->addWin();
+							}
 						}
+					}
+					else if (myGame.m_computer->getWonBy() == "uncover") {
+						for (int i = 1; i <= myGame.getGameRule(); i++) {
+							if (myGame.m_computer->isUncoverable(*myGame.m_computer, i)) {
+								scoreSum += i;
+								myGame.m_computer->setScore(scoreSum);
+								myGame.m_computer->addWin();
+							}
+						}				
 					}
 				}
 				playerBoardView.displayScore();
+				//after winning.. create a clear player data (like the flags, not score and wins)
 			}
 		}
 

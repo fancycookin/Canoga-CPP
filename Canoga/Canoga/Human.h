@@ -15,6 +15,8 @@ public:
 private:
 	bool verifyGameRule(string a_selection);
 	bool verifyRollDice(string a_selection);
+	bool verifyOneRoll(string a_selection);
+	bool verifyTwoRoll(string a_selection);
 	bool verifyRollChoice(string a_selection);
 	bool verifyCoverSquare(string a_selection);
 	bool verifyUncoverSquare(string a_selection);
