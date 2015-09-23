@@ -446,8 +446,10 @@ bool Game::playRound()
 		}
 		if (m_computerMoves.m_computerRowMove) {
 			for (int i = 0; i <= m_computerMoves.m_moveComputerSet.size() - 1; i++) {
-				m_computer->setCoverSquare(m_computerMoves.m_moveComputerSet.at(i));
-				cout << "Computer covered square #" << m_computerMoves.m_moveComputerSet.at(i) << " on it's own row." << endl;
+				if (m_computerMoves.m_moveComputerSet.at(i) != 0) {
+					m_computer->setCoverSquare(m_computerMoves.m_moveComputerSet.at(i));
+					cout << "Computer covered square #" << m_computerMoves.m_moveComputerSet.at(i) << " on it's own row." << endl;
+				}
 				
 			}
 			return true;
@@ -455,8 +457,10 @@ bool Game::playRound()
 
 		if (m_computerMoves.m_humanRowMove) {
 			for (int i = 0; i <= m_computerMoves.m_moveHumanSet.size() - 1; i++) {
-				m_human->setUncoverSquare(m_computerMoves.m_moveHumanSet.at(i));
-				cout << "Computer uncovered square #" << m_computerMoves.m_moveHumanSet.at(i) << " on your row." << endl;
+				if (m_computerMoves.m_moveHumanSet.at(i) != 0) {
+					m_human->setUncoverSquare(m_computerMoves.m_moveHumanSet.at(i));
+					cout << "Computer uncovered square #" << m_computerMoves.m_moveHumanSet.at(i) << " on your row." << endl;
+				}
 				
 			}
 			return true;
