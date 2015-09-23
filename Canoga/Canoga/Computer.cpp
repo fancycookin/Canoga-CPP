@@ -31,9 +31,6 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 	// see if we can cover top
 	//the first two were indexed at 5 but now its 6 cuz why not
 
-
-
-
 	m_moveFree = false;
 	Moves m_moves;
 	vector<int> m_finalComputerSet4 = vector<int>();
@@ -149,7 +146,7 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 			m_finalHumanSet1.clear();
 			m_finalHumanSet1.push_back(m_selectionsHuman[i]);
 		}
-		for (int j = i + 1; j < 12; j++) {
+		for (int j = i + 1; j < a_gameRule; j++) {
 			if (m_selectionsHuman[j] + m_selectionsHuman[i] == a_diceSum) {
 				m_moveFree = true;
 				m_moves.m_humanRowMove = true;
@@ -157,7 +154,7 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 				m_finalHumanSet2.push_back(m_selectionsHuman[j]);
 				m_finalHumanSet2.push_back(m_selectionsHuman[i]);
 			}
-			for (int k = j + 1; k < 12; k++) {
+			for (int k = j + 1; k < a_gameRule; k++) {
 				if (m_selectionsHuman[k] + m_selectionsHuman[j] + m_selectionsHuman[i] == a_diceSum) {
 					m_moveFree = true;
 					m_moves.m_humanRowMove = true;
@@ -166,7 +163,7 @@ Computer::Moves Computer::setBestMove(Human& a_human,int a_gameRule, int a_diceS
 					m_finalHumanSet3.push_back(m_selectionsHuman[j]);
 					m_finalHumanSet3.push_back(m_selectionsHuman[i]);
 				}
-				for (int q = k + 1; q < 12; q++) {
+				for (int q = k + 1; q < a_gameRule; q++) {
 					if (m_selectionsHuman[q] + m_selectionsHuman[k] + m_selectionsHuman[j] + m_selectionsHuman[i] == a_diceSum) {
 						m_moveFree = true;
 						m_moves.m_humanRowMove = true;

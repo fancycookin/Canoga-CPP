@@ -94,8 +94,8 @@ void Game::setNewRound()
 	m_board = Board(m_gameRule);
 	m_human->setConnectedBoard(m_board);
 	m_computer->setConnectedBoard(m_board);
-	m_human->setScore(0);
-	m_computer->setScore(0);
+	m_human->addScore(0);
+	m_computer->addScore(0);
 	m_playerDiceSum = 0;
 	m_computerDiceSum = 0;
 	m_human->setGameRule(m_gameRule);
@@ -167,7 +167,9 @@ bool Game::playRound()
 			else if (rollChoice == "two") {
 				m_playerDiceSum = rollDice(*m_human);
 			}
-
+		}
+		else {
+			m_playerDiceSum = rollDice(*m_human);
 		}
 		
 		
@@ -372,7 +374,7 @@ bool Game::playRound()
 							}
 							if (input == "uncover") {
 								m_computer->setUncoverSquare(selections[i]);
-								cout << "Square #" << selections[i] << " on your computer's row has been uncovered" << endl;
+								cout << "Square #" << selections[i] << " on computer's row has been uncovered" << endl;
 							}
 						}
 						return true;
@@ -386,7 +388,7 @@ bool Game::playRound()
 		// can we use one die?
 		int dieModeCounter = 0;
 		for (int i = 7; i <= m_gameRule; i++) {
-			if (m_computer->getBoard()->getHumanRows()->at(i) == true) {
+			if (m_computer->getBoard()->getComputerRows()->at(i) == true) {
 				dieModeCounter++;
 			}
 		}
@@ -396,7 +398,7 @@ bool Game::playRound()
 		}
 
 		int squareDieCounter = 0;
-		for (int i = 1; i <= m_gameRule; i++) {
+		for (int i = 1; i <= 4; i++) {
 			if (m_computer->isCoverable(*m_computer,i)) {
 				squareDieCounter++;
 			}
@@ -446,18 +448,20 @@ bool Game::playRound()
 			for (int i = 0; i <= m_computerMoves.m_moveComputerSet.size() - 1; i++) {
 				m_computer->setCoverSquare(m_computerMoves.m_moveComputerSet.at(i));
 				cout << "Computer covered square #" << m_computerMoves.m_moveComputerSet.at(i) << " on it's own row." << endl;
-				computerMoved = true;
+				
 			}
+			return true;
 		}
-		if (!computerMoved) {
-			if (m_computerMoves.m_humanRowMove) {
-				for (int i = 0; i <= m_computerMoves.m_moveHumanSet.size() - 1; i++) {
-					m_human->setUncoverSquare(m_computerMoves.m_moveHumanSet.at(i));
-					cout << "Computer uncovered square #" << m_computerMoves.m_moveHumanSet.at(i) << " on your row." << endl;
-					computerMoved = true;
-				}
+
+		if (m_computerMoves.m_humanRowMove) {
+			for (int i = 0; i <= m_computerMoves.m_moveHumanSet.size() - 1; i++) {
+				m_human->setUncoverSquare(m_computerMoves.m_moveHumanSet.at(i));
+				cout << "Computer uncovered square #" << m_computerMoves.m_moveHumanSet.at(i) << " on your row." << endl;
+				
 			}
+			return true;
 		}
+		
 		
 	}
 
@@ -593,14 +597,6 @@ int main() {
 			if (myGame.isFirstPlay()) {
 
 				//myGame.m_human->setCoverSquare(1);
-				//myGame.m_human->setCoverSquare(2);
-				//myGame.m_human->setCoverSquare(3);
-				//myGame.m_human->setCoverSquare(4);
-				//myGame.m_human->setCoverSquare(5);
-				//myGame.m_human->setCoverSquare(6);
-				//myGame.m_human->setCoverSquare(7);
-				//myGame.m_human->setCoverSquare(8);
-				//myGame.m_human->setCoverSquare(9);
 				if (!myGame.playRound()) {
 					myGame.m_human->setTurn();
 					myGame.m_computer->setTurn();
@@ -630,7 +626,7 @@ int main() {
 						for (int i = 1; i <= myGame.getGameRule(); i++) {
 							if (myGame.m_human->isCoverable(*myGame.m_computer, i)) {
 								scoreSum += i;
-								myGame.m_human->setScore(scoreSum);
+								myGame.m_human->addScore(scoreSum);
 								myGame.m_human->addWin();
 							}
 						}
@@ -639,7 +635,7 @@ int main() {
 						for (int i = 1; i <= myGame.getGameRule(); i++) {
 							if (myGame.m_human->isUncoverable(*myGame.m_human, i)) {
 								scoreSum += i;
-								myGame.m_human->setScore(scoreSum);
+								myGame.m_human->addScore(scoreSum);
 								myGame.m_human->addWin();
 							}
 						}
@@ -656,7 +652,7 @@ int main() {
 						for (int i = 1; i <= myGame.getGameRule(); i++) {
 							if (myGame.m_computer->isCoverable(*myGame.m_human, i)) {
 								scoreSum += i;
-								myGame.m_computer->setScore(scoreSum);
+								myGame.m_computer->addScore(scoreSum);
 								myGame.m_computer->addWin();
 							}
 						}
@@ -665,7 +661,7 @@ int main() {
 						for (int i = 1; i <= myGame.getGameRule(); i++) {
 							if (myGame.m_computer->isUncoverable(*myGame.m_computer, i)) {
 								scoreSum += i;
-								myGame.m_computer->setScore(scoreSum);
+								myGame.m_computer->addScore(scoreSum);
 								myGame.m_computer->addWin();
 							}
 						}				
