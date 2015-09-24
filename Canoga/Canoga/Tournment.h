@@ -10,7 +10,6 @@ public:
 	int GetRounds();
 	void Handicap(Game & newGame);
 	bool startGame();
-	void Handicap();
 private:
 	int m_rounds;
 	Human m_human;

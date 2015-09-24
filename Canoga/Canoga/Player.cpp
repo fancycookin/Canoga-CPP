@@ -43,6 +43,10 @@ int Player::getScore()
 	return m_score;
 }
 
+int Player::getAdvantage() {
+	return m_advantagePoints;
+}
+
 void Player::setConnectedBoard(Board& a_board)
 {
 	m_playerBoard = &a_board;
@@ -227,7 +231,7 @@ string Player::getWonBy()
 		//print digit
 	} while (advantageSum > 9);
 
-	m_advantagePoints = sum;
+	m_advantagePoints = advantageSum;
 }
 
 

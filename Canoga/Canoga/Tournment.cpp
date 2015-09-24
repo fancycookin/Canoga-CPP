@@ -42,9 +42,11 @@ bool Tournment::startGame() {
 	cout << "Enter 'play' or 'quit': ";
 	input = newGame.getInputFromUser(m_human, "start");
 	do {
-		if (input == "start") {
+		if (input == "play") {
 			if (system("CLS")) system("clear");
+			Game newGame = Game(m_human, m_computer);
 			newGame.playGame(m_rounds);
+			Handicap(newGame);
 			m_rounds++;
 			cout << "Would you like to play round #" << m_rounds << " ?" << endl;
 			input = newGame.getInputFromUser(m_human, "start");
