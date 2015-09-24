@@ -5,7 +5,10 @@
 #include <string>
 #include <iomanip>
 
+BoardView::BoardView() 
+{
 
+}
 BoardView::BoardView(Player &a_player, Player &a_player2, Board &a_board)
 {
 	m_board = &a_board;

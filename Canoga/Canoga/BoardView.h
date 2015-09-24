@@ -11,6 +11,7 @@ public:
 	* reference
 	*/
 	BoardView(Player &a_player,Player &a_player2, Board &a_board);
+	BoardView();
 	~BoardView();
 	void refreshDisplay();
 	void display();

@@ -1,11 +1,13 @@
 #include "Player.h"
 #include <typeinfo>
-
+#include <iostream>
 
 Player::Player()
 {
 	setPlayerType("Player");
 	m_score = 0;
+	m_roundScore = 0;
+	m_advantagePoints = 0;
 	m_wins = 0;
 	m_isOneDieMode = false;
 	m_isTurn = false;
@@ -70,6 +72,16 @@ bool Player::isUncoverable(Player a_player, int a_square)
 	return false;
 }
 
+void Player::setRoundScore(int a_score)
+{
+	m_roundScore = a_score;
+}
+
+int Player::getRoundScore()
+{
+	return m_roundScore;
+}
+
 Board* Player::getBoard()
 {
 	return m_playerBoard;
@@ -121,15 +133,24 @@ bool Player::getWentFirst()
 	return m_wentFirst;
 }
 
-void Player::setWentFirst()
+void Player::setWentFirst(bool a_bool)
 {
-	m_wentFirst = true;
+	m_wentFirst = a_bool;
 }
 
 bool Player::isWon()
 {
 	if (m_isWon) return true;
 	else return false;
+}
+
+void Player::clearFlags()
+{
+	m_isOneDieMode = false;
+	m_isTurn = false;
+	m_isWon = false;
+	m_wonByCover = false;
+	m_wonByUncover = false;
 }
 
 void Player::setCoverSquare(int a_square)
@@ -187,6 +208,26 @@ string Player::getWonBy()
 	if (m_wonByUncover) {
 		return "uncover";
 	}
+}
+
+ void Player::setAdvantage()
+{
+	int advantageSum = this->getRoundScore();
+	int sum = 0;
+	do
+	{
+		int digit1 = advantageSum % 10;
+		advantageSum /= 10;
+		int digit2 = advantageSum % 10;
+		advantageSum /= 10;
+
+		int sum = digit1 + digit2;
+		advantageSum = sum;
+
+		//print digit
+	} while (advantageSum > 9);
+
+	m_advantagePoints = sum;
 }
 
 

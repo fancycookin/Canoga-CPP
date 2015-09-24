@@ -18,6 +18,9 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	if (a_inputType == "start") {
 		return verifyStartGame(a_input);
 	}
+	else if (a_inputType == "help") {
+		return verifyHelp(a_input);
+	}
 	else if (a_inputType == "roll") {
 		return verifyRollDice(a_input);
 	}
@@ -42,11 +45,11 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	else if (a_inputType == "number") {
 		return verifyNumber(a_input);
 	}
+	else if (a_inputType == "gamerule") {
+		return verifyGameRule(a_input);
+	}
 	else if (a_inputType == "save" || a_input == "load") {
 		return verifyFileName(a_input);
-	}
-	else if (a_inputType == "side") {
-		return verifySideSelection(a_input);
 	}
 	else {
 		return false;
@@ -56,8 +59,16 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 }
 bool Human::verifyGameRule(string a_selection)
 {
+	if ((is_number(a_selection) && stoi(a_selection) == 9) || (is_number(a_selection) && stoi(a_selection) == 10) || (is_number(a_selection) && stoi(a_selection) == 11)) {
+		return true;
+	}
+	else return false;
+}
+bool Human::verifyHelp(string a_selection)
+{
 	string selection = toLowerCase(a_selection);
-	return false;
+	if (selection == "help") return true;
+	else return false;
 }
 bool Human::verifyRollDice(string a_selection)
 {
@@ -86,13 +97,13 @@ bool Human::verifyRollChoice(string a_selection)
 bool Human::verifyCoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
-	if (selection == "cover") return true;
+	if (selection == "cover" || selection == "help") return true;
 	return false;
 }
 bool Human::verifyUncoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
-	if (selection == "uncover") return true;
+	if (selection == "uncover" || selection == "help") return true;
 	return false;
 }
 bool Human::verifyFileName(string a_selection)
@@ -104,17 +115,6 @@ bool Human::verifyStartGame(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "play" || selection == "quit")
-	{
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-bool Human::verifySideSelection(string a_selection)
-{
-	string selection = toLowerCase(a_selection);
-	if (selection == "cover" || selection == "uncover")
 	{
 		return true;
 	}
@@ -157,7 +157,7 @@ bool Human::verifyNumber(string a_selection)
 bool Human::verifyCoverUncoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
-	if (selection == "cover" || selection == "uncover")
+	if (selection == "cover" || selection == "uncover" || selection == "help")
 	{
 		return true;
 	}

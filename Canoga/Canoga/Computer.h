@@ -12,20 +12,20 @@ public:
 	int getSuggestedMove();
 	
 	struct Moves {
-		vector<int> m_moveComputerSet = vector<int>();
-		vector<int> m_moveHumanSet = vector<int>();
-		bool m_computerRowMove = false;
-		bool m_humanRowMove = false;
+		vector<int> m_coverMoveSet = vector<int>();
+		vector<int> m_uncoverMoveSet = vector<int>();
+		bool m_isCoverMove = false;
+		bool m_isUncoverMove = false;
 	};
-	Moves setBestMove(Human& a_human, int a_gameRule, int a_diceSum);
+	Moves setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer, int a_gameRule, int a_diceSum);
 private:
 	//flags
 
-	bool m_goComputerHigherSquares;
-	bool m_goComputerLowerSquares;
+	//bool m_goComputerHigherSquares;
+	//bool m_goComputerLowerSquares;
 	bool m_goRollOneDice;
-	bool m_goHumanHigherSquares;
-	bool m_goHumanLowerSquares;
+	//bool m_goHumanHigherSquares;
+	//bool m_goHumanLowerSquares;
 	bool m_moveFree;
 	Human *m_human;
 

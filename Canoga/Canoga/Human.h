@@ -14,6 +14,7 @@ public:
 	void setGameRule(int a_gameRule);
 private:
 	bool verifyGameRule(string a_selection);
+	bool verifyHelp(string a_selection);
 	bool verifyRollDice(string a_selection);
 	bool verifyOneRoll(string a_selection);
 	bool verifyTwoRoll(string a_selection);
@@ -22,7 +23,6 @@ private:
 	bool verifyUncoverSquare(string a_selection);
 	bool verifyFileName(string a_selection);
 	bool verifyStartGame(string a_selection);
-	bool verifySideSelection(string a_selection);
 	bool verifyNumber(string a_selection);
 	bool verifyCoverUncoverSquare(string a_selection);
 	int m_gameRule;
