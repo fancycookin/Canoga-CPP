@@ -432,9 +432,11 @@ bool Game::playRound()
 				m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum);
 				if (m_computerMoves.m_isCoverMove) {
 					cout << "You should cover your own squares." << endl;
+					cout << m_computerMoves.m_logic << endl;
 					for (int i = 0; i <= m_computerMoves.m_coverMoveSet.size() - 1; i++) {
 						if (m_computerMoves.m_coverMoveSet.at(i) != 0) {
 							cout << "You should cover square #" << m_computerMoves.m_coverMoveSet.at(i) << " on your row." << endl;
+
 						}
 					}
 					continue;
@@ -442,6 +444,7 @@ bool Game::playRound()
 
 				if (m_computerMoves.m_isUncoverMove) {
 					cout << "You should uncover computer's squares." << endl;
+					cout << m_computerMoves.m_logic << endl;
 					for (int i = 0; i <= m_computerMoves.m_uncoverMoveSet.size() - 1; i++) {
 						if (m_computerMoves.m_uncoverMoveSet.at(i) != 0) {
 							cout << "You should uncover sqaure #" << m_computerMoves.m_uncoverMoveSet.at(i) << " on computer's side." << endl;
@@ -600,33 +603,64 @@ bool Game::playRound()
 
 
 		if (!m_computerMoves.m_isUncoverMove && !m_computerMoves.m_isCoverMove) {
-			cout << "No move made by computer." << endl;
+			cout << "No move made by computer because no move was available." << endl;
 			cout << "Ending turn..." << endl;
 			Sleep(1000);
 			return false;
 		}
-		if (m_computerMoves.m_isCoverMove) {
-			cout << "Computer decided to cover own squares." << endl;
-			for (int i = 0; i <= m_computerMoves.m_coverMoveSet.size() - 1; i++) {
-				if (m_computerMoves.m_coverMoveSet.at(i) != 0) {
-					m_computer->setCoverSquare(m_computerMoves.m_coverMoveSet.at(i));
-					cout << "Computer covered square #" << m_computerMoves.m_coverMoveSet.at(i) << " on it's own row." << endl;
-				}
 
+		if (m_computerMoves.m_coverMoveSet.size() > m_computerMoves.m_uncoverMoveSet.size()) {
+			if (m_computerMoves.m_isCoverMove) {
+				cout << "Computer decided to cover own squares to maximze area of controlled squares." << endl;
+				for (int i = 0; i <= m_computerMoves.m_coverMoveSet.size() - 1; i++) {
+					if (m_computerMoves.m_coverMoveSet.at(i) != 0) {
+						m_computer->setCoverSquare(m_computerMoves.m_coverMoveSet.at(i));
+						cout << "Computer covered square #" << m_computerMoves.m_coverMoveSet.at(i) << " on it's own row." << endl;
+					}
+
+				}
+				return true;
 			}
-			return true;
+		}
+		else if (m_computerMoves.m_coverMoveSet.size() < m_computerMoves.m_uncoverMoveSet.size()) {
+			if (m_computerMoves.m_isUncoverMove) {
+				cout << "Computer decided to uncover your squares to maximize are of controlled squares." << endl;
+				for (int i = 0; i <= m_computerMoves.m_uncoverMoveSet.size() - 1; i++) {
+					if (m_computerMoves.m_uncoverMoveSet.at(i) != 0) {
+						m_human->setUncoverSquare(m_computerMoves.m_uncoverMoveSet.at(i));
+						cout << "Computer uncovered square #" << m_computerMoves.m_uncoverMoveSet.at(i) << " on your row." << endl;
+					}
+				}
+				return true;
+			}
+		}
+		else if (m_computerMoves.m_coverMoveSet.size() == m_computerMoves.m_uncoverMoveSet.size()) {
+
+			if (m_computerMoves.m_isCoverMove) {
+				cout << "Computer decided to cover own squares to maximze area of controlled squares." << endl;
+				for (int i = 0; i <= m_computerMoves.m_coverMoveSet.size() - 1; i++) {
+					if (m_computerMoves.m_coverMoveSet.at(i) != 0) {
+						m_computer->setCoverSquare(m_computerMoves.m_coverMoveSet.at(i));
+						cout << "Computer covered square #" << m_computerMoves.m_coverMoveSet.at(i) << " on it's own row." << endl;
+					}
+
+				}
+				return true;
+			}
+
+			if (m_computerMoves.m_isUncoverMove) {
+				cout << "Computer decided to uncover your squares to maximize are of controlled squares." << endl;
+				for (int i = 0; i <= m_computerMoves.m_uncoverMoveSet.size() - 1; i++) {
+					if (m_computerMoves.m_uncoverMoveSet.at(i) != 0) {
+						m_human->setUncoverSquare(m_computerMoves.m_uncoverMoveSet.at(i));
+						cout << "Computer uncovered square #" << m_computerMoves.m_uncoverMoveSet.at(i) << " on your row." << endl;
+					}
+				}
+				return true;
+			}
 		}
 
-		if (m_computerMoves.m_isUncoverMove) {
-			cout << "Computer decided to uncover your squares." << endl;
-			for (int i = 0; i <= m_computerMoves.m_uncoverMoveSet.size() - 1; i++) {
-				if (m_computerMoves.m_uncoverMoveSet.at(i) != 0) {
-					m_human->setUncoverSquare(m_computerMoves.m_uncoverMoveSet.at(i));
-					cout << "Computer uncovered square #" << m_computerMoves.m_uncoverMoveSet.at(i) << " on your row." << endl;
-				}
-			}
-			return true;
-		}
+
 	}
 }
 
