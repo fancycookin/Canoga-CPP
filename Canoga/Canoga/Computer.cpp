@@ -67,73 +67,6 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 		}
 	}
 
-	if (m_coverSelectionsCounter < m_uncoverSelectionsCounter) {
-		if (a_aidPlayer.getPlayerType() == "Human") {
-			m_moves.m_logic = "You have less squares covered than computer.\n"; 
-			if (m_moves.m_isCoverMove) {
-				m_moves.m_logic += "You should cover to force computer to play defensively.";
-			}
-			else if (m_moves.m_isUncoverMove) {
-				m_moves.m_logic += "You should uncover to prevent computer from winning.";
-			}
-		}
-		if (a_aidPlayer.getPlayerType() == "Computer") {
-			m_moves.m_logic = "Computer has more options to uncover than to cover.\n";
-			if (m_moves.m_isCoverMove) {
-				m_moves.m_logic += "Computer covers to maximize area of controlled squares.";
-			}
-			else if (m_moves.m_isUncoverMove) {
-				m_moves.m_logic += "Computer uncovers defensively.";
-			}
-		}
-		m_moves.m_uncoverPrior = true;
-	}
-	else if (m_coverSelectionsCounter > m_uncoverSelectionsCounter) {
-		if (a_aidPlayer.getPlayerType() == "Human") {
-			m_moves.m_logic = "You have more cover options than uncover options.\n";
-			if (m_moves.m_isCoverMove) {
-				m_moves.m_logic += "You should cover to maximize area of controlled squares.";
-			}
-			else if (m_moves.m_isUncoverMove) {
-				m_moves.m_logic += "You should uncover to pressure computer.";
-			}
-
-		}
-		if (a_aidPlayer.getPlayerType() == "Computer") {
-			m_moves.m_logic = "Computer decided to play aggressively because your covered squares are no threat to it.";
-			if (m_moves.m_isCoverMove) {
-				m_moves.m_logic += "Computer covers to play aggressively.";
-			}
-			else if (m_moves.m_isUncoverMove) {
-				m_moves.m_logic += "Computer uncovers to force you to defend.";
-			}
-		}
-		m_moves.m_coverPrior = true;
-	}
-	else if (m_coverSelectionsCounter == m_coverSelectionsCounter) {
-		if (a_aidPlayer.getPlayerType() == "Human") {
-			m_moves.m_logic = "Cover and uncover options are even.\n";
-			if (m_moves.m_isCoverMove) {
-				m_moves.m_logic += "You should over own squares to force computer to play defensively.";
-			}
-			else if (m_moves.m_isUncoverMove) {
-				m_moves.m_logic += "You should uncover computer's squares to force computer to prevent it from winning.";
-			}
-
-		}
-		if (a_aidPlayer.getPlayerType() == "Computer") {
-			m_moves.m_logic = "Computer's cover and uncover options are even.";
-			if (m_moves.m_isCoverMove) {
-
-			}
-			else if (m_moves.m_isUncoverMove) {
-
-			}
-		}
-		m_moves.m_coverPrior = true;
-		m_moves.m_uncoverPrior = true;
-	}
-
 	/*
 	for (int i = 7; i < a_gameRule + 1;i++) {
 		if (this->isCoverable(*this, i)) {
@@ -176,7 +109,7 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 			m_coverMoveSet1.clear();
 			m_coverMoveSet1.push_back(m_coverSelections[i]);
 		}
-		for (int j = i + 1; j < a_gameRule; j++) {
+		for (int j = i + 1; j < 12; j++) {
 			if (m_coverSelections[j] + m_coverSelections[i] == a_diceSum) {
 				m_moveFree = true;
 				m_moves.m_isCoverMove = true;
@@ -184,7 +117,7 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 				m_coverMoveSet2.push_back(m_coverSelections[j]);
 				m_coverMoveSet2.push_back(m_coverSelections[i]);
 			}
-			for (int k = j + 1; k < a_gameRule; k++) {
+			for (int k = j + 1; k < 12; k++) {
 				if (m_coverSelections[k] + m_coverSelections[j] + m_coverSelections[i] == a_diceSum) {
 					m_moveFree = true;
 					m_moves.m_isCoverMove = true;
@@ -193,7 +126,7 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 					m_coverMoveSet3.push_back(m_coverSelections[j]);
 					m_coverMoveSet3.push_back(m_coverSelections[i]);
 				}
-				for (int q = k + 1; q < a_gameRule; q++) {
+				for (int q = k + 1; q < 12; q++) {
 					if (m_coverSelections[q] + m_coverSelections[k] + m_coverSelections[j] + m_coverSelections[i] == a_diceSum) {
 						m_moveFree = true;
 						m_moves.m_isCoverMove = true;
@@ -251,49 +184,6 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 		//cout << "No Move available to be made by computer. Ending turn..." << endl;
 		return m_moves;
 	}
-
-	if (m_moveFree) 
-	{
-		if (!m_coverMoveSet4.empty() && m_moves.m_isCoverMove) {
-			m_moves.m_coverMoveSet = m_coverMoveSet4;
-			return m_moves;
-		}
-		if (!m_uncoverMoveSet4.empty() && m_moves.m_isUncoverMove) {
-			m_moves.m_uncoverMoveSet = m_uncoverMoveSet4;
-			return m_moves;
-		}
-		if (!m_coverMoveSet3.empty() && m_moves.m_isCoverMove) {
-			m_moves.m_coverMoveSet = m_coverMoveSet3;
-			return m_moves;
-		}
-		if (!m_uncoverMoveSet3.empty() && m_moves.m_isUncoverMove) {
-			m_moves.m_uncoverMoveSet = m_uncoverMoveSet3;
-			return m_moves;
-		}
-		if (!m_coverMoveSet2.empty() && m_moves.m_isCoverMove) {
-			m_moves.m_coverMoveSet = m_coverMoveSet2;
-			return m_moves;
-		}
-		if (!m_uncoverMoveSet2.empty() && m_moves.m_isUncoverMove) {
-			m_moves.m_uncoverMoveSet = m_uncoverMoveSet2;
-			return m_moves;
-		}
-		if (!m_coverMoveSet1.empty() && m_moves.m_isCoverMove ) {
-			m_moves.m_coverMoveSet = m_coverMoveSet1;
-			return m_moves;
-		}
-		if (!m_uncoverMoveSet1.empty() && m_moves.m_isUncoverMove) {
-			m_moves.m_uncoverMoveSet = m_uncoverMoveSet1;
-			return m_moves;
-		}
-	}
-
-
-
-
-
-
-	/*
 	if (m_moveFree && m_moves.m_isCoverMove) {
 		//cout << "Computer decided to cover own squares." << endl;
 		if (!m_coverMoveSet4.empty()) { 
@@ -332,7 +222,7 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 			return m_moves;
 		}
 	}
-	*/
+
 
 
 	//so this madness right here

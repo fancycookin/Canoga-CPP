@@ -16,9 +16,6 @@ public:
 		vector<int> m_uncoverMoveSet = vector<int>();
 		bool m_isCoverMove = false;
 		bool m_isUncoverMove = false;
-		bool m_coverPrior = false;
-		bool m_uncoverPrior = false;
-		string m_logic = "";
 	};
 	Moves setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer, int a_gameRule, int a_diceSum);
 private:
