@@ -17,6 +17,8 @@ public:
 	void display();
 	void displayScore();
 
+	void displayTurns();
+
 private:
 	// check for encapsulation break
 	Player *m_player;

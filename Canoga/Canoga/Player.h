@@ -24,7 +24,7 @@ public:
 	void setWonByUncover();
 	string getWonBy();
 
-	void setAdvantage();
+	void setAdvantage(int a_roundScore);
 	int getAdvantage();
 
 
@@ -37,6 +37,7 @@ public:
 	bool setScore(int a_score);
 	bool addScore(int a_score);
 	bool setTurn();
+	void setTurn(bool a_flag);
 	void setIsWon();
 	bool getWentFirst();
 	void setWentFirst(bool a_bool);

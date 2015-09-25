@@ -1,11 +1,12 @@
 #include "Human.h"
 #include <iostream>
 #include <string>
+#include <regex>
 
 Human::Human()  : Player()
 {
 	Player::setPlayerType("Human");
-
+	m_gameRule = 0;
 }
 
 Human::~Human()
@@ -14,7 +15,7 @@ Human::~Human()
 
 
 bool Human::verifyInput(string a_input, string a_inputType) {
-	
+
 	if (a_inputType == "start") {
 		return verifyStartGame(a_input);
 	}
@@ -48,8 +49,11 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	else if (a_inputType == "gamerule") {
 		return verifyGameRule(a_input);
 	}
-	else if (a_inputType == "save" || a_input == "load") {
+	else if (a_inputType == "filename") {
 		return verifyFileName(a_input);
+	}
+	else if (a_inputType == "save") {
+		return verifySaveGame(a_input);
 	}
 	else {
 		return false;
@@ -108,13 +112,29 @@ bool Human::verifyUncoverSquare(string a_selection)
 }
 bool Human::verifyFileName(string a_selection)
 {
+	bool found = false;
 	string selection = toLowerCase(a_selection);
-	return false;
+	regex findChars("(\\\\|/|:|\\*|\\?|\"|<|>|\\|)");
+	regex_iterator<string::iterator> myIterator(selection.begin(), selection.end(), findChars);
+	regex_iterator<string::iterator> endIterator;
+	while (myIterator != endIterator) {
+		found = true;
+		myIterator++;
+	}
+	if (int(selection.length()) < 30 && found == false) {
+		return true;
+	}
+	if (selection == "back") {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 bool Human::verifyStartGame(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
-	if (selection == "play" || selection == "quit")
+	if (selection == "play" || selection == "load" || selection == "quit")
 	{
 		return true;
 	}
@@ -141,9 +161,9 @@ bool Human::verifyGameRule(string a_selection)
 
 bool Human::verifyNumber(string a_selection)
 {
-	if (is_number(a_selection) && stoi(a_selection) <= m_gameRule && stoi(a_selection) >= 1 )
+	if (is_number(a_selection) && stoi(a_selection) <= m_gameRule && stoi(a_selection) >= 1)
 	{
-			return true;
+		return true;
 	}
 	else if (a_selection == "-1") {
 		return true;
@@ -165,6 +185,14 @@ bool Human::verifyCoverUncoverSquare(string a_selection)
 		return false;
 	}
 }
+
+bool Human::verifySaveGame(string a_selection)
+{
+	string selection = toLowerCase(a_selection);
+	if (selection == "yes" || selection == "no") return true;
+	return false;
+}
+
 
 string Human::toLowerCase(string a_selection) {
 	string lower_str = a_selection;
