@@ -9,16 +9,8 @@
 #include <windows.h>
 #include <ctime>
 #include <thread>
-#include <regex>
-#include <fstream>
-#include <sstream>
-#include <stdlib.h>
-#include <queue>
-using namespace std;
 
-Game::Game()
-{
-}
+using namespace std;
 
 
 Game::Game(Human& a_human, Computer& a_computer)
@@ -27,14 +19,9 @@ Game::Game(Human& a_human, Computer& a_computer)
 	m_computer = &a_computer;
 	struct Computer::Moves m_moves;
 	m_firstPlay = true;
-	m_gameStarted = false;
-	m_isLoaded = false;
-	m_diceFile = false;
-	m_didHumanMove = false;
-	m_didComputerMove = false;
 	//askGameRule();
 
-	//setGameRule(m_gameRule);
+	//setGameRule(a_gameRule);
 
 	//setNewRound();
 }
@@ -65,24 +52,10 @@ bool Game::setGameRule(string a_gameRule)
 	else
 	{
 		m_gameRule = selection;
-		m_human->setGameRule(m_gameRule);
 		if (system("CLS")) system("clear");
 		cout << "Game rule has been set to: " + a_gameRule + " squares per row.\n" << endl;
 		return true;
 	}
-}
-
-bool Game::setGameRule(int a_gameRule)
-{
-	if (a_gameRule != 9 && a_gameRule != 10 && a_gameRule != 11) {
-		cerr << "\nNumber of squares must be either 9, 10, or 11." << endl;
-		return false;
-	}
-	else {
-		m_gameRule = a_gameRule;
-		return true;
-	}
-
 }
 
 bool Game::isWon()
@@ -116,61 +89,6 @@ void Game::setIsFirstPlay()
 	m_firstPlay = !m_firstPlay;
 }
 
-void Game::loadDiceFile()
-{
-	string line;
-	ifstream myFile("dice.txt");
-	if (myFile.is_open()) {
-
-		while (getline(myFile, line)) {
-			regex findDiceRoll("\\d+");
-			{
-				regex_iterator<string::iterator> myIterator(line.begin(), line.end(), findDiceRoll);
-				regex_iterator<string::iterator> endIterator;
-				//Add all the values from the file to the board
-				int sum = 0;
-				while (myIterator != endIterator) {
-					sum += stoi(myIterator->str());
-					myIterator++;
-				}
-				m_diceRolls.push(sum);
-			}
-		}
-	}
-
-}
-
-void Game::setLoadedRound(vector<string> a_computerRow, vector<string> a_humanRow) {
-	m_board = Board(m_gameRule);
-	m_human->setConnectedBoard(m_board);
-	m_computer->setConnectedBoard(m_board);
-	m_playerDiceSum = 0;
-	m_computerDiceSum = 0;
-	m_firstPlay = false;
-	m_didHumanMove = true;
-	m_didComputerMove =true;
-	//m_human->setGameRule(m_gameRule);
-
-	if (m_human->getAdvantage() != 0) {
-		m_human->setCoverSquare(m_human->getAdvantage());
-	}
-	if (m_computer->getAdvantage() != 0) {
-		m_computer->setCoverSquare(m_computer->getAdvantage());
-	}
-
-	for (int i = 0; i < a_computerRow.capacity(); i++) {
-		if (a_computerRow.at(i) == "*") {
-			m_computer->setCoverSquare(i+1);
-		}
-	}
-	for (int i = 0; i < a_humanRow.capacity(); i++) {
-		if (a_humanRow.at(i) == "*") {
-			m_human->setCoverSquare(i+1);
-		}
-	}
-}
-
-
 void Game::setNewRound()
 {
 	m_board = Board(m_gameRule);
@@ -180,7 +98,7 @@ void Game::setNewRound()
 	m_computer->addScore(0);
 	m_playerDiceSum = 0;
 	m_computerDiceSum = 0;
-	//m_human->setGameRule(m_gameRule);
+	m_human->setGameRule(m_gameRule);
 
 	if (m_human->getAdvantage() != 0) {
 		m_human->setCoverSquare(m_human->getAdvantage());
@@ -194,13 +112,6 @@ void Game::askGameRule()
 {
 	cout << "Set the rule of the game.\nHow many squares would you like the game boards to have?" << endl;
 	cout << "Enter either 9, 10, or 11 as a value: ";
-}
-
-void Game::askSaveGame()
-{
-	cout << endl;
-	cout << "Would you like to save your game?" << endl;
-	cout << "Type 'yes' to save, or 'no' to keep playing: ";
 }
 
 Player* Game::getWinner()
@@ -228,62 +139,32 @@ BoardView* Game::getBoardViewObject()
 
 bool Game::playRound()
 {
-	int winHumanRowCounter = 0;
-	int winComputerRowCounter = 0;
-	for (int i = 1; i <= m_gameRule; i++) {
-		if (m_human->getBoard()->getHumanRows()->at(i) == true) {
-			winHumanRowCounter++;
-		}
-		if (winHumanRowCounter == m_gameRule) {
-			cout << "You covered all your squares! You win!" << endl;
-			setWon(*m_human);
-			m_human->setWonByCover();
-			return true;
-		}
-		if (m_human->getBoard()->getComputerRows()->at(i) == false) {
-			winComputerRowCounter++;
-		}
-		//dont forget to add if not on first play
-		if (winComputerRowCounter == m_gameRule && !isFirstPlay() && m_didComputerMove) {
-			cout << "You uncovered all computer's squares! You win!" << endl;
-			setWon(*m_human);
-			m_human->setWonByUncover();
-			return true;
-		}
-	}
-
-
-
-	winHumanRowCounter = 0;
-	winComputerRowCounter = 0;
-	for (int i = 1; i <= m_gameRule; i++) {
-		if (m_computer->getBoard()->getHumanRows()->at(i) == false) {
-			winHumanRowCounter++;
-		}
-		if (winHumanRowCounter == m_gameRule && !isFirstPlay() && m_didHumanMove) {
-			cout << "All your squares were uncovered! Computer wins!" << endl;
-			setWon(*m_computer);
-			m_computer->setWonByUncover();
-			return true;
-		}
-		if (m_human->getBoard()->getComputerRows()->at(i) == true) {
-			winComputerRowCounter++;
-		}
-		//dont forget to add if not on first play
-		if (winComputerRowCounter == m_gameRule) {
-			cout << "Computer covered all of its squares! Computer wins!" << endl;
-			setWon(*m_computer);
-			m_computer->setWonByCover();
-			return true;
-		}
-	}
-
-
 
 	if (m_human->isTurn()) {
-		m_didHumanMove = false;
+		int winHumanRowCounter = 0;
+		int winComputerRowCounter = 0;
 		m_human->setOneDieMode(false);
-
+		for (int i = 1; i <= m_gameRule; i++) {
+			if (m_human->getBoard()->getHumanRows()->at(i) == true) {
+				winHumanRowCounter++;
+			}
+			if (winHumanRowCounter == m_gameRule) {
+				cout << "You covered all your squares! You win!" << endl;
+				setWon(*m_human);
+				m_human->setWonByCover();
+				return true;
+			}
+			if (m_human->getBoard()->getComputerRows()->at(i) == false) {
+				winComputerRowCounter++;
+			}
+			//dont forget to add if not on first play
+			if (winComputerRowCounter == m_gameRule && !isFirstPlay()) {
+				cout << "You uncovered all computer's squares! You win!" << endl;
+				setWon(*m_human);
+				m_human->setWonByUncover();
+				return true;
+			}
+		}
 		int dieModeCounter = 0;
 		for (int i = 7; i <= m_gameRule; i++) {
 			if (m_human->getBoard()->getHumanRows()->at(i) == true) {
@@ -295,30 +176,26 @@ bool Game::playRound()
 			m_human->setOneDieMode(true);
 		}
 
-		if (!m_diceFile) {
-			cout << "Your turn!" << endl;
-			cout << "Enter 'roll' to roll the dice: ";
-			getInputFromUser(*m_human, "roll");
 
-			if (m_human->isOneDieMode()) {
-				cout << "Roll 'one' or 'two' dice?: ";
-				string rollChoice;
-				rollChoice = getInputFromUser(*m_human, "rollchoice");
-				if (rollChoice == "one") {
-					m_playerDiceSum = rollDie(*m_human);
-				}
-				else if (rollChoice == "two") {
-					m_playerDiceSum = rollDice(*m_human);
-				}
+		cout << "Your turn!" << endl;
+		cout << "Enter 'roll' to roll the dice: ";
+		getInputFromUser(*m_human, "roll");
+
+		if (m_human->isOneDieMode()) {
+			cout << "Roll 'one' or 'two' dice?: ";
+			string rollChoice;
+			rollChoice = getInputFromUser(*m_human, "rollchoice");
+			if (rollChoice == "one") {
+				m_playerDiceSum = rollDie(*m_human);
 			}
-			else {
+			else if (rollChoice == "two") {
 				m_playerDiceSum = rollDice(*m_human);
 			}
 		}
-		else if (m_diceFile) {
-			m_playerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
+		else {
+			m_playerDiceSum = rollDice(*m_human);
 		}
+
 
 		bool coverMoveOpen = false;
 		bool uncoverMoveOpen = false;
@@ -405,11 +282,11 @@ bool Game::playRound()
 		*/
 		string input = "";
 		do {
-			cout << "\n";
 			if (m_computerMoves.m_isCoverMove && !m_computerMoves.m_isUncoverMove) {
 				cout << "You can only cover your board!" << endl;
 				cout << "Type 'cover' to start making selections or ask for 'help': ";
 				input = getInputFromUser(*m_human, "cover");
+
 			}
 			else if (!m_computerMoves.m_isCoverMove && m_computerMoves.m_isUncoverMove) {
 				cout << "You can only uncover the computers board" << endl;
@@ -425,8 +302,6 @@ bool Game::playRound()
 				Sleep(1000);
 				return false;
 			}
-
-			m_boardView.display();
 
 			if (input == "help" && (m_computerMoves.m_isCoverMove || m_computerMoves.m_isUncoverMove)) {
 				m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum);
@@ -566,8 +441,8 @@ bool Game::playRound()
 		} while (!valid || invalidTotal || invalidNumbers);
 	}
 	else {
-		cout << "\n";
-		m_didComputerMove = false;
+		bool computerMoved = false;
+
 		// can we use one die?
 		int dieModeCounter = 0;
 		for (int i = 7; i <= m_gameRule; i++) {
@@ -586,21 +461,40 @@ bool Game::playRound()
 				squareDieCounter++;
 			}
 		}
-		if (!m_diceFile) {
-			if (squareDieCounter == 4 && m_computer->isOneDieMode()) {
-				m_computerDiceSum = rollDie(*m_computer);
-			}
-			else {
-				m_computerDiceSum = rollDice(*m_computer);
-			}
+
+		if (squareDieCounter == 4 && m_computer->isOneDieMode()) {
+			m_computerDiceSum = rollDie(*m_computer);
 		}
-		if (m_diceFile) {
-			m_computerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
+		else {
+			m_computerDiceSum = rollDice(*m_computer);
 		}
 		m_computerMoves = m_computer->setBestMove(*m_computer, *m_human, m_gameRule, m_computerDiceSum);
 
 
+
+		int winHumanRowCounter = 0;
+		int winComputerRowCounter = 0;
+		for (int i = 1; i <= m_gameRule; i++) {
+			if (m_computer->getBoard()->getHumanRows()->at(i) == false) {
+				winHumanRowCounter++;
+			}
+			if (winHumanRowCounter == m_gameRule && !isFirstPlay()) {
+				cout << "All your squares were uncovered! Computer wins!" << endl;
+				setWon(*m_computer);
+				m_computer->setWonByUncover();
+				return true;
+			}
+			if (m_human->getBoard()->getComputerRows()->at(i) == true) {
+				winComputerRowCounter++;
+			}
+			//dont forget to add if not on first play
+			if (winComputerRowCounter == m_gameRule) {
+				cout << "Computer covered all of its squares! Computer wins!" << endl;
+				setWon(*m_computer);
+				m_computer->setWonByCover();
+				return true;
+			}
+		}
 
 		if (!m_computerMoves.m_isUncoverMove && !m_computerMoves.m_isCoverMove) {
 			cout << "No move made by computer because no move was available." << endl;
@@ -668,18 +562,11 @@ bool Game::playRound()
 void Game::setFirstPlayer()
 {
 	while (m_playerDiceSum == m_computerDiceSum) {
-		if (!m_diceFile) {
-			m_playerDiceSum = rollDice(*m_human);
-			//cout << "You rolled a " << m_playerDiceSum << endl;
-			//Sleep(2000);
-			m_computerDiceSum = rollDice(*m_computer);
-		}
-		else if (m_diceFile) {
-			m_playerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
-			m_computerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
-		}
+
+		m_playerDiceSum = rollDice(*m_human);
+		//cout << "You rolled a " << m_playerDiceSum << endl;
+		//Sleep(2000);
+		m_computerDiceSum = rollDice(*m_computer);
 		//cout << "Computer rolled a " << m_computerDiceSum << endl;
 		if (m_playerDiceSum == m_computerDiceSum) {
 			cout << "You and the computer both rolled a " << m_playerDiceSum << endl;
@@ -702,86 +589,6 @@ void Game::setFirstPlayer()
 	}
 }
 
-bool Game::saveGame() {
-	ofstream myFile;
-	//Get file name from user
-	cout << "What would you like to name the file?  Max 30 characters please." << endl;
-	cout << "Enter 'back' to go back." << endl;
-	string input = getInputFromUser(*m_human, "filename");
-	if (input == "back") {
-		return false;
-	}
-
-	input = input + ".txt";
-	try {
-		myFile.open(input);
-
-		myFile << "Computer:" << endl;
-		//Write computer squares to file
-		myFile << "\tSquares: ";
-		for (int i = 1; i <= m_gameRule; i++) {
-			if (m_computer->isCoverable(*m_computer,i)) {
-				myFile << i << " ";
-			}
-			if (!m_computer->isCoverable(*m_computer, i)) {
-				myFile << "* ";
-			}
-		}
-		myFile << endl;
-		//Write computer's score
-		myFile << "\tScore:" << m_computer->getScore();
-		myFile << endl;
-		myFile << endl;
-
-
-		//human stats
-		myFile << "Human:" << endl;
-		//Write human's squares
-		myFile << "\tSquares: ";
-		for (int i = 1; i <= m_gameRule; i++) {
-			if (m_human->isCoverable(*m_human, i)) {
-				myFile << i << " ";
-			}
-			if (!m_human->isCoverable(*m_human, i)) {
-				myFile << "* ";
-			}
-		}
-		myFile << endl;
-		//Write human's score
-		myFile << "\tScore:" << m_human->getScore();
-		myFile << endl;
-		myFile << endl;
-
-		myFile << "First Turn: " << getFirstPlayer()->getPlayerType() << endl;
-		myFile << "Next Turn: ";
-		if (m_human->isTurn()) {
-			myFile << "Human" << endl;
-		}
-		else if (m_computer->isTurn()) {
-			myFile << "Computer" << endl;
-		}
-		myFile.close();
-		return true;
-	}
-	catch (exception const& e) {
-		cerr << "Error " << e.what() << endl;
-		return false;
-	}
-}
-
-bool Game::isGameStarted() {
-	return m_gameStarted;
-}
-
-bool Game::isLoaded()
-{
-	return m_isLoaded;
-}
-
-void Game::setIsLoaded(bool a_flag)
-{
-	m_isLoaded = a_flag;
-}
 
 int Game::rollDice(Player& a_player)
 {
@@ -827,15 +634,9 @@ string Game::getInputFromUser(Human &user, string a_inputType) {
 	return userChoice;
 }
 
-bool Game::playGame(int a_roundNumber) {
-	if (m_diceFile) {
-		loadDiceFile();
-	}
-
+void Game::playGame(int a_roundNumber) {
 	string input;
-	cout << "Begin round #" << a_roundNumber << " !\n" << endl;
-
-	if (!isLoaded()) {
+		cout << "Begin round #" << a_roundNumber << " !\n" << endl;
 		askGameRule();
 		input = getInputFromUser(*m_human, "gamerule");
 		setGameRule(input);
@@ -843,128 +644,95 @@ bool Game::playGame(int a_roundNumber) {
 		//myGame.setGameRule(temp);
 
 		setNewRound();
-	}
-	m_boardView = BoardView(*m_human, *m_computer, m_board);
-	m_gameStarted = true;
-
-	if (!isLoaded() && !m_diceFile) {
+		m_boardView = BoardView(*m_human, *m_computer, m_board);
 		cout << "Time to roll the dice to see who goes first!" << endl;
 		cout << "Type 'roll' to roll the dice: ";
 		getInputFromUser(*m_human, "roll");
-	}
 
-	m_boardView.refreshDisplay();
-	m_boardView.display();
-	m_boardView.displayScore();
-	if (!isLoaded()) {
+		m_boardView.refreshDisplay();
+		m_boardView.display();
+		m_boardView.displayScore();
 		setFirstPlayer();
-	}
 
-	while (!isWon()) {
-		if (isFirstPlay()) {
-			//m_boardView.display();
-			//m_boardView.displayScore();
-			//m_boardView.displayTurns();
+		while (!isWon()) {
+			if (isFirstPlay()) {
 
-			//myGame.m_human->setCoverSquare(1);
-			if (!playRound()) {
-				m_human->setTurn();
-				m_computer->setTurn();
-				setIsFirstPlay();
-				askSaveGame();
-				input = getInputFromUser(*m_human, "save");
-				if (input == "yes") {
-					saveGame();
-					m_boardView.display();
-					m_boardView.displayScore();
-					m_boardView.displayTurns();
-					cout << "Game Saved! Quitting game..." << endl;
-					return false;
+				//myGame.m_human->setCoverSquare(1);
+				if (!playRound()) {
+					m_human->setTurn();
+					m_computer->setTurn();
+					setIsFirstPlay();
 				}
-			}
-			m_boardView.display();
-			//m_boardView.displayScore();
-			m_boardView.displayTurns();
+				m_boardView.display();
 
-			//myGame.setWon(*myGame.m_human);
-
-		}
-		else {
-			if (!playRound()) {
-				m_human->setTurn();
-				m_computer->setTurn();
-				askSaveGame();
-				input = getInputFromUser(*m_human, "save");
-				if (input == "yes") {
-					saveGame();
-					m_boardView.display();
-					m_boardView.displayScore();
-					cout << "Game Saved! Quitting game..." << endl;
-					return false;
-				}
-			}
-			m_boardView.display();
-			//m_boardView.displayScore();
-			m_boardView.displayTurns();
-		}
-
-		if (isWon()) {
-			if (getWinner()->getPlayerType() == "Human") {
-				//TODO: implement score calculations
-				//sum of all uncovered squares of computer
-				//cout << "You win!" << endl;
-				int scoreSum = 0;
-				m_human->setIsWon();
-				if (m_human->getWonBy() == "cover") {
-					for (int i = 1; i <= getGameRule(); i++) {
-						if (m_human->isCoverable(*m_computer, i)) {
-							scoreSum += i;
-						}
-					}
-					m_human->addScore(scoreSum);
-					m_human->setRoundScore(scoreSum);
-					m_human->addWin();
-				}
-				else if (m_human->getWonBy() == "uncover") {
-					for (int i = 1; i <= getGameRule(); i++) {
-						if (m_human->isUncoverable(*m_human, i)) {
-							scoreSum += i;
-						}
-					}
-					m_human->addScore(scoreSum);
-					m_human->setRoundScore(scoreSum);
-					m_human->addWin();
-				}
+				//myGame.setWon(*myGame.m_human);
 
 			}
-			else if (getWinner()->getPlayerType() == "Computer") {
-				//TODO: implement score calculations
-				//sum of all uncovered squares of computer
-				//cout << "You lose!" << endl;
-				int scoreSum = 0;
-				m_computer->setIsWon();
-				if (m_computer->getWonBy() == "cover") {
-					for (int i = 1; i <= getGameRule(); i++) {
-						if (m_computer->isCoverable(*m_human, i)) {
-							scoreSum += i;
-						}
-					}
-					m_computer->addScore(scoreSum);
-					m_computer->setRoundScore(scoreSum);
-					m_computer->addWin();
+			else {
+				if (!playRound()) {
+					m_human->setTurn();
+					m_computer->setTurn();
 				}
-				else if (m_computer->getWonBy() == "uncover") {
-					for (int i = 1; i <= getGameRule(); i++) {
-						if (m_computer->isUncoverable(*m_computer, i)) {
-							scoreSum += i;
-						}
-					}
-					m_computer->addScore(scoreSum);
-					m_computer->setRoundScore(scoreSum);
-					m_computer->addWin();
-				}
+				m_boardView.display();
 			}
-			m_boardView.displayScore();
+
+			if (isWon()) {
+				if (getWinner()->getPlayerType() == "Human") {
+					//TODO: implement score calculations
+					//sum of all uncovered squares of computer
+					//cout << "You win!" << endl;
+					int scoreSum = 0;
+					m_human->setIsWon();
+					if (m_human->getWonBy() == "cover") {
+						for (int i = 1; i <= getGameRule(); i++) {
+							if (m_human->isCoverable(*m_computer, i)) {
+								scoreSum += i;
+							}
+						}
+						m_human->addScore(scoreSum);
+						m_human->setRoundScore(scoreSum);
+						m_human->addWin();
+					}
+					else if (m_human->getWonBy() == "uncover") {
+						for (int i = 1; i <= getGameRule(); i++) {
+							if (m_human->isUncoverable(*m_human, i)) {
+								scoreSum += i;
+							}
+						}
+						m_human->addScore(scoreSum);
+						m_human->setRoundScore(scoreSum);
+						m_human->addWin();
+					}
+
+				}
+				else if (getWinner()->getPlayerType() == "Computer") {
+					//TODO: implement score calculations
+					//sum of all uncovered squares of computer
+					//cout << "You lose!" << endl;
+					int scoreSum = 0;
+					m_computer->setIsWon();
+					if (m_computer->getWonBy() == "cover") {
+						for (int i = 1; i <= getGameRule(); i++) {
+							if (m_computer->isCoverable(*m_human, i)) {
+								scoreSum += i;
+							}
+						}
+						m_computer->addScore(scoreSum);
+						m_computer->setRoundScore(scoreSum);
+						m_computer->addWin();
+					}
+					else if (m_computer->getWonBy() == "uncover") {
+						for (int i = 1; i <= getGameRule(); i++) {
+							if (m_computer->isUncoverable(*m_computer, i)) {
+								scoreSum += i;
+							}
+						}
+						m_computer->addScore(scoreSum);
+						m_computer->setRoundScore(scoreSum);
+						m_computer->addWin();
+					}
+				}
+				m_boardView.displayScore();
 		}
 	}
 }

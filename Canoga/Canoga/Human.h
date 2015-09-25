@@ -25,7 +25,6 @@ private:
 	bool verifyStartGame(string a_selection);
 	bool verifyNumber(string a_selection);
 	bool verifyCoverUncoverSquare(string a_selection);
-	bool verifySaveGame(string a_selection);
 	int m_gameRule;
 
 

@@ -81,7 +81,6 @@ void BoardView::display()
 	cout << "\n";
 }
 
-
 void BoardView::displayScore()
 {
 	cout << "    1P";
@@ -89,16 +88,11 @@ void BoardView::displayScore()
 		cout << " ";
 	}
 	cout << "CPU\n";
-	cout << "Tournment Score : " << m_player->getScore();
-	for (int i = 0; i < 20; i++) {
+	cout << "Score : " << m_player->getScore();
+	for (int i = 0; i < 30; i++) {
 		cout << " ";
 	}
-	cout << "Tournment Score : " << m_player2->getScore() << endl;
-	cout << "Round Score: " << m_player->getRoundScore();
-	for (int i = 0; i < 25; i++) {
-		cout << " ";
-	}
-	cout << "Round Score: " << m_player2->getRoundScore() << endl;
+	cout << "Score : " << m_player2->getScore() << endl;
 	cout << "Wins  : " << m_player->getWins();
 	for (int i = 0; i < 30; i++) {
 		cout << " ";
@@ -106,22 +100,3 @@ void BoardView::displayScore()
 	cout << "Wins  : " << m_player2->getWins() << endl;
 }
 
-void BoardView::displayTurns() {
-	string firstPlayer;
-	string turnPlayer;
-	if (m_player->getWentFirst()) {
-		firstPlayer = m_player->getPlayerType();
-	}
-	else {
-		firstPlayer = m_player2->getPlayerType();
-	}
-
-	if (m_player->isTurn()) {
-		turnPlayer = m_player->getPlayerType();
-	}
-	else {
-		turnPlayer = m_player2->getPlayerType();
-	}
-	cout << "Current Turn : " << turnPlayer << endl;
-	cout << "First Player : " << firstPlayer << endl;
-}

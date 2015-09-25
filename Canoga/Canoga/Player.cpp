@@ -127,11 +127,6 @@ bool Player::setTurn()
 	return true;
 }
 
-void Player::setTurn(bool a_flag)
-{
-	m_isTurn = a_flag;
-}
-
 void Player::setIsWon()
 {
 	m_isWon = true;
@@ -160,7 +155,6 @@ void Player::clearFlags()
 	m_isWon = false;
 	m_wonByCover = false;
 	m_wonByUncover = false;
-	m_roundScore = 0;
 }
 
 void Player::setCoverSquare(int a_square)
@@ -220,9 +214,9 @@ string Player::getWonBy()
 	}
 }
 
- void Player::setAdvantage(int a_roundScore)
+ void Player::setAdvantage()
 {
-	int advantageSum = a_roundScore;
+	int advantageSum = this->getRoundScore();
 	int sum = 0;
 	do
 	{
