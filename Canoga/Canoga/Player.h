@@ -25,7 +25,6 @@ public:
 	string getWonBy();
 
 	void setAdvantage();
-	int getAdvantage();
 
 
 

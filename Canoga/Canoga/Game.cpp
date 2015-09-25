@@ -99,13 +99,6 @@ void Game::setNewRound()
 	m_playerDiceSum = 0;
 	m_computerDiceSum = 0;
 	m_human->setGameRule(m_gameRule);
-
-	if (m_human->getAdvantage() != 0) {
-		m_human->setCoverSquare(m_human->getAdvantage());
-	}
-	if (m_computer->getAdvantage() != 0) {
-		m_computer->setCoverSquare(m_computer->getAdvantage());
-	}
 }
 
 void Game::askGameRule()
@@ -139,7 +132,6 @@ BoardView* Game::getBoardViewObject()
 
 bool Game::playRound()
 {
-
 	if (m_human->isTurn()) {
 		int winHumanRowCounter = 0;
 		int winComputerRowCounter = 0;
@@ -148,7 +140,7 @@ bool Game::playRound()
 			if (m_human->getBoard()->getHumanRows()->at(i) == true) {
 				winHumanRowCounter++;
 			}
-			if (winHumanRowCounter == m_gameRule) {
+			if (winHumanRowCounter == m_gameRule && !isFirstPlay()) {
 				cout << "You covered all your squares! You win!" << endl;
 				setWon(*m_human);
 				m_human->setWonByCover();
@@ -200,10 +192,6 @@ bool Game::playRound()
 		bool coverMoveOpen = false;
 		bool uncoverMoveOpen = false;
 
-		m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum);
-
-
-		/*
 		// maybe do the check for if move is makeable here?
 		for (int i = 1; i <= m_board.getMaxSquares(); i++) {
 			if (m_human->isCoverable(*m_human, i)) {
@@ -278,32 +266,30 @@ bool Game::playRound()
 				}
 			}
 		}
-
-		*/
 		string input = "";
 		do {
-			if (m_computerMoves.m_isCoverMove && !m_computerMoves.m_isUncoverMove) {
+			if (coverMoveOpen && !uncoverMoveOpen) {
 				cout << "You can only cover your board!" << endl;
 				cout << "Type 'cover' to start making selections or ask for 'help': ";
 				input = getInputFromUser(*m_human, "cover");
 
 			}
-			else if (!m_computerMoves.m_isCoverMove && m_computerMoves.m_isUncoverMove) {
+			else if (uncoverMoveOpen && !coverMoveOpen) {
 				cout << "You can only uncover the computers board" << endl;
 				cout << "Type 'uncover' to start making selections or ask for 'help': ";
 				input = getInputFromUser(*m_human, "uncover");
 			}
-			else if (m_computerMoves.m_isCoverMove && m_computerMoves.m_isUncoverMove) {
-				cout << "Would you like to cover or uncover? or ask for 'help': ";
+			else if (coverMoveOpen && uncoverMoveOpen) {
+				cout << "Would you like to cover or uncover? or ask for 'help': " << endl;
 				input = getInputFromUser(*m_human, "coveruncover");
 			}
-			else if (!m_computerMoves.m_isCoverMove && !m_computerMoves.m_isUncoverMove) {
+			else if (!coverMoveOpen && !uncoverMoveOpen) {
 				cout << "No moves available. Ending turn..." << endl;
 				Sleep(1000);
 				return false;
 			}
 
-			if (input == "help" && (m_computerMoves.m_isCoverMove || m_computerMoves.m_isUncoverMove)) {
+			if (input == "help" && (coverMoveOpen == true || uncoverMoveOpen == true)) {
 				m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum);
 				if (m_computerMoves.m_isCoverMove) {
 					cout << "You should cover your own squares." << endl;
@@ -327,13 +313,13 @@ bool Game::playRound()
 				}
 			}
 		} while (input == "help");
-		if (input == "cover" && m_computerMoves.m_isCoverMove) {
+		if (input == "cover" && coverMoveOpen) {
 			cout << "You picked to cover your row!" << endl;
 			cout << "Select the squares you'd like to cover.\nOnce done selecting, type '-1'" << endl;
 			cout << "Dice Sum: " << m_playerDiceSum << endl;
 		}
 
-		if (input == "uncover" && m_computerMoves.m_isUncoverMove) {
+		if (input == "uncover" && uncoverMoveOpen) {
 			cout << "You picked to uncover the computer's row!" << endl;
 			cout << "Select the squares you'd like to uncover.\nOnce done selecting, type '-1'" << endl;
 			cout << "Dice Sum: " << m_playerDiceSum << endl;
@@ -485,7 +471,7 @@ bool Game::playRound()
 				winComputerRowCounter++;
 			}
 			//dont forget to add if not on first play
-			if (winComputerRowCounter == m_gameRule) {
+			if (winComputerRowCounter == m_gameRule && !isFirstPlay()) {
 				cout << "Computer covered all of its squares! Computer wins!" << endl;
 				setWon(*m_computer);
 				m_computer->setWonByCover();
@@ -620,7 +606,7 @@ void Game::playGame(int a_roundNumber) {
 		m_boardView.displayScore();
 		setFirstPlayer();
 
-		while (!isWon()) {
+		while (isWon()) {
 			if (isFirstPlay()) {
 
 				//myGame.m_human->setCoverSquare(1);
