@@ -99,11 +99,11 @@ void BoardView::displayScore()
 		cout << " ";
 	}
 	cout << "Round Score: " << m_player2->getRoundScore() << endl;
-	cout << "Wins  : " << m_player->getWins();
+	cout << "Wins  : " << m_player2->getWins();
 	for (int i = 0; i < 30; i++) {
 		cout << " ";
 	}
-	cout << "Wins  : " << m_player2->getWins() << endl;
+	cout << "Wins  : " << m_player->getWins() << endl;
 }
 
 void BoardView::displayTurns() {

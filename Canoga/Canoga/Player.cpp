@@ -1,6 +1,10 @@
 #include "Player.h"
 #include <typeinfo>
 #include <iostream>
+#include <regex>
+#include <fstream>
+#include <sstream>
+#include <stdlib.h>
 
 Player::Player()
 {
@@ -239,6 +243,30 @@ string Player::getWonBy()
 
 	m_advantagePoints = advantageSum;
 }
+
+ void Player::loadDiceFile()
+ {
+	 string line;
+	 ifstream myFile("dice.txt");
+	 if (myFile.is_open()) {
+
+		 while (getline(myFile, line)) {
+			 regex findDiceRoll("\\d+");
+			 {
+				 regex_iterator<string::iterator> myIterator(line.begin(), line.end(), findDiceRoll);
+				 regex_iterator<string::iterator> endIterator;
+				 //Add all the values from the file to the board
+				 int sum = 0;
+				 while (myIterator != endIterator) {
+					 sum += stoi(myIterator->str());
+					 myIterator++;
+				 }
+				 m_diceRolls.push(sum);
+			 }
+		 }
+	 }
+
+ }
 
 
 

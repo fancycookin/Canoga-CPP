@@ -1,5 +1,6 @@
 #pragma once
 #include "Board.h"
+#include <queue>
 //class Board;
 class Player
 {
@@ -23,6 +24,7 @@ public:
 	void setWonByCover();
 	void setWonByUncover();
 	string getWonBy();
+	void loadDiceFile();
 
 	void setAdvantage(int a_roundScore);
 	int getAdvantage();
@@ -43,7 +45,7 @@ public:
 	void setWentFirst(bool a_bool);
 	bool isWon();
 	void clearFlags();
-
+	queue<int> m_diceRolls;
 
 private:
 	Board *m_playerBoard;
@@ -52,6 +54,7 @@ private:
 	bool m_isTurn, m_isOneDieMode, m_isWon, m_wentFirst;
 	bool m_wonByCover, m_wonByUncover;
 	string m_playerType;
+
 
 
 

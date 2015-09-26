@@ -26,7 +26,7 @@ int Computer::getSuggestedMove()
 	return 0;
 }
 
-Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer, int a_gameRule, int a_diceSum)
+Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer, int a_gameRule, int a_diceSum, bool a_isFirstPlay)
 {
 	// see if we can cover top
 	//the first two were indexed at 5 but now its 6 cuz why not
@@ -62,8 +62,10 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 			m_coverSelectionsCounter++;
 		}
 		if (a_enemyPlayer.isUncoverable(a_enemyPlayer, i + 1)) {
-			m_uncoverSelections[i] = i + 1;
-			m_uncoverSelectionsCounter++;
+			if (a_enemyPlayer.getAdvantage() != i +1 && a_isFirstPlay == false ) {
+				m_uncoverSelections[i] = i + 1;
+				m_uncoverSelectionsCounter++;
+			}
 		}
 	}
 
@@ -184,6 +186,53 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 		//cout << "No Move available to be made by computer. Ending turn..." << endl;
 		return m_moves;
 	}
+
+	if (m_moveFree)
+		{
+		if (!m_coverMoveSet4.empty() && m_moves.m_isCoverMove) {
+			m_moves.m_coverMoveSet = m_coverMoveSet4;
+			return m_moves;
+			
+		}
+		if (!m_uncoverMoveSet4.empty() && m_moves.m_isUncoverMove) {
+			m_moves.m_uncoverMoveSet = m_uncoverMoveSet4;
+			return m_moves;
+			
+		}
+		if (!m_coverMoveSet3.empty() && m_moves.m_isCoverMove) {
+			m_moves.m_coverMoveSet = m_coverMoveSet3;
+			return m_moves;
+			
+		}
+		if (!m_uncoverMoveSet3.empty() && m_moves.m_isUncoverMove) {
+			m_moves.m_uncoverMoveSet = m_uncoverMoveSet3;
+			return m_moves;
+			
+		}
+		if (!m_coverMoveSet2.empty() && m_moves.m_isCoverMove) {
+			m_moves.m_coverMoveSet = m_coverMoveSet2;
+			return m_moves;
+		}
+		if (!m_uncoverMoveSet2.empty() && m_moves.m_isUncoverMove) {
+			m_moves.m_uncoverMoveSet = m_uncoverMoveSet2;
+			return m_moves;
+		}
+		if (!m_coverMoveSet1.empty() && m_moves.m_isCoverMove) {
+			m_moves.m_coverMoveSet = m_coverMoveSet1;
+			return m_moves;
+		}
+		if (!m_uncoverMoveSet1.empty() && m_moves.m_isUncoverMove) {
+			m_moves.m_uncoverMoveSet = m_uncoverMoveSet1;
+			return m_moves;
+			
+		}
+		}
+	
+
+	
+	/*
+
+
 	if (m_moveFree && m_moves.m_isCoverMove) {
 		//cout << "Computer decided to cover own squares." << endl;
 		if (!m_coverMoveSet4.empty()) { 
@@ -223,7 +272,7 @@ Computer::Moves Computer::setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer
 		}
 	}
 
-
+	*/
 
 	//so this madness right here
 	// will determine if we can actually make a move with the dice sum that we have

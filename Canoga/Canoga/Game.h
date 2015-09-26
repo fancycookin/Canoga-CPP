@@ -3,7 +3,6 @@
 #include "Computer.h"
 #include "BoardView.h"
 #include "Board.h"
-#include <queue>
 class Game
 {
 public:
@@ -24,8 +23,6 @@ public:
 	void setWon(Player& a_player);
 	bool isFirstPlay();
 	void setIsFirstPlay();
-
-	void loadDiceFile();
 
 	void setLoadedRound(vector<string> a_computerRow, vector<string> a_humanRow);
 
@@ -51,6 +48,7 @@ public:
 	bool isGameStarted();
 	bool isLoaded();
 	void setIsLoaded(bool a_flag);
+	bool m_diceFile;
 private:
 	bool m_gameStarted;
 	bool m_isWonGame;
@@ -58,10 +56,9 @@ private:
 	bool m_didHumanMove;
 	bool m_didComputerMove;
 	bool m_isLoaded;
-	bool m_diceFile;
+
 	BoardView m_boardView;
 	Board m_board;
-	queue<int> m_diceRolls;
 
 
 

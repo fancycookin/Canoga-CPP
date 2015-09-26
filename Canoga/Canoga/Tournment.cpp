@@ -1,4 +1,7 @@
 #include "Tournment.h"
+#include "Player.h"
+#include "Computer.h"
+#include "Game.h"
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
@@ -12,6 +15,7 @@ Tournment::Tournment()
 	m_rounds = 1;
 	m_computer = Computer();
 	m_human = Human();
+	m_diceFile = true;
 }
 
 
@@ -85,7 +89,6 @@ bool Tournment::loadGame() {
 		string nextTurn;
 		vector<string> computerRow = vector<string>();
 		vector<string> humanRow = vector<string>();
-		
 		int gameRule = 0;
 		int computerScore = 0;
 		int humanScore = 0;
@@ -105,7 +108,8 @@ bool Tournment::loadGame() {
 			
 			//Human Squares
 			getline(myFile, line);
-			regex findSquare("([1-9]|[*]|-)");
+			//regex findSquare("([1-9]|[*]|-)");
+			regex findSquare("(\\d+|[*]|-)");
 			{
 				regex_iterator<string::iterator> myIterator(line.begin(), line.end(), findSquare);
 				regex_iterator<string::iterator> endIterator;
@@ -185,7 +189,7 @@ bool Tournment::loadGame() {
 
 			m_computer.setScore(computerScore);
 			m_human.setScore(humanScore);
-			m_human.setGameRule(humanRow.capacity());
+			m_human.setGameRule(humanRow.size());
 
 			if (firstTurn == "Computer") {
 				m_computer.setWentFirst(true);
@@ -205,9 +209,11 @@ bool Tournment::loadGame() {
 			}
 			m_game = Game(m_human, m_computer);
 			m_game.setIsLoaded(true);
-			m_game.setGameRule(humanRow.capacity());
+			m_game.setGameRule(humanRow.size());
 			m_game.setLoadedRound(computerRow, humanRow);
-
+			if (m_diceFile) {
+				m_game.m_diceFile = true;
+			}
 			return true;
 		}
 		else {
@@ -218,7 +224,13 @@ bool Tournment::loadGame() {
 
 bool Tournment::startGame() {
 	string input;
+
 	m_game = Game(m_human, m_computer);
+	if (m_diceFile) {
+		m_human.loadDiceFile();
+
+		m_game.m_diceFile = true;
+	}
 	cout << "Would you like to play a game?" << endl;
 	cout << "Enter 'play', 'load' or 'quit': ";
 	input = m_game.getInputFromUser(m_human, "start");
@@ -247,6 +259,9 @@ bool Tournment::startGame() {
 		if (input == "play") {
 			if (system("CLS")) system("clear");
 			m_game = Game(m_human, m_computer);
+			if (m_diceFile) {
+				m_game.m_diceFile = true;
+			}
 			if (!m_game.playGame(m_rounds)) {
 				input = "quit";
 				continue;

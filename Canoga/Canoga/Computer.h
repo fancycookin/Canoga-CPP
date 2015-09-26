@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-#include "Human.h"
 #include <vector>
 class Computer :
 	public Player
@@ -17,7 +16,7 @@ public:
 		bool m_isCoverMove = false;
 		bool m_isUncoverMove = false;
 	};
-	Moves setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer, int a_gameRule, int a_diceSum);
+	Moves setBestMove(Player& a_aidPlayer, Player& a_enemyPlayer, int a_gameRule, int a_diceSum, bool a_isFirstPlay);
 private:
 	//flags
 
@@ -27,7 +26,6 @@ private:
 	//bool m_goHumanHigherSquares;
 	//bool m_goHumanLowerSquares;
 	bool m_moveFree;
-	Human *m_human;
 
 
 	// okay here's the plan
