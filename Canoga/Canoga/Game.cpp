@@ -116,30 +116,6 @@ void Game::setIsFirstPlay()
 	m_firstPlay = !m_firstPlay;
 }
 
-void Game::loadDiceFile()
-{
-	string line;
-	ifstream myFile("dice.txt");
-	if (myFile.is_open()) {
-
-		while (getline(myFile, line)) {
-			regex findDiceRoll("\\d+");
-			{
-				regex_iterator<string::iterator> myIterator(line.begin(), line.end(), findDiceRoll);
-				regex_iterator<string::iterator> endIterator;
-				//Add all the values from the file to the board
-				int sum = 0;
-				while (myIterator != endIterator) {
-					sum += stoi(myIterator->str());
-					myIterator++;
-				}
-				m_diceRolls.push(sum);
-			}
-		}
-	}
-
-}
-
 void Game::setLoadedRound(vector<string> a_computerRow, vector<string> a_humanRow) {
 	m_board = Board(m_gameRule);
 	m_human->setConnectedBoard(m_board);
@@ -158,12 +134,12 @@ void Game::setLoadedRound(vector<string> a_computerRow, vector<string> a_humanRo
 		m_computer->setCoverSquare(m_computer->getAdvantage());
 	}
 
-	for (int i = 0; i < a_computerRow.capacity(); i++) {
+	for (int i = 0; i < a_computerRow.size(); i++) {
 		if (a_computerRow.at(i) == "*") {
 			m_computer->setCoverSquare(i+1);
 		}
 	}
-	for (int i = 0; i < a_humanRow.capacity(); i++) {
+	for (int i = 0; i < a_humanRow.size(); i++) {
 		if (a_humanRow.at(i) == "*") {
 			m_human->setCoverSquare(i+1);
 		}
@@ -316,93 +292,21 @@ bool Game::playRound()
 			}
 		}
 		else if (m_diceFile) {
-			m_playerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
+			if (m_human->m_diceRolls.empty()) {
+				m_diceFile = false;
+			}
+			else {
+				m_playerDiceSum = m_human->m_diceRolls.front();
+				cout << "Dice sum: " << m_playerDiceSum << endl;
+				m_human->m_diceRolls.pop();
+			}
 		}
 
 		bool coverMoveOpen = false;
 		bool uncoverMoveOpen = false;
 
-		m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum);
+		m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum, isFirstPlay());
 
-
-		/*
-		// maybe do the check for if move is makeable here?
-		for (int i = 1; i <= m_board.getMaxSquares(); i++) {
-			if (m_human->isCoverable(*m_human, i)) {
-				if (m_playerDiceSum == i) {
-					coverMoveOpen = true;
-				}
-			}
-			if (m_human->isUncoverable(*m_computer, i)) {
-				if (m_playerDiceSum == i) {
-					uncoverMoveOpen = true;
-				}
-			}
-			for (int j = i + 1; j <= m_board.getMaxSquares(); j++) {
-				if (m_human->isCoverable(*m_human, i)) {
-					if (m_human->isCoverable(*m_human, j)) {
-						if (m_playerDiceSum == (i + j)) {
-							coverMoveOpen = true;
-						}
-					}
-				}
-				if (m_human->isUncoverable(*m_computer, i)) {
-					if (m_human->isUncoverable(*m_computer, j)) {
-						if (m_playerDiceSum == (i + j)) {
-							uncoverMoveOpen = true;
-						}
-					}
-				}
-				for (int k = j + 1; k <= m_board.getMaxSquares();k++) {
-					if (m_human->isCoverable(*m_human, i)) {
-						if (m_human->isCoverable(*m_human, j)) {
-							if (m_human->isCoverable(*m_human, k)) {
-								if (m_playerDiceSum == (i + j + k)) {
-									coverMoveOpen = true;
-								}
-							}
-						}
-					}
-					if (m_human->isUncoverable(*m_computer, i)) {
-						if (m_human->isUncoverable(*m_computer, j)) {
-							if (m_human->isUncoverable(*m_computer, k)) {
-								if (m_playerDiceSum == (i + j + k)) {
-									uncoverMoveOpen = true;
-								}
-							}
-						}
-					}
-
-					for (int q = k + 1; q <= m_board.getMaxSquares();q++) {
-						if (m_human->isCoverable(*m_human, i)) {
-							if (m_human->isCoverable(*m_human, j)) {
-								if (m_human->isCoverable(*m_human, k)) {
-									if (m_human->isCoverable(*m_human, q)) {
-										if (m_playerDiceSum == (i + j + k + q)) {
-											coverMoveOpen = true;
-										}
-									}
-								}
-							}
-						}
-						if (m_human->isUncoverable(*m_computer, i)) {
-							if (m_human->isUncoverable(*m_computer, j)) {
-								if (m_human->isUncoverable(*m_computer, k)) {
-									if (m_human->isUncoverable(*m_computer, q)) {
-										if (m_playerDiceSum == (i + j + k + q)) {
-											uncoverMoveOpen = true;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		*/
 		string input = "";
 		do {
 			cout << "\n";
@@ -429,9 +333,14 @@ bool Game::playRound()
 			m_boardView.display();
 
 			if (input == "help" && (m_computerMoves.m_isCoverMove || m_computerMoves.m_isUncoverMove)) {
-				m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum);
+				m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum, isFirstPlay());
 				if (m_computerMoves.m_isCoverMove) {
-					cout << "You should cover your own squares." << endl;
+					if (!m_computerMoves.m_isUncoverMove) {
+						cout << "You should cover because that's the only move available." << endl;
+					}
+					else {
+						cout << "You should cover your own squares to take control of more squares on the board." << endl;
+					}
 					for (int i = 0; i <= m_computerMoves.m_coverMoveSet.size() - 1; i++) {
 						if (m_computerMoves.m_coverMoveSet.at(i) != 0) {
 							cout << "You should cover square #" << m_computerMoves.m_coverMoveSet.at(i) << " on your row." << endl;
@@ -441,7 +350,12 @@ bool Game::playRound()
 				}
 
 				if (m_computerMoves.m_isUncoverMove) {
-					cout << "You should uncover computer's squares." << endl;
+					if (!m_computerMoves.m_isCoverMove) {
+						cout << "You should uncover because that's the only move available." << endl;
+					}
+					else {
+						cout << "You should uncover computer's squares to take control of more squares on the board." << endl;
+					}
 					for (int i = 0; i <= m_computerMoves.m_uncoverMoveSet.size() - 1; i++) {
 						if (m_computerMoves.m_uncoverMoveSet.at(i) != 0) {
 							cout << "You should uncover sqaure #" << m_computerMoves.m_uncoverMoveSet.at(i) << " on computer's side." << endl;
@@ -534,7 +448,11 @@ bool Game::playRound()
 						}
 					}
 					if (input == "uncover") {
-						if (m_human->isUncoverable(*m_computer, selections[i])) {
+						if (m_human->isUncoverable(*m_computer, selections[i]) && m_computer->getAdvantage() == selections[i] && isFirstPlay()) {
+							valid = false;
+							cerr << "Cannot cover square #" << selections[i] << " because it is an advantage square.\nSelect again." << endl;
+						}
+						else if (m_human->isUncoverable(*m_computer, selections[i])) {
 							valid = true;
 						}
 						else {
@@ -583,6 +501,17 @@ bool Game::playRound()
 				squareDieCounter++;
 			}
 		}
+
+		if (m_diceFile) {
+			if (m_human->m_diceRolls.empty()) {
+				m_diceFile = false;
+			}
+			else {
+				m_computerDiceSum = m_human->m_diceRolls.front();
+				cout << "Dice sum: " << m_computerDiceSum << endl;
+				m_human->m_diceRolls.pop();
+			}
+		}
 		if (!m_diceFile) {
 			if (squareDieCounter == 4 && m_computer->isOneDieMode()) {
 				m_computerDiceSum = rollDie(*m_computer);
@@ -591,11 +520,8 @@ bool Game::playRound()
 				m_computerDiceSum = rollDice(*m_computer);
 			}
 		}
-		if (m_diceFile) {
-			m_computerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
-		}
-		m_computerMoves = m_computer->setBestMove(*m_computer, *m_human, m_gameRule, m_computerDiceSum);
+
+		m_computerMoves = m_computer->setBestMove(*m_computer, *m_human, m_gameRule, m_computerDiceSum, isFirstPlay());
 
 
 
@@ -607,6 +533,7 @@ bool Game::playRound()
 		}
 		if (m_computerMoves.m_isCoverMove) {
 			cout << "Computer decided to cover own squares." << endl;
+			cout << "Computer plays defensively to take control over more squares." << endl;
 			for (int i = 0; i <= m_computerMoves.m_coverMoveSet.size() - 1; i++) {
 				if (m_computerMoves.m_coverMoveSet.at(i) != 0) {
 					m_computer->setCoverSquare(m_computerMoves.m_coverMoveSet.at(i));
@@ -619,6 +546,7 @@ bool Game::playRound()
 
 		if (m_computerMoves.m_isUncoverMove) {
 			cout << "Computer decided to uncover your squares." << endl;
+			cout << "Computer plays aggressively to prevent you from winning." << endl;
 			for (int i = 0; i <= m_computerMoves.m_uncoverMoveSet.size() - 1; i++) {
 				if (m_computerMoves.m_uncoverMoveSet.at(i) != 0) {
 					m_human->setUncoverSquare(m_computerMoves.m_uncoverMoveSet.at(i));
@@ -636,15 +564,20 @@ void Game::setFirstPlayer()
 	while (m_playerDiceSum == m_computerDiceSum) {
 		if (!m_diceFile) {
 			m_playerDiceSum = rollDice(*m_human);
-			//cout << "You rolled a " << m_playerDiceSum << endl;
-			//Sleep(2000);
 			m_computerDiceSum = rollDice(*m_computer);
 		}
 		else if (m_diceFile) {
-			m_playerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
-			m_computerDiceSum = m_diceRolls.front();
-			m_diceRolls.pop();
+			if (m_human->m_diceRolls.empty()) {
+				m_diceFile = false;
+			}
+			else {
+				m_playerDiceSum = m_human->m_diceRolls.front();
+				cout << "Dice sum: " << m_playerDiceSum << endl;
+				m_human->m_diceRolls.pop();
+				m_computerDiceSum = m_human->m_diceRolls.front();
+				cout << "Dice sum: " << m_computerDiceSum << endl;
+				m_human->m_diceRolls.pop();
+			}
 		}
 		//cout << "Computer rolled a " << m_computerDiceSum << endl;
 		if (m_playerDiceSum == m_computerDiceSum) {
@@ -794,9 +727,6 @@ string Game::getInputFromUser(Human &user, string a_inputType) {
 }
 
 bool Game::playGame(int a_roundNumber) {
-	if (m_diceFile) {
-		loadDiceFile();
-	}
 
 	string input;
 	cout << "Begin round #" << a_roundNumber << " !\n" << endl;
