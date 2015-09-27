@@ -4,20 +4,35 @@
 //* Class: CMPS 366 Organization of Programming Languages *
 //* Date: 9/25/15                                         *
 //*********************************************************
-
-
-
 #include "Board.h"
 #include <typeinfo>
 #include <iostream>
 #include <string>
 #include "Player.h"
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Board::Board() {
 
 
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Board::Board(int a_numberOfRows)
 {
 	m_maxSquares = 0;
@@ -26,10 +41,28 @@ Board::Board(int a_numberOfRows)
 }
 
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Board::~Board()
 {
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Board::isCovered(Player& a_player, int a_square)
 {
 
@@ -49,11 +82,29 @@ bool Board::isCovered(Player& a_player, int a_square)
 	}
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 int Board::getMaxSquares()
 {
 	return m_maxSquares;
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Board::setMaxSquares(int a_maxRows)
 {
 	if (a_maxRows < 9 || a_maxRows > 12) {
@@ -65,18 +116,42 @@ bool Board::setMaxSquares(int a_maxRows)
 	}
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 map<int,bool>*Board::getHumanRows()
 {
 	return &m_humanRow;
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 map<int, bool>*Board::getComputerRows()
 {
 	return &m_computerRow;
 }
-
-
-
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 int Board::initializeRows(int a_numberOfRows) {
 	if (setMaxSquares(a_numberOfRows)) {
 		for (int i = 0; i < m_maxSquares; i++) {

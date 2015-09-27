@@ -1,3 +1,9 @@
+/************************************************************
+/* Name: Ihab Hamid                                         *
+/* Project : Canoga - C++ - OPL 2015                        *
+/* Class : CMPS 366 - Organization of Programming Languages *
+/* Date : 9/25/2015                                         *
+/************************************************************/
 #include "BoardView.h"
 #include "Board.h"
 #include "Player.h"
@@ -5,10 +11,28 @@
 #include <string>
 #include <iomanip>
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 BoardView::BoardView() 
 {
 
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 BoardView::BoardView(Player &a_player, Player &a_player2, Board &a_board)
 {
 	m_board = &a_board;
@@ -16,16 +40,42 @@ BoardView::BoardView(Player &a_player, Player &a_player2, Board &a_board)
 	m_player2 = &a_player2;
 }
 
-
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 BoardView::~BoardView()
 {
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 void BoardView::refreshDisplay()
 {
 	if (system("CLS")) system("clear");
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 void BoardView::display()
 {
 	// Open board borders
@@ -82,6 +132,15 @@ void BoardView::display()
 }
 
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 void BoardView::displayScore()
 {
 	cout << "    1P";
@@ -106,6 +165,15 @@ void BoardView::displayScore()
 	cout << "Wins  : " << m_player->getWins() << endl;
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 void BoardView::displayTurns() {
 	string firstPlayer;
 	string turnPlayer;

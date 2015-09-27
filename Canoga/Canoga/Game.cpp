@@ -1,3 +1,9 @@
+/************************************************************
+/* Name: Ihab Hamid                                         *
+/* Project : Canoga - C++ - OPL 2015                        *
+/* Class : CMPS 366 - Organization of Programming Languages *
+/* Date : 9/25/2015                                         *
+/************************************************************/
 #include "Game.h"
 #include "Player.h"
 #include "BoardView.h"
@@ -16,11 +22,32 @@
 #include <queue>
 using namespace std;
 
+/* *********************************************************************
+Function Name: Game
+Purpose: default constructor for Game class
+Parameters: none
+Return Value:  Game
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 Game::Game()
 {
 }
 
-
+/* *********************************************************************
+Function Name: Game
+Purpose: overloaded constructor to assign players to their boards and 
+		 intiliaze round flags
+Parameters: Human& a_human - Human player object passed by reference from
+			Tournment class
+			Computer& a_computer - Computer player object passed by reference
+			from Tournment class
+Return Value: Game
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 Game::Game(Human& a_human, Computer& a_computer)
 {
 	m_human = &a_human;
@@ -32,23 +59,74 @@ Game::Game(Human& a_human, Computer& a_computer)
 	m_diceFile = false;
 	m_didHumanMove = false;
 	m_didComputerMove = false;
-	//askGameRule();
-
-	//setGameRule(m_gameRule);
-
-	//setNewRound();
 }
 
-
+/* *********************************************************************
+Function Name:Game
+Purpose: Destructor for Game class
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 Game::~Game()
 {
 }
 
-int Game::getGameRule()
+/* *********************************************************************
+Function Name: getGameRule
+Purpose: get the number of maximum size of squares on the board
+Parameters: none
+Return Value: int m_gameRule - maximuze size of squares on a players row on
+				the board
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+int Game::getGameRule() const
 {
 	return m_gameRule;
 }
 
+/* *********************************************************************
+Function Name: getIsDiceFile
+Purpose: check if flag for loading a dice file is set
+Parameters: none
+Return Value: bool m_diceFile - true if needs to be loaded, false if not
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+bool Game::getIsDiceFile() const
+{
+	return m_diceFile;
+}
+
+/* *********************************************************************
+Function Name: setIsDiceFile
+Purpose: set flag to load dice file to true or false
+Parameters: bool a_flag - true or false flag
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+void Game::setIsDiceFile(bool a_flag)
+{
+	m_diceFile = a_flag;
+}
+
+/* *********************************************************************
+Function Name: setGameRule
+Purpose: function to set number of maximum size of squares on board
+Parameters: string a_gameRule - 
+Return Value: returns true if set was succeful, false if not
+Local Variables: int selection - variable to hold the number of game rule
+Algorithm: Get string which is user input, check the number, validate, then set
+			game rule
+Assistance Received: none
+********************************************************************* */
 bool Game::setGameRule(string a_gameRule)
 {
 	int selection;
@@ -72,6 +150,16 @@ bool Game::setGameRule(string a_gameRule)
 	}
 }
 
+/* *********************************************************************
+Function Name: setGameRule
+Purpose: Overriden function to use an int parameter instead of string to set
+		game rule
+Parameters: int a_gameRule - number of maximum size of squares on the board
+Return Value: true if succesful, false if faield
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Game::setGameRule(int a_gameRule)
 {
 	if (a_gameRule != 9 && a_gameRule != 10 && a_gameRule != 11) {
@@ -85,12 +173,32 @@ bool Game::setGameRule(int a_gameRule)
 
 }
 
-bool Game::isWon()
+/* *********************************************************************
+Function Name: isWon
+Purpose: check if one of the two players won the round
+Parameters: none
+Return Value: bool - true if a player has one, else false
+Local Variables: none
+Algorithm: check if one of the players won
+			if so, retrun true
+			else return false
+Assistance Received: none
+********************************************************************* */
+bool Game::isWon() const
 {
 	if (m_human->isWon() || m_computer->isWon()) return true;
 	else return false;
 }
 
+/* *********************************************************************
+Function Name: setWon
+Purpose: toggle a player's win flag
+Parameters: Player& a_player - the player that's flag needs to be toggled
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 void Game::setWon(Player& a_player)
 {
 	if (a_player.getPlayerType() == "Human")
@@ -105,17 +213,47 @@ void Game::setWon(Player& a_player)
 	}
 }
 
-bool Game::isFirstPlay()
+/* *********************************************************************
+Function Name: isFirstPlay
+Purpose: check if this is the first turn being played. this is used to 
+		prevent advantage square uncovering
+Parameters: none
+Return Value: true if is first play, false if it is not
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+bool Game::isFirstPlay() const
 {
 	if (m_firstPlay) return true;
 	else return false;
 }
 
+/* *********************************************************************
+Function Name: setIsFirstPlay
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 void Game::setIsFirstPlay()
 {
 	m_firstPlay = !m_firstPlay;
 }
 
+/* *********************************************************************
+Function Name: setLoadedRound
+Purpose: set up players, board, advantage, game flags such as turn, first player, and such
+		 when a game is to be loaded
+Parameters: vector<string> a_computerRow - the computer's parsed row from  the serialized file
+			vector<string> a_humanRow - the parsed human's row from the serialized file
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 void Game::setLoadedRound(vector<string> a_computerRow, vector<string> a_humanRow) {
 	m_board = Board(m_gameRule);
 	m_human->setConnectedBoard(m_board);
@@ -125,7 +263,6 @@ void Game::setLoadedRound(vector<string> a_computerRow, vector<string> a_humanRo
 	m_firstPlay = false;
 	m_didHumanMove = true;
 	m_didComputerMove =true;
-	//m_human->setGameRule(m_gameRule);
 
 	if (m_human->getAdvantage() != 0) {
 		m_human->setCoverSquare(m_human->getAdvantage());
@@ -147,6 +284,16 @@ void Game::setLoadedRound(vector<string> a_computerRow, vector<string> a_humanRo
 }
 
 
+/* *********************************************************************
+Function Name: setNewRound
+Purpose: set up players, board, game flags such as turn, first player, and
+		such when playing a new game
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: create players, connect them to the board, reset scores and points
+Assistance Received: none
+********************************************************************* */
 void Game::setNewRound()
 {
 	m_board = Board(m_gameRule);
@@ -166,12 +313,30 @@ void Game::setNewRound()
 	}
 }
 
+/* *********************************************************************
+Function Name: askGameRule
+Purpose: prompt user with a message to select game rule
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 void Game::askGameRule()
 {
 	cout << "Set the rule of the game.\nHow many squares would you like the game boards to have?" << endl;
 	cout << "Enter either 9, 10, or 11 as a value: ";
 }
 
+/* *********************************************************************
+Function Name: askSaveGame
+Purpose: prompt user with a message to offer to save game
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 void Game::askSaveGame()
 {
 	cout << endl;
@@ -179,37 +344,111 @@ void Game::askSaveGame()
 	cout << "Type 'yes' to save, or 'no' to keep playing: ";
 }
 
-Player* Game::getWinner()
+/* *********************************************************************
+Function Name: getWinner
+Purpose: get winner of a round
+Parameters: none
+Return Value: Player* - pointer to the player that won
+Local Variables: none
+Algorithm: check a player's win flag to see if they won
+Assistance Received: none
+********************************************************************* */
+Player* Game::getWinner() const
 {
 	if (m_human->isWon()) return m_human;
 	else return m_computer;
 }
 
-Player * Game::getFirstPlayer()
+/* *********************************************************************
+Function Name: getFirstPlayer
+Purpose: get the player who went first
+Parameters: none
+Return Value: Player* - pointed to the player that went first
+Local Variables: none
+Algorithm: check went first flag for each player then return who had it true
+Assistance Received: none
+********************************************************************* */
+Player * Game::getFirstPlayer() const
 {
 	if (m_human->getWentFirst()) return m_human;
 	if (m_computer->getWentFirst()) return m_computer;
 }
 
+/* *********************************************************************
+Function Name: getBoardObjet
+Purpose: grab the board object
+Parameters: none
+Return Value: Board* -  pointer to the board object being used by game
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 Board* Game::getBoardObjet()
 {
 	return &m_board;
 }
 
+/* *********************************************************************
+Function Name:getBoardViewObject
+Purpose: grab the BoardView object
+Parameters: none
+Return Value: BoardView* - pointer to the board view object being used by game
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 BoardView* Game::getBoardViewObject()
 {
 	return &m_boardView;
 }
 
 
+/* *********************************************************************
+Function Name: playRound
+Purpose: To play the round of a game
+Parameters: none
+Return Value: true if a player won, false if nobody won yet and move 
+				has been made or no move has been made
+		
+Local Variables: int WinHumanRowCounter - counter to hold number of covered squares by human
+				 int winComputerRowCounter - counter to hold number of uncovered squares by human
+				 bool coverMoveOpen - is cover move available flag
+				 bool uncoverMoveOpen -  is uncover move avaiable flag
+				 string rollChoice - string to hold either choice of one or two dice
+				 string input -  variable to hold user's input
+				 int selection - variable to hold user's square selection
+				 int selectionSum - variable to hold user's square selection sum
+				 bool valid - move valid flag
+				 bool invalidTotal - invalid sum of selections flag
+				 bool invalidNumbers - invalid square selected (uncoverable, or ununcoverable) flag
+				 int dieModeCounter - one die counter to check for squares
+				 int squareDieCounter - number of squares to one die mode 
+
+Algorithm:		 1) check if human won by covering or uncovering
+				 2) check if computer won by covering or uncovering
+				 3) if humans turn, ask for input: roll
+				 4) ask to roll one or two dice (when applicable)
+				 5) offer cover or uncover when applicable
+				 6) take in selections
+				 7) validate selections
+				 8) cover or uncover selections
+
+				 9) check computers turn
+				 10) get all possible moves
+				 11) determine the best move: cover or uncover
+				 12) apply cover or uncover moves
+Assistance Received: none
+********************************************************************* */
 bool Game::playRound()
 {
+	// check if human won
 	int winHumanRowCounter = 0;
 	int winComputerRowCounter = 0;
 	for (int i = 1; i <= m_gameRule; i++) {
 		if (m_human->getBoard()->getHumanRows()->at(i) == true) {
 			winHumanRowCounter++;
 		}
+		// by covering own squares
 		if (winHumanRowCounter == m_gameRule) {
 			cout << "You covered all your squares! You win!" << endl;
 			setWon(*m_human);
@@ -219,7 +458,7 @@ bool Game::playRound()
 		if (m_human->getBoard()->getComputerRows()->at(i) == false) {
 			winComputerRowCounter++;
 		}
-		//dont forget to add if not on first play
+		//by uncovering computer's squares
 		if (winComputerRowCounter == m_gameRule && !isFirstPlay() && m_didComputerMove) {
 			cout << "You uncovered all computer's squares! You win!" << endl;
 			setWon(*m_human);
@@ -228,14 +467,14 @@ bool Game::playRound()
 		}
 	}
 
-
-
+	// check if computer won
 	winHumanRowCounter = 0;
 	winComputerRowCounter = 0;
 	for (int i = 1; i <= m_gameRule; i++) {
 		if (m_computer->getBoard()->getHumanRows()->at(i) == false) {
 			winHumanRowCounter++;
 		}
+		// by uncovering all humans squares
 		if (winHumanRowCounter == m_gameRule && !isFirstPlay() && m_didHumanMove) {
 			cout << "All your squares were uncovered! Computer wins!" << endl;
 			setWon(*m_computer);
@@ -245,7 +484,7 @@ bool Game::playRound()
 		if (m_human->getBoard()->getComputerRows()->at(i) == true) {
 			winComputerRowCounter++;
 		}
-		//dont forget to add if not on first play
+		// by covering all own squares
 		if (winComputerRowCounter == m_gameRule) {
 			cout << "Computer covered all of its squares! Computer wins!" << endl;
 			setWon(*m_computer);
@@ -253,8 +492,6 @@ bool Game::playRound()
 			return true;
 		}
 	}
-
-
 
 	if (m_human->isTurn()) {
 		m_didHumanMove = false;
@@ -309,6 +546,7 @@ bool Game::playRound()
 
 		string input = "";
 		do {
+			//prompt options
 			cout << "\n";
 			if (m_computerMoves.m_isCoverMove && !m_computerMoves.m_isUncoverMove) {
 				cout << "You can only cover your board!" << endl;
@@ -332,6 +570,7 @@ bool Game::playRound()
 
 			m_boardView.display();
 
+			// cover help
 			if (input == "help" && (m_computerMoves.m_isCoverMove || m_computerMoves.m_isUncoverMove)) {
 				m_computerMoves = m_computer->setBestMove(*m_human, *m_computer, m_gameRule, m_playerDiceSum, isFirstPlay());
 				if (m_computerMoves.m_isCoverMove) {
@@ -349,6 +588,7 @@ bool Game::playRound()
 					continue;
 				}
 
+				// uncover help
 				if (m_computerMoves.m_isUncoverMove) {
 					if (!m_computerMoves.m_isCoverMove) {
 						cout << "You should uncover because that's the only move available." << endl;
@@ -366,18 +606,20 @@ bool Game::playRound()
 				}
 			}
 		} while (input == "help");
+		// cover feedback
 		if (input == "cover" && m_computerMoves.m_isCoverMove) {
 			cout << "You picked to cover your row!" << endl;
 			cout << "Select the squares you'd like to cover.\nOnce done selecting, type '-1'" << endl;
 			cout << "Dice Sum: " << m_playerDiceSum << endl;
 		}
-
+		//uncover feedback
 		if (input == "uncover" && m_computerMoves.m_isUncoverMove) {
 			cout << "You picked to uncover the computer's row!" << endl;
 			cout << "Select the squares you'd like to uncover.\nOnce done selecting, type '-1'" << endl;
 			cout << "Dice Sum: " << m_playerDiceSum << endl;
 		}
-
+		
+		// validate selections
 		int selection = 0;
 		int selectionSum = 0;
 		bool valid = false;
@@ -391,12 +633,13 @@ bool Game::playRound()
 			int selections[4] = { 0 };
 			selection = 0;
 			selectionSum = 0;
-
+			
+			// selections input
 			while (selection < 4 && selectionInput != "-1") {
 				selectionInput = getInputFromUser(*m_human, "number");
 				if (selectionInput != "-1") {
 					selections[selection] = stoi(selectionInput);
-					//add sum of selection numbers to a variable for later comparison
+					// add sum of selection numbers to a variable for later comparison
 					// with sum of pips
 					selectionSum += selections[selection];
 					selection++;
@@ -404,11 +647,6 @@ bool Game::playRound()
 			}
 
 			//check if all selections are equal to the sum of the pips thrown
-
-			// TODO: implement that two selections can't be equal
-			// like if i rolled 4..  i can't pick to cover 2 twice
-
-
 			for (int i = 0; i < selection - 1; i++)
 			{
 				for (int j = i + 1;j < selection; j++)
@@ -421,10 +659,8 @@ bool Game::playRound()
 					}
 				}
 			}
-			// DONE: What if player decided to cover.. but there are no more squares to cover... and he already rolled
+			// What if player decided to cover.. but there are no more squares to cover... and he already rolled
 			// well.. you gotta reverse the operation.. so go to uncover.. and if also no moves there.. just end round
-
-
 			if (selectionSum != m_playerDiceSum) {
 				invalidTotal = true;
 				cerr << "Sum of squares selected does not equal sum of pips.\nSelect again." << endl;
@@ -501,7 +737,7 @@ bool Game::playRound()
 				squareDieCounter++;
 			}
 		}
-
+		//load from dice file if activated
 		if (m_diceFile) {
 			if (m_human->m_diceRolls.empty()) {
 				m_diceFile = false;
@@ -524,7 +760,7 @@ bool Game::playRound()
 		m_computerMoves = m_computer->setBestMove(*m_computer, *m_human, m_gameRule, m_computerDiceSum, isFirstPlay());
 
 
-
+		// display moves made by computer
 		if (!m_computerMoves.m_isUncoverMove && !m_computerMoves.m_isCoverMove) {
 			cout << "No move made by computer." << endl;
 			cout << "Ending turn..." << endl;
@@ -559,6 +795,16 @@ bool Game::playRound()
 }
 
 
+/* *********************************************************************
+Function Name:setFirstPlayer
+Purpose: set which player goes first
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: roll two dice to see which player goes first for each player, keep rolling
+			until the tosses are not equal to each other
+Assistance Received: none
+********************************************************************* */
 void Game::setFirstPlayer()
 {
 	while (m_playerDiceSum == m_computerDiceSum) {
@@ -579,7 +825,6 @@ void Game::setFirstPlayer()
 				m_human->m_diceRolls.pop();
 			}
 		}
-		//cout << "Computer rolled a " << m_computerDiceSum << endl;
 		if (m_playerDiceSum == m_computerDiceSum) {
 			cout << "You and the computer both rolled a " << m_playerDiceSum << endl;
 			cout << "Rolling again..." << endl;
@@ -601,6 +846,21 @@ void Game::setFirstPlayer()
 	}
 }
 
+/* *********************************************************************
+Function Name: saveGame
+Purpose: to serialize a game's state
+Parameters:	none
+Return Value: true if successfully created a save file, false if not
+Local Variables: string input - file line buffer
+				 ifstream myFile - file to be saved to
+Algorithm: go line by line
+			write playeer labels,
+			write squares controlled for each player
+			write stats for each player
+			write who the first player was
+			write who the next turn is
+Assistance Received: none
+********************************************************************* */
 bool Game::saveGame() {
 	ofstream myFile;
 	//Get file name from user
@@ -651,6 +911,7 @@ bool Game::saveGame() {
 		myFile << endl;
 		myFile << endl;
 
+		// save turns
 		myFile << "First Turn: " << getFirstPlayer()->getPlayerType() << endl;
 		myFile << "Next Turn: ";
 		if (m_human->isTurn()) {
@@ -668,25 +929,65 @@ bool Game::saveGame() {
 	}
 }
 
-bool Game::isGameStarted() {
+/* *********************************************************************
+Function Name: isGameStarted
+Purpose: check if game has started yet
+Parameters: none
+Return Value: true if game started, else returns false
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+bool Game::isGameStarted() const {
 	return m_gameStarted;
 }
 
-bool Game::isLoaded()
+/* *********************************************************************
+Function Name: isLoaded
+Purpose: check if a loaded game
+Parameters: none
+Return Value: true if is a loaded game, false if new game
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+bool Game::isLoaded() const
 {
 	return m_isLoaded;
 }
 
+/* *********************************************************************
+Function Name: setIsLoaded
+Purpose: set if its a loaded game
+Parameters: bool a_flag - true if loaded, false if not
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 void Game::setIsLoaded(bool a_flag)
 {
 	m_isLoaded = a_flag;
 }
 
+/* *********************************************************************
+Function Name: rollDice
+Purpose: function to roll two dice
+Parameters: Player& a_player - reference to the player rollling the dice
+Return Value: int - sum of dice roll
+Local Variables: int value1 - sum of first die roll
+				 int value2 - sum of second die roll
+				 int value - sum of both dice rolled
+Algorithm: 1) get current time and use that as a seed number for a the random number
+			  generation
+		   2) do it twice for two dice
+		   3) return sum of both dice
+Assistance Received: none
+********************************************************************* */
 int Game::rollDice(Player& a_player)
 {
 	Sleep(2000);
 	srand(static_cast<unsigned int>(time(0)));
-	//srand(time(NULL));
 	int value = 0;
 	int value1 = rand() % 6 + 1;
 	int value2 = rand() % 6 + 1;
@@ -695,11 +996,21 @@ int Game::rollDice(Player& a_player)
 	return value;
 }
 
+/* *********************************************************************
+Function Name: rollDie
+Purpose: function to roll a die
+Parameters:  Player& a_player - reference to the player rollling the die
+Return Value: int - die roll
+Local Variables: int value - random value generated between 1 -6 
+Algorithm: 1) get current time and use that as a seed number for the random
+			  number generation
+	       2) roll dice and return value
+Assistance Received: none
+********************************************************************* */
 int Game::rollDie(Player& a_player)
 {
 	Sleep(2000);
 	srand(static_cast<unsigned int>(time(0)));
-	//srand(time(NULL));
 	int value;
 	value = rand() % 6 + 1;
 	cout << a_player.getPlayerType() << " rolled a " << value << "." << endl;
@@ -707,6 +1018,22 @@ int Game::rollDie(Player& a_player)
 }
 
 
+/* *********************************************************************
+Function Name: getInputFromUser
+Purpose: get input from user
+Parameters: Human &user - 
+			string a_inputType - 
+Return Value: return string inputted by user after validating
+Local Variables: bool validInput - is it valid string flag
+				 string userChoice - user's selection
+Algorithm: 1) get user's selection as string
+		   2) check validation functions in Human class with the corresponding 
+			  input type
+		   3) true if valid input, return false if invalid input and ask
+			  user to input again
+	       4) return string input
+Assistance Received: none
+********************************************************************* */
 string Game::getInputFromUser(Human &user, string a_inputType) {
 	bool validInput = false;
 	string userChoice;
@@ -726,11 +1053,23 @@ string Game::getInputFromUser(Human &user, string a_inputType) {
 	return userChoice;
 }
 
+/* *********************************************************************
+Function Name: playGame
+Purpose: starting point of a round
+Parameters: a_roundNumber - round number: used in tournmen
+Return Value: return flase if game was issued a request to quit
+Local Variables: string input - variable to hold user's input
+Algorithm: 1) check if its a new game or loaded game
+		   2) if loaded game flag is ture, load state of game from a file
+		   3) else its  anew game, set a new round, and set who goes first
+		   4) then finally check if a player hass won
+Assistance Received: none
+********************************************************************* */
 bool Game::playGame(int a_roundNumber) {
-
+	// begin game round
 	string input;
 	cout << "Begin round #" << a_roundNumber << " !\n" << endl;
-
+	// check if loaded game
 	if (!isLoaded()) {
 		askGameRule();
 		input = getInputFromUser(*m_human, "gamerule");
@@ -743,6 +1082,7 @@ bool Game::playGame(int a_roundNumber) {
 	m_boardView = BoardView(*m_human, *m_computer, m_board);
 	m_gameStarted = true;
 
+	// if not loaded game, set first player
 	if (!isLoaded() && !m_diceFile) {
 		cout << "Time to roll the dice to see who goes first!" << endl;
 		cout << "Type 'roll' to roll the dice: ";
@@ -756,13 +1096,9 @@ bool Game::playGame(int a_roundNumber) {
 		setFirstPlayer();
 	}
 
+	// keep playing turns until someone wins
 	while (!isWon()) {
 		if (isFirstPlay()) {
-			//m_boardView.display();
-			//m_boardView.displayScore();
-			//m_boardView.displayTurns();
-
-			//myGame.m_human->setCoverSquare(1);
 			if (!playRound()) {
 				m_human->setTurn();
 				m_computer->setTurn();
@@ -779,11 +1115,7 @@ bool Game::playGame(int a_roundNumber) {
 				}
 			}
 			m_boardView.display();
-			//m_boardView.displayScore();
 			m_boardView.displayTurns();
-
-			//myGame.setWon(*myGame.m_human);
-
 		}
 		else {
 			if (!playRound()) {
@@ -800,15 +1132,13 @@ bool Game::playGame(int a_roundNumber) {
 				}
 			}
 			m_boardView.display();
-			//m_boardView.displayScore();
 			m_boardView.displayTurns();
 		}
 
+		// if someone wins, calculate score and announce winner
 		if (isWon()) {
 			if (getWinner()->getPlayerType() == "Human") {
-				//TODO: implement score calculations
 				//sum of all uncovered squares of computer
-				//cout << "You win!" << endl;
 				int scoreSum = 0;
 				m_human->setIsWon();
 				if (m_human->getWonBy() == "cover") {
@@ -834,9 +1164,7 @@ bool Game::playGame(int a_roundNumber) {
 
 			}
 			else if (getWinner()->getPlayerType() == "Computer") {
-				//TODO: implement score calculations
 				//sum of all uncovered squares of computer
-				//cout << "You lose!" << endl;
 				int scoreSum = 0;
 				m_computer->setIsWon();
 				if (m_computer->getWonBy() == "cover") {

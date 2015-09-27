@@ -1,19 +1,52 @@
+/************************************************************
+/* Name: Ihab Hamid                                         *
+/* Project : Canoga - C++ - OPL 2015                        *
+/* Class : CMPS 366 - Organization of Programming Languages *
+/* Date : 9/25/2015                                         *
+/************************************************************/
 #include "Human.h"
 #include <iostream>
 #include <string>
 #include <regex>
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Human::Human()  : Player()
 {
 	Player::setPlayerType("Human");
 	m_gameRule = 0;
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Human::~Human()
 {
 }
 
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyInput(string a_input, string a_inputType) {
 
 	if (a_inputType == "start") {
@@ -61,6 +94,15 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	
 	return true;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyGameRule(string a_selection)
 {
 	if ((is_number(a_selection) && stoi(a_selection) == 9) || (is_number(a_selection) && stoi(a_selection) == 10) || (is_number(a_selection) && stoi(a_selection) == 11)) {
@@ -68,48 +110,120 @@ bool Human::verifyGameRule(string a_selection)
 	}
 	else return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyHelp(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "help") return true;
 	else return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyRollDice(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "roll") return true;
 	else return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyOneRoll(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "one") return true;
 	else return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyTwoRoll(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "two") return true;
 	else return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyRollChoice(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "one" || selection == "two") return true;
 	else return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyCoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "cover" || selection == "help") return true;
 	return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyUncoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
 	if (selection == "uncover" || selection == "help") return true;
 	return false;
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyFileName(string a_selection)
 {
 	bool found = false;
@@ -131,6 +245,15 @@ bool Human::verifyFileName(string a_selection)
 		return false;
 	}
 }
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyStartGame(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
@@ -142,23 +265,16 @@ bool Human::verifyStartGame(string a_selection)
 		return false;
 	}
 }
-/*
-bool Human::verifyGameRule(string a_selection)
-{
-	int gameRule;
-	try {
-		gameRule = stoi(a_selection);
-	}
-	catch (invalid_argument& e) {
-		cerr << e.what() << endl;
-		return false;
-	}
 
-	if (gameRule < 9 || gameRule > 12) return false;
-	return true;
-}
-*/
-
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyNumber(string a_selection)
 {
 	if (is_number(a_selection) && stoi(a_selection) <= m_gameRule && stoi(a_selection) >= 1)
@@ -174,6 +290,15 @@ bool Human::verifyNumber(string a_selection)
 	}
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifyCoverUncoverSquare(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
@@ -186,6 +311,15 @@ bool Human::verifyCoverUncoverSquare(string a_selection)
 	}
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::verifySaveGame(string a_selection)
 {
 	string selection = toLowerCase(a_selection);
@@ -194,6 +328,15 @@ bool Human::verifySaveGame(string a_selection)
 }
 
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 string Human::toLowerCase(string a_selection) {
 	string lower_str = a_selection;
 	transform(lower_str.begin(), lower_str.end(), lower_str.begin(), ::tolower);
@@ -202,11 +345,29 @@ string Human::toLowerCase(string a_selection) {
 
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 void Human::setGameRule(int a_gameRule)
 {
 	m_gameRule = a_gameRule;
 }
 
+/* *********************************************************************
+Function Name:
+Purpose:
+Parameters:
+Return Value:
+Local Variables:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 bool Human::is_number(const string& s)
 {
 	return !s.empty() && find_if(s.begin(),

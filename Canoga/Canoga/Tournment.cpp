@@ -1,3 +1,10 @@
+/************************************************************
+/* Name: Ihab Hamid                                         *
+/* Project : Canoga - C++ - OPL 2015                        *
+/* Class : CMPS 366 - Organization of Programming Languages *
+/* Date : 9/25/2015                                         *
+/************************************************************/
+
 #include "Tournment.h"
 #include "Player.h"
 #include "Computer.h"
@@ -8,8 +15,13 @@
 #include <fstream>
 #include <regex>
 
-
-
+/* *********************************************************************
+Function Name: Tournment
+Purpose: Default constructor for Tournment class
+Parameters: none
+Return Value: none
+Assistance Received: none
+********************************************************************* */
 Tournment::Tournment()
 {
 	m_rounds = 1;
@@ -18,16 +30,69 @@ Tournment::Tournment()
 	m_diceFile = true;
 }
 
-
+/* *********************************************************************
+Function Name: Tournment
+Purpose: Default destructor for Tournment class
+Parameters: none
+Return Value: none
+Assistance Received: none
+********************************************************************* */
 Tournment::~Tournment()
 {
 }
 
-int Tournment::getRounds()
+
+/* *********************************************************************
+Function Name: getRounds
+Purpose: To return number of rounds played
+Parameters: none
+Return Value: number of rounds played: int value
+Assistance Received: none
+********************************************************************* */
+int Tournment::getRounds() const
 {
 	return m_rounds;
 }
 
+/* *********************************************************************
+Function Name: isDiceFile
+Purpose: To check if dice file to be loaded
+Parameters: none
+Return Value: true if file to be loaded, false if not: boolean value
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+bool Tournment::isDiceFile() const
+{
+	return m_diceFile;
+}
+
+/* *********************************************************************
+Function Name:setDiceFile
+Purpose: To set the m_diceFile to true or false
+Parameters: bool a_flag - true or false
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
+void Tournment::setDiceFile(bool a_flag)
+{
+	m_diceFile = a_flag;
+}
+
+/* *********************************************************************
+Function Name: handicap
+Purpose: to calculate the handicap after finishing a round
+Parameters: Game &newGame - reference to the round going to be played
+Return Value: none
+Local Variables: none
+Algorithm: 1) check the winner
+			2) check who went first
+			3) calculate advantage
+Assistance Received: none
+********************************************************************* */
 void Tournment::handicap(Game &newGame) {
 	if (newGame.getWinner()->getPlayerType() == "Human" && newGame.getFirstPlayer()->getPlayerType() == "Human") {
 		m_computer.setAdvantage(m_human.getRoundScore());
@@ -43,6 +108,15 @@ void Tournment::handicap(Game &newGame) {
 	}
 }
 
+/* *********************************************************************
+Function Name: displayWinner
+Purpose: display the winner of the tournment
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 void Tournment::displayWinner() {
 	if (m_human.getScore() > m_computer.getScore()) {
 		cout << "Winner: Human!" << endl;
@@ -55,6 +129,15 @@ void Tournment::displayWinner() {
 	}
 }
 
+/* *********************************************************************
+Function Name: displayLoadFileName
+Purpose: display prompt for the user when load game is requested
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
+Assistance Received: none
+********************************************************************* */
 void Tournment::displayLoadFileName() {
 	cout << "What is the name of the file you would like to load." << endl;
 	cout << "Enter \"EXIT\" to exit." << endl;
@@ -65,18 +148,18 @@ Function Name: LoadGame
 Purpose: Load game from a specific state.
 Parameters: none
 Return Value: boolean true or false
-Local Variables: line as a string,
-input as a string,
-myFile as ifstream,
-findTile regex,
-myIterator regex_iterator,
-endIterator regex_iterator,
-tmp as Tile,
-tmp as string,
-myScore as int,
-myWins as int,
-findScoreOrWins regex,
-findHumanOrCPU regex
+Local Variables:	string line - read line buffer,
+					string firstTurn - holds first turn Player's name
+					string nextTurn - holds next turn player's name
+					vector<string> computerRow - holds computer's row
+					vector<string> humanRow - holds human's row
+					int gameRule - holds the board's max sqaure
+					int computerScore - computer's score points
+					int humanScore - human's score points
+					myFile as ifstream,
+					findSquare regex,
+					myIterator regex_iterator,
+					endIterator regex_iterator,
 Algorithm: Using regular expressions and the getline function, the function
 goes line by line assigning the approriate values to the computer
 and human players.  It uses regular expressions to grab the values
@@ -212,7 +295,7 @@ bool Tournment::loadGame() {
 			m_game.setGameRule(humanRow.size());
 			m_game.setLoadedRound(computerRow, humanRow);
 			if (m_diceFile) {
-				m_game.m_diceFile = true;
+				m_game.setIsDiceFile(true);
 			}
 			return true;
 		}
@@ -222,27 +305,39 @@ bool Tournment::loadGame() {
 		}
 }
 
+/* *********************************************************************
+Function Name: startGame
+Purpose: This is the main menu of the game and the gateway to gameplay 
+Parameters: none
+Return Value: bool - returns true when game quits
+Local Variables: string input - user input
+Algorithm: 1) give user option to either start a new game, load, or quit
+			2) if user picks load - load a previously started game
+			3) if user picks play - start a new game 
+Assistance Received:
+********************************************************************* */
 bool Tournment::startGame() {
 	string input;
-
 	m_game = Game(m_human, m_computer);
+
+	// if using dice file
 	if (m_diceFile) {
 		m_human.loadDiceFile();
-
-		m_game.m_diceFile = true;
+		m_game.setIsDiceFile(true);
 	}
 	cout << "Would you like to play a game?" << endl;
 	cout << "Enter 'play', 'load' or 'quit': ";
 	input = m_game.getInputFromUser(m_human, "start");
 	do {
 		if (input == "load") {
-			//Game m_game = Game(m_human, m_computer);
+			//load a previously started game
 			if (loadGame()) {
-				//m_game.setIsLoaded(true);
+				// if user exits/saves from a play game, then exit from entire game
 				if (!m_game.playGame(m_rounds)) {
 					input = "quit";
 					continue;
 				}
+				// claculate handicap at end of round
 				handicap(m_game);
 				m_rounds++;
 				cout << "Would you like to play round #" << m_rounds << " ?" << endl;
@@ -260,7 +355,7 @@ bool Tournment::startGame() {
 			if (system("CLS")) system("clear");
 			m_game = Game(m_human, m_computer);
 			if (m_diceFile) {
-				m_game.m_diceFile = true;
+				m_game.setIsDiceFile(true);
 			}
 			if (!m_game.playGame(m_rounds)) {
 				input = "quit";
@@ -270,17 +365,19 @@ bool Tournment::startGame() {
 			m_rounds++;
 			cout << "Would you like to play round #" << m_rounds << " ?" << endl;
 			input = m_game.getInputFromUser(m_human, "start");
+			// reseet players for a new round
 			m_human.clearFlags();
 			m_computer.clearFlags();
 		}
 		else if(input == "quit" || input == "saved") {
 			if (m_game.isGameStarted()) {
+				// game ended, display winner of tournment
 				cout << "Rounds played: " << m_rounds << endl;
 				m_game.getBoardViewObject()->displayScore();
 				displayWinner();
 			}
 			cout << "Quitting the game..." << endl;
-			return false;
+			return true;
 		}
 	} while (input != "quit");
 }

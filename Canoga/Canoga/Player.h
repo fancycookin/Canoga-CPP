@@ -1,51 +1,55 @@
+/************************************************************
+/* Name: Ihab Hamid                                         *
+/* Project : Canoga - C++ - OPL 2015                        *
+/* Class : CMPS 366 - Organization of Programming Languages *
+/* Date : 9/25/2015                                         *
+/************************************************************/
 #pragma once
 #include "Board.h"
 #include <queue>
-//class Board;
 class Player
 {
 public:
 	Player();
 	~Player();
-	string getPlayerType();
-	void setPlayerType(string a_playerType);
-	int getWins();
-	int getScore();
-	void setConnectedBoard(Board& a_board);
-	bool isOneDieMode();
-	bool setOneDieMode(bool a_flag);
-	bool isTurn();
-	bool isCoverable(Player a_player, int a_square);
-	bool isUncoverable(Player a_player, int a_square);
-	void setRoundScore(int a_score);
-	int getRoundScore();
-	void setCoverSquare(int a_square);
-	void setUncoverSquare( int a_square);
-	void setWonByCover();
-	void setWonByUncover();
-	string getWonBy();
-	void loadDiceFile();
+	virtual string getPlayerType();
+	virtual string getWonBy();
+	virtual void setPlayerType(string a_playerType);
+	virtual int getWins();
+	virtual int getScore();
+	virtual int getRoundScore();
+	virtual int getAdvantage();
+	virtual bool getWentFirst();
+	virtual Board* getBoard();
+	
+	virtual bool isOneDieMode();
+	virtual bool isTurn();
+	virtual bool isCoverable(Player a_player, int a_square);
+	virtual bool isUncoverable(Player a_player, int a_square);
+	virtual bool isWon();
 
-	void setAdvantage(int a_roundScore);
-	int getAdvantage();
-
-
-
-	Board* getBoard();
-
-
-	bool setWin(int a_wins);
-	bool addWin();
-	bool setScore(int a_score);
-	bool addScore(int a_score);
-	bool setTurn();
-	void setTurn(bool a_flag);
-	void setIsWon();
-	bool getWentFirst();
-	void setWentFirst(bool a_bool);
-	bool isWon();
-	void clearFlags();
+	virtual void setConnectedBoard(Board& a_board);
+	virtual bool setOneDieMode(bool a_flag);
+	virtual void setRoundScore(int a_score);
+	virtual void setCoverSquare(int a_square);
+	virtual void setUncoverSquare( int a_square);
+	virtual void setWonByCover();
+	virtual void setWonByUncover();
+	
+	virtual void loadDiceFile();
+	virtual void setAdvantage(int a_roundScore);
+	
+	virtual bool setWin(int a_wins);
+	virtual bool addWin();
+	virtual bool setScore(int a_score);
+	virtual bool addScore(int a_score);
 	queue<int> m_diceRolls;
+	virtual bool setTurn();
+	virtual void setTurn(bool a_flag);
+	virtual void setIsWon();
+	virtual void setWentFirst(bool a_bool);
+	virtual void clearFlags();
+	
 
 private:
 	Board *m_playerBoard;

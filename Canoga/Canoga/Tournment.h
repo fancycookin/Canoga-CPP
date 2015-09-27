@@ -15,18 +15,21 @@ class Tournment
 public:
 	Tournment();
 	~Tournment();
-	int getRounds();
+	int getRounds() const;
+	bool isDiceFile() const;
+	void setDiceFile(bool a_flag);
+	bool loadGame();
 	void handicap(Game & newGame);
 	bool startGame();
 	void displayWinner();
-	bool loadGame();
 	void displayLoadFileName();
-	bool m_diceFile;
+	
 private:
 	int m_rounds;
 	Human m_human;
 	Computer m_computer;
 	Game m_game;
+	bool m_diceFile;
 	
 };
 
