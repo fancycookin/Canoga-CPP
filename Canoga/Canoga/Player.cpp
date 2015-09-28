@@ -13,12 +13,13 @@
 #include <stdlib.h>
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: Player
+Purpose: Default Constructor for Player
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: set player type, reset score, round score, advantage points
+			number of wins and all win flags.
 Assistance Received: none
 ********************************************************************* */
 Player::Player()
@@ -38,12 +39,12 @@ Player::Player()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: Player
+Purpose: destructor for player
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 Player::~Player()
@@ -51,12 +52,12 @@ Player::~Player()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getPlayerType
+Purpose: return type of player
+Parameters: none
+Return Value: type of player as a string
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 string Player::getPlayerType()
@@ -65,26 +66,27 @@ string Player::getPlayerType()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setPlayerType
+Purpose: set the player type field for the player Human or Computer
+Parameters: string to be set as player type
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setPlayerType(string a_playerType)
 {
-	m_playerType = a_playerType;
+	if(a_playerType == "Human" || a_playerType == "Computer") 
+		m_playerType = a_playerType;
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getWins
+Purpose: return number of wins
+Parameters: none
+Return Value: return number of wins
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 int Player::getWins()
@@ -93,12 +95,12 @@ int Player::getWins()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getScore
+Purpose: return total score of all rounds
+Parameters: none
+Return Value: total score of all rounds
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 int Player::getScore()
@@ -107,12 +109,12 @@ int Player::getScore()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getAdvantage
+Purpose: return number of advantage square
+Parameters: none
+Return Value: int - advantage square
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 int Player::getAdvantage() {
@@ -120,12 +122,12 @@ int Player::getAdvantage() {
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setConnectedBoard
+Purpose: connect a player to a board
+Parameters: reference to the board to be the end connection
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setConnectedBoard(Board& a_board)
@@ -134,12 +136,12 @@ void Player::setConnectedBoard(Board& a_board)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: isOneDieMode
+Purpose: check if player the flag that holds flag if player can roll one die
+Parameters: none
+Return Value: true if player can roll one die, else false
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::isOneDieMode()
@@ -149,12 +151,12 @@ bool Player::isOneDieMode()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: isTurn
+Purpose: check if the flag for if it is the player's turn
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::isTurn()
@@ -164,12 +166,15 @@ bool Player::isTurn()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: isCoverable
+Purpose: check if a certain square is coverable by a certain player
+Parameters: Player a_player - player that is requesting the check
+			int a_square - square requested to be checked
+Return Value: true if is it coverable, false if it is not coverable
+Local Variables: none
+Algorithm: check if a square is covered, if is it, return false as the square
+			is not coverable,
+			else the square is coverable so return true
 Assistance Received: none
 ********************************************************************* */
 bool Player::isCoverable(Player a_player, int a_square)
@@ -179,12 +184,15 @@ bool Player::isCoverable(Player a_player, int a_square)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: isUncoverable
+Purpose: check if a certain square is uncoverable by a certain player
+Parameters: Player a_player - player that is requesting the check
+			int a_square - square resquested to be checked
+Return Value:  true if it is uncoverable, false if it is not uncoverable
+Local Variables: none
+Algorithm: check if a square is covered, if is it, return true as the square
+			is uncovercoverable,
+			else the square is not covered so return false it is uncoverable
 Assistance Received: none
 ********************************************************************* */
 bool Player::isUncoverable(Player a_player, int a_square)
@@ -194,12 +202,12 @@ bool Player::isUncoverable(Player a_player, int a_square)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setRoundScore
+Purpose: change the total round score to a sepcific number
+Parameters: int a_score - the new total round score number
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setRoundScore(int a_score)
@@ -208,12 +216,12 @@ void Player::setRoundScore(int a_score)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getRoundScore
+Purpose: return the total round score
+Parameters: none
+Return Value: int - the total round score of a player
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 int Player::getRoundScore()
@@ -222,12 +230,12 @@ int Player::getRoundScore()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getBoard
+Purpose: get the player's connected board object
+Parameters: none
+Return Value: return's a Board pointer to the player's connected board
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 Board* Player::getBoard()
@@ -236,12 +244,12 @@ Board* Player::getBoard()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setOneDieMode
+Purpose: turn the one die flag on or off
+Parameters: bool a_flag - true or false for on or off
+Return Value: return true on success
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::setOneDieMode(bool a_flag)
