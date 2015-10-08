@@ -12,12 +12,12 @@
 #include <iomanip>
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: BoardView
+Purpose: default constructor for BoardView
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 BoardView::BoardView() 
@@ -25,12 +25,14 @@ BoardView::BoardView()
 
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: BoardView
+Purpose: overloaded constructor for BoardView
+Parameters: Player &a_player - Human player
+			Player &a_player2 - computer player
+			Board &a_board -  board
+Return Value: none
+Local Variables: none
+Algorithm: assign players based to their corresponding member variables
 Assistance Received: none
 ********************************************************************* */
 BoardView::BoardView(Player &a_player, Player &a_player2, Board &a_board)
@@ -41,12 +43,12 @@ BoardView::BoardView(Player &a_player, Player &a_player2, Board &a_board)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: BoardView
+Purpose: default destructor for BoardView
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 BoardView::~BoardView()
@@ -54,12 +56,12 @@ BoardView::~BoardView()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: refershDisplay
+Purpose: clear the window prompt
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void BoardView::refreshDisplay()
@@ -68,12 +70,12 @@ void BoardView::refreshDisplay()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: display
+Purpose: print out the board
+Parameters: none
+Return Value: none
+Local Variables: auto it - row iterator
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void BoardView::display()
@@ -133,12 +135,12 @@ void BoardView::display()
 
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: displayScore
+Purpose: display the score, labels, and wins
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void BoardView::displayScore()
@@ -166,12 +168,12 @@ void BoardView::displayScore()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: displayTurns
+Purpose: display whose turn it is
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void BoardView::displayTurns() {

@@ -10,12 +10,12 @@
 #include <regex>
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: Human
+Purpose: Default constructor for class Human
+Parameters: none
+Return Value:none
+Local Variables: none
+Algorithm: inherits Player's default constructor
 Assistance Received: none
 ********************************************************************* */
 Human::Human()  : Player()
@@ -25,12 +25,12 @@ Human::Human()  : Player()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: Human
+Purpose: default destructor
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 Human::~Human()
@@ -39,12 +39,16 @@ Human::~Human()
 
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyInput
+Purpose: verify the user input
+Parameters: string a_input - user's input
+			string a_inputType - type of input , for what purpose
+Return Value: bool returns true or false if input is correct which is returned
+			  from the corresponding verify functions
+Local Variables: none
+Algorithm: check input type which is specified in specific segments of the program,
+			then check the input for that type, then return true for valid, false for 
+			invalid
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyInput(string a_input, string a_inputType) {
@@ -95,12 +99,12 @@ bool Human::verifyInput(string a_input, string a_inputType) {
 	return true;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyGameRule
+Purpose: verify the board size number input
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - user's input in lower case
+Algorithm: check if input is a number: 9 10 or 11
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyGameRule(string a_selection)
@@ -111,12 +115,12 @@ bool Human::verifyGameRule(string a_selection)
 	else return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyHelp
+Purpose: verify ask for help input
+Parameters: string a_selection - users input
+Return Value: true if help valid, false if not
+Local Variables: string selection - user's input in lower case
+Algorithm: check if input is a request for 'help'
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyHelp(string a_selection)
@@ -126,12 +130,12 @@ bool Human::verifyHelp(string a_selection)
 	else return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyRollDice
+Purpose: verify request for 'roll' dice
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid input
+Local Variables: string selection - user's input in lower case
+Algorithm: check if input is a request for 'roll'
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyRollDice(string a_selection)
@@ -141,12 +145,12 @@ bool Human::verifyRollDice(string a_selection)
 	else return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyOneRoll
+Purpose: verify request for 'one' die roll
+Parameters:  string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - users input in lower case
+Algorithm: check if input is a request for 'one' roll die
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyOneRoll(string a_selection)
@@ -156,12 +160,12 @@ bool Human::verifyOneRoll(string a_selection)
 	else return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyTwoRoll
+Purpose: verify request for 'two' die roll
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - user's input in lower case
+Algorithm: check if input is a request for 'two' roll die
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyTwoRoll(string a_selection)
@@ -171,12 +175,12 @@ bool Human::verifyTwoRoll(string a_selection)
 	else return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyRollChoice
+Purpose: verify roll choice
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - user's input in lower case
+Algorithm: chec if input is a reuqest for a roll choice
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyRollChoice(string a_selection)
@@ -186,12 +190,12 @@ bool Human::verifyRollChoice(string a_selection)
 	else return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyCoverSquare
+Purpose: verify cover or help request
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - users input in lowercase
+Algorithm: check if input is a request for cover or help
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyCoverSquare(string a_selection)
@@ -201,12 +205,12 @@ bool Human::verifyCoverSquare(string a_selection)
 	return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyUncoverSquare
+Purpose: verify uuncover or help selection request
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - users input in lowercase
+Algorithm: check if input is a request for uncover or help
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyUncoverSquare(string a_selection)
@@ -216,12 +220,15 @@ bool Human::verifyUncoverSquare(string a_selection)
 	return false;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyFileName
+Purpose: verify file name
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: bool found - flag if file was found
+				 string selection - file name in lower case
+				 regex_iterator myIterator - iterator to iterate thru returned regex
+				 regex_iterator endItertor - end position of returned regex
+Algorithm: check file name for any invalid characters
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyFileName(string a_selection)
@@ -246,12 +253,12 @@ bool Human::verifyFileName(string a_selection)
 	}
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyStartGame
+Purpose: verify start game choice
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - users input in lower case
+Algorithm: check if 'play' 'load' 'quit' request
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyStartGame(string a_selection)
@@ -267,12 +274,12 @@ bool Human::verifyStartGame(string a_selection)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyNumber
+Purpose: verify if input is number
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: none
+Algorithm: check if use input is a number bigger than gamerule number or -1
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyNumber(string a_selection)
@@ -291,12 +298,12 @@ bool Human::verifyNumber(string a_selection)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifyCoverUncoverSquare
+Purpose: verify cover, uncover, or help request
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - users input to lower case
+Algorithm: check if user input equals cover uncover or help
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifyCoverUncoverSquare(string a_selection)
@@ -312,12 +319,12 @@ bool Human::verifyCoverUncoverSquare(string a_selection)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: verifySaveGame
+Purpose: verify saveg game choice
+Parameters: string a_selection - users input
+Return Value: true if valid, false if invalid
+Local Variables: string selection - users input in lower case
+Algorithm: check if input is 'yes' or 'no'
 Assistance Received: none
 ********************************************************************* */
 bool Human::verifySaveGame(string a_selection)
@@ -329,12 +336,12 @@ bool Human::verifySaveGame(string a_selection)
 
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: toLowerCase
+Purpose: change a passed string to lower case
+Parameters: string a_selection - string to be changed to lower case
+Return Value: lower case string
+Local Variables: string lower_str - lower case string
+Algorithm: go char by char and turn it into a lower case char
 Assistance Received: none
 ********************************************************************* */
 string Human::toLowerCase(string a_selection) {
@@ -346,12 +353,12 @@ string Human::toLowerCase(string a_selection) {
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setGameRule
+Purpose: set member variable for game rule
+Parameters: int a_gameRule - gameRule member variable
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Human::setGameRule(int a_gameRule)
@@ -360,12 +367,12 @@ void Human::setGameRule(int a_gameRule)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: is_number
+Purpose: check if passed string is a number
+Parameters: const string& s - string
+Return Value:  true if number, false if not
+Local Variables: none
+Algorithm: check every char if its a number or not
 Assistance Received: none
 ********************************************************************* */
 bool Human::is_number(const string& s)

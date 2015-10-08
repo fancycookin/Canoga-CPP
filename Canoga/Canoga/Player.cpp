@@ -259,12 +259,12 @@ bool Player::setOneDieMode(bool a_flag)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setWin
+Purpose: set the number of wins for a player
+Parameters: new number of wins
+Return Value: bool - return true on success
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::setWin(int a_wins)
@@ -274,12 +274,12 @@ bool Player::setWin(int a_wins)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: addWin
+Purpose: increments the number of wins
+Parameters: none
+Return Value: bool - returns true if successful
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::addWin()
@@ -289,12 +289,12 @@ bool Player::addWin()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setScore
+Purpose: sets a new given score for the player
+Parameters: int a_score - new score
+Return Value: true when successful
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::setScore(int a_score)
@@ -304,12 +304,12 @@ bool Player::setScore(int a_score)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: addScore
+Purpose: add a given number of points to the player's score
+Parameters: int a_score - new score
+Return Value: true when successful
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::addScore(int a_score)
@@ -319,12 +319,12 @@ bool Player::addScore(int a_score)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setTurn
+Purpose: toggle the player's turn flag
+Parameters: none
+Return Value: true when successful
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::setTurn()
@@ -334,12 +334,12 @@ bool Player::setTurn()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setTurn
+Purpose: OVerloaded setTurn() - set the player's trun flag
+Parameters: bool a_flag - new bool
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setTurn(bool a_flag)
@@ -348,12 +348,12 @@ void Player::setTurn(bool a_flag)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setIsWon
+Purpose: set a player to win
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setIsWon()
@@ -362,12 +362,12 @@ void Player::setIsWon()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getWentFirst
+Purpose: check if a player went first
+Parameters: none
+Return Value: bool - return if player went first
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::getWentFirst()
@@ -376,12 +376,12 @@ bool Player::getWentFirst()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setWentFirst
+Purpose: set that a player went first
+Parameters: bool a_bool - flag
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setWentFirst(bool a_bool)
@@ -390,12 +390,12 @@ void Player::setWentFirst(bool a_bool)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: isWon
+Purpose: check if player has won
+Parameters: none
+Return Value: bool - if player has won, return true, else return false
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 bool Player::isWon()
@@ -405,12 +405,12 @@ bool Player::isWon()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: clearFlags
+Purpose: clear the win, turn, one die mode, round score, and win type flags
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::clearFlags()
@@ -424,47 +424,39 @@ void Player::clearFlags()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setCoverSquare
+Purpose: cover a square selected by player
+Parameters: int a_square - the square selected
+Return Value: none
+Local Variables: *ptr - pointer to the players row in the board
+Algorithm: get the selected square, cover it
 Assistance Received: none
 ********************************************************************* */
 void Player::setCoverSquare(int a_square)
 {
-	//if (isUncoverable(a_player,a_square)) return false;
-	//else {
 	if (a_square != 0) {
 		if (m_playerType == "Human") {
 			map<int, bool> *ptr = m_playerBoard->getHumanRows();
-			//m_playerBoard.getMap()[a_square] = true;
 			ptr->at(a_square) = true;
-
 		}
 		else {
 			map<int, bool> *ptr = m_playerBoard->getComputerRows();
-			//m_playerBoard.getMap()[a_square] = true;
 			ptr->at(a_square) = true;
 		}
 	}
-	//}
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setUncoverSquare
+Purpose: uncover a square selected by player
+Parameters: int a_square - the square selected
+Return Value: none
+Local Variables: *ptr - pointer to the players row in the board
+Algorithm: get the selected square, uncover it
 Assistance Received: none
 ********************************************************************* */
 void Player::setUncoverSquare(int a_square)
 {
-	//if (isCoverable(a_player, a_square)) return false;
-	//else {
 	if (a_square != 0) {
 		if (m_playerType == "Human") {
 			map<int, bool> *ptr = m_playerBoard->getHumanRows();
@@ -475,16 +467,15 @@ void Player::setUncoverSquare(int a_square)
 			ptr->at(a_square) = false;
 		}
 	}
-	//}
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setWonByCover
+Purpose: set a win that a player has won by covering all own squares
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setWonByCover()
@@ -493,12 +484,12 @@ void Player::setWonByCover()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setWonByUncover
+Purpose: set a win that a player has b uncover all opponents squares
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 void Player::setWonByUncover()
@@ -507,12 +498,13 @@ void Player::setWonByUncover()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getWonBy
+Purpose: return the way a player won
+Parameters: none
+Return Value: "cover" if player won by covering, "uncover" if player won
+			 by uncovering
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 string Player::getWonBy()
@@ -526,12 +518,17 @@ string Player::getWonBy()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: setAdvantage
+Purpose: calculate the advantage points when a player wins
+Parameters: int a_roundScore - the sum of points of the won round
+Return Value: none
+Local Variables: int advantageSum - variable to hold the round's score
+				 int sum - temp sum of the advantage
+				 int digit1 - first digit of the round score number
+				 int digit2 - second digit of the round score number
+
+Algorithm: get first digit, get second digit, get the sum, then keep doing 
+			that until the sum is less than 9
 Assistance Received: none
 ********************************************************************* */
  void Player::setAdvantage(int a_roundScore)
@@ -555,12 +552,14 @@ Assistance Received: none
 }
 
  /* *********************************************************************
- Function Name:
- Purpose:
- Parameters:
- Return Value:
- Local Variables:
- Algorithm:
+ Function Name: loadDiceFile
+ Purpose: load the file in which the dice rolls are saved
+ Parameters: none
+ Return Value: none
+ Local Variables: string line - line read from file
+					ifstream myfile - the dice file
+ Algorithm: read line by line each dice roll, if its two numbers on a line,
+			add them and store that as a dice roll
  Assistance Received: none
  ********************************************************************* */
  void Player::loadDiceFile()

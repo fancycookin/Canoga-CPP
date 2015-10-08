@@ -11,12 +11,12 @@
 #include "Player.h"
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: Board	
+Purpose: default constructor for Board
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 Board::Board() {
@@ -25,12 +25,12 @@ Board::Board() {
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: Board
+Purpose: overloaded constructor for Board class
+Parameters: int a_numberOfRows - maximum number of squares on a row
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 Board::Board(int a_numberOfRows)
@@ -42,12 +42,12 @@ Board::Board(int a_numberOfRows)
 
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: Board
+Purpose: default destructor for Board class
+Parameters: none
+Return Value: none
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 Board::~Board()
@@ -55,19 +55,18 @@ Board::~Board()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: isCovered
+Purpose: check if a square on a specified player's row is covered
+Parameters: Player& a_player - player's row
+			int a_square - square to be checked
+Return Value: bool if covered return true, if not return false
+Local Variables: none
+Algorithm: check the square in the specified row
 Assistance Received: none
 ********************************************************************* */
 bool Board::isCovered(Player& a_player, int a_square)
 {
 
-	//cout << typeid(a_player).name() << endl;
-	//cout << a_player.getPlayerType() << endl;
 	if (a_player.getPlayerType() == "Human") {
 		if (m_humanRow[a_square]) return true;
 		else return false;
@@ -82,27 +81,15 @@ bool Board::isCovered(Player& a_player, int a_square)
 	}
 }
 
-/* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
-Assistance Received: none
-********************************************************************* */
-int Board::getMaxSquares()
-{
-	return m_maxSquares;
-}
+
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
+Function Name: setMaxSquares
+Purpose: set max number of squares on a row
+Parameters: int a_maxRows - max number of squares
+Return Value: true if number of max squares is valid, false if not
 Local Variables:
-Algorithm:
+Algorithm: check if passed max number of squares is between 9 and 11
 Assistance Received: none
 ********************************************************************* */
 bool Board::setMaxSquares(int a_maxRows)
@@ -117,12 +104,12 @@ bool Board::setMaxSquares(int a_maxRows)
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getHumanRows
+Purpose: returns a pointer to the human players rows
+Parameters: none
+Return Value: points to the uman players row map
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 map<int,bool>*Board::getHumanRows()
@@ -131,12 +118,12 @@ map<int,bool>*Board::getHumanRows()
 }
 
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: getComputerRows
+Purpose: returns a poiner to the computer players rows
+Parameters: none
+Return Value: a pointer to the computer players row map
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
 map<int, bool>*Board::getComputerRows()
@@ -144,15 +131,15 @@ map<int, bool>*Board::getComputerRows()
 	return &m_computerRow;
 }
 /* *********************************************************************
-Function Name:
-Purpose:
-Parameters:
-Return Value:
-Local Variables:
-Algorithm:
+Function Name: initializeRows
+Purpose: fill both human and computer rows
+Parameters: int a_numberOfRows - maximum number of squares
+Return Value: return true if sucessfully filled rows, false if number of rows is out of range
+Local Variables: none
+Algorithm: none
 Assistance Received: none
 ********************************************************************* */
-int Board::initializeRows(int a_numberOfRows) {
+bool Board::initializeRows(int a_numberOfRows) {
 	if (setMaxSquares(a_numberOfRows)) {
 		for (int i = 0; i < m_maxSquares; i++) {
 			m_humanRow.insert(pair<int, bool>(i + 1, false));

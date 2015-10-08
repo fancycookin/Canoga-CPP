@@ -14,7 +14,6 @@ public:
 	Computer();
 	//using Player::Player;
 	~Computer();
-	int getSuggestedMove();
 	
 	struct Moves {
 		vector<int> m_coverMoveSet = vector<int>();
